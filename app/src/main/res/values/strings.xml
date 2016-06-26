@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">萌妹</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_about">关于萌妹子</string>
+    <string name="gank_meizi">首页</string>
+    <string name="tao_female">淘女郎</string>
+    <string name="douban_meizi">豆瓣妹子</string>
+    <string name="huaban_meizi">花瓣妹子</string>
+    <string name="action_notifiable">每天中午提醒</string>
+    <string name="notifiable_on">已经开启提醒</string>
+    <string name="notifiable_off">已经关闭提醒</string>
+    <string name="headsup_title">萌妹</string>
+    <string name="headsup_content">今天的妹纸已经准备好了，快来享用吧~</string>
+    <string name="image_icon_dec">app icon</string>
+</resources>

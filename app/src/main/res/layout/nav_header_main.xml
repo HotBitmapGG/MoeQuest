@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@color/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+
+    <com.hotbitmapgg.moequest.widget.CircleImageView
+        android:id="@+id/nav_head_avatar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+       android:layout_centerInParent="true"
+        android:src="@drawable/ic_avatar1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nav_head_avatar"
+        android:padding="10dp"
+        android:text="萌妹,每日妹子福利"
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+
+</RelativeLayout>

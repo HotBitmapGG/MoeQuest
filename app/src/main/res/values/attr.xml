@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 圆形头像控件-->
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension"/>
+        <attr name="border_color2" format="color"/>
+    </declare-styleable>
+
+    <!--进度条-->
+    <declare-styleable name="CircleProgressView">
+        <attr name="matProg_progressIndeterminate" format="boolean"/>
+        <attr name="matProg_barColor" format="color"/>
+        <attr name="matProg_rimColor" format="color"/>
+        <attr name="matProg_rimWidth" format="dimension"/>
+        <attr name="matProg_spinSpeed" format="float"/>
+        <attr name="matProg_barSpinCycleTime" format="integer"/>
+        <attr name="matProg_circleRadius" format="dimension"/>
+        <attr name="matProg_fillRadius" format="boolean"/>
+        <attr name="matProg_barWidth" format="dimension"/>
+        <attr name="matProg_linearProgress" format="boolean"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:checked="true"
+            android:icon="@drawable/home"
+            android:title="首页" />
+
+        <item
+            android:id="@+id/nav_tao"
+            android:checked="true"
+            android:icon="@drawable/bra"
+            android:title="淘女郎" />
+        <item
+            android:id="@+id/nav_douban"
+            android:icon="@drawable/businesswoman"
+            android:title="豆瓣妹子" />
+        <item
+            android:id="@+id/nav_huaban"
+            android:icon="@drawable/portrait_mode"
+            android:title="花瓣妹子" />
+    </group>
+
+    <item android:title="Other">
+        <menu>
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="关于App" />
+
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="分享App" />
+
+        </menu>
+    </item>
+
+</menu>
