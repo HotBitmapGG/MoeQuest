@@ -16,6 +16,7 @@ import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import com.hotbitmapgg.moequest.ui.fragment.DoubanMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.GankMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.HuaBanMeiziFragment;
+import com.hotbitmapgg.moequest.ui.fragment.JianDanMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.TaoFemaleFragment;
 import com.hotbitmapgg.moequest.utils.AlarmManagerUtils;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
@@ -80,11 +81,22 @@ public class MainActivity extends RxBaseActivity
     private void initFragment()
     {
 
+        // 初始化Fragment
         GankMeiziFragment gankMeiziFragment = GankMeiziFragment.newInstance();
         DoubanMeiziFragment doubanMeiziFragment = DoubanMeiziFragment.newInstance();
         HuaBanMeiziFragment huaBanMeiziFragment = HuaBanMeiziFragment.newInstance();
         TaoFemaleFragment taoFemaleFragment = TaoFemaleFragment.newInstance();
-        fragments = new Fragment[]{gankMeiziFragment, taoFemaleFragment, doubanMeiziFragment, huaBanMeiziFragment};
+        JianDanMeiziFragment jianDanMeiziFragment = JianDanMeiziFragment.newInstance();
+
+        fragments = new Fragment[]{
+                gankMeiziFragment,
+                taoFemaleFragment,
+                doubanMeiziFragment,
+                huaBanMeiziFragment,
+                jianDanMeiziFragment
+        };
+
+        //显示第一个 gank妹子
         getFragmentManager().beginTransaction().replace(R.id.content, gankMeiziFragment).commit();
     }
 
@@ -149,10 +161,20 @@ public class MainActivity extends RxBaseActivity
                 changIndex(3, getResources().getString(R.string.huaban_meizi), item);
                 return true;
 
+            case R.id.nav_jiandan:
+                changIndex(4, getResources().getString(R.string.jiandan_meizi), item);
+                return true;
+
+
+            case R.id.nav_about:
+
+                return true;
+
             case R.id.nav_share:
 
                 ShareUtil.shareLink("", "萌妹,每日更新妹子福利", MainActivity.this);
                 return true;
+
 
             default:
                 break;

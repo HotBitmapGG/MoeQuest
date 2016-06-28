@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.network;
+package com.hotbitmapgg.moequest.network.api;
 
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;

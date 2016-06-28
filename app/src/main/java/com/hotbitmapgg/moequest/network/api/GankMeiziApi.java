@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.network;
+package com.hotbitmapgg.moequest.network.api;
 
 
 import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;

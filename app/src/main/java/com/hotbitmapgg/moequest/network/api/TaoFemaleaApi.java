@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.network;
+package com.hotbitmapgg.moequest.network.api;
 
 import com.hotbitmapgg.moequest.model.taomodel.TaoFemale;
 
@@ -12,9 +12,6 @@ import rx.Observable;
  */
 public interface TaoFemaleaApi
 {
-
-    //https://route.showapi.com/126-2?order=&page=&showapi_appid=15314&showapi_timestamp=20160625193433&type=&showapi_sign=cf50d9a896b8de0d931bc10c318f2b09
-
 
     @GET("126-2")
     Observable<TaoFemale> getTaoFemale(@Query("page") String page,

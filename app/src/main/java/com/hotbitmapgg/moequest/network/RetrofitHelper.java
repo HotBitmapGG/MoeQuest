@@ -2,6 +2,11 @@ package com.hotbitmapgg.moequest.network;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.hotbitmapgg.moequest.MoeQuestApp;
+import com.hotbitmapgg.moequest.network.api.DoubanMeizhiApi;
+import com.hotbitmapgg.moequest.network.api.GankMeiziApi;
+import com.hotbitmapgg.moequest.network.api.HuaBanMeiziApi;
+import com.hotbitmapgg.moequest.network.api.JianDanMeiziApi;
+import com.hotbitmapgg.moequest.network.api.TaoFemaleaApi;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +28,8 @@ public class RetrofitHelper
     public static final String BASE_HUABAN_URL = "http://route.showapi.com/";
 
     public static final String BASE_DOUBAN_URL = "http://www.dbmeinv.com/dbgroup/";
+
+    public static final String BASE_JIANDAN_URL = "http://jandan.net/";
 
     private static OkHttpClient mOkHttpClient;
 
@@ -87,6 +94,11 @@ public class RetrofitHelper
         return retrofit.create(DoubanMeizhiApi.class);
     }
 
+    /**
+     * 淘女郎Api
+     *
+     * @return
+     */
     public static TaoFemaleaApi getTaoFemaleApi()
     {
 
@@ -98,6 +110,24 @@ public class RetrofitHelper
                 .build();
 
         return retrofit.create(TaoFemaleaApi.class);
+    }
+
+    /**
+     * 煎蛋Api
+     *
+     * @return
+     */
+    public static JianDanMeiziApi getJianDanApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_JIANDAN_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(JianDanMeiziApi.class);
     }
 
 
