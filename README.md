@@ -11,17 +11,21 @@
 
 ## 截图
 
-![](https://github.com/HotBitmapGG/RxZhiHu/blob/https--github.com/HotBitmapGG/RxZhiHuDaily/screenphoto/photo_2.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/01.jpg?raw=true)
 
-![](https://github.com/HotBitmapGG/RxZhiHu/blob/https--github.com/HotBitmapGG/RxZhiHuDaily/screenphoto/photo_3.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/02.jpg?raw=true)
 
-![](https://github.com/HotBitmapGG/RxZhiHu/blob/https--github.com/HotBitmapGG/RxZhiHuDaily/screenphoto/photo_4.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/03.jpg?raw=true)
 
-![](https://github.com/HotBitmapGG/RxZhiHu/blob/https--github.com/HotBitmapGG/RxZhiHuDaily/screenphoto/photo_5.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/04.jpg?raw=true)
 
-![](https://github.com/HotBitmapGG/RxZhiHu/blob/https--github.com/HotBitmapGG/RxZhiHuDaily/screenphoto/photo_6.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/05.jpg?raw=true)
 
-![](https://github.com/HotBitmapGG/RxZhiHu/blob/https--github.com/HotBitmapGG/RxZhiHuDaily/screenphoto/photo_8.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/06.jpg?raw=true)
+
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/07.jpg?raw=true)
+
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/08.jpg?raw=true)
 
 
 ## 声明
