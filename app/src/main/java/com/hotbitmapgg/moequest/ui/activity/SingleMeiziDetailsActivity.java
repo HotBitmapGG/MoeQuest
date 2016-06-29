@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -38,15 +37,12 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
-public class HuaBanMeiziDetailsActivity extends RxBaseActivity
+public class SingleMeiziDetailsActivity extends RxBaseActivity
 {
 
 
     @Bind(R.id.meizi)
     ImageView mImageView;
-
-    @Bind(R.id.meizi_title)
-    TextView mTitle;
 
     @Bind(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
@@ -85,8 +81,6 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
         Glide.with(this).load(url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(mImageView);
-
-        mTitle.setText(title);
 
         setUpPhotoAttacher();
     }
@@ -137,7 +131,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
                 // 分享
                 Observable.just("")
                         .compose(bindToLifecycle())
-                        .compose(RxPermissions.getInstance(HuaBanMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                        .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                         .observeOn(Schedulers.io())
                         .filter(new Func1<Boolean,Boolean>()
                         {
@@ -156,7 +150,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
                             public Observable<Uri> call(Boolean aBoolean)
                             {
 
-                                return GlideDownloadImageUtil.saveImageToLocal(HuaBanMeiziDetailsActivity.this, url);
+                                return GlideDownloadImageUtil.saveImageToLocal(SingleMeiziDetailsActivity.this, url);
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())
@@ -177,7 +171,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
                             public void call(Throwable throwable)
                             {
 
-                                Toast.makeText(HuaBanMeiziDetailsActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SingleMeiziDetailsActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
                             }
                         });
                 return true;
@@ -195,7 +189,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
     public static Intent LuanchActivity(Activity activity, String url, String title)
     {
 
-        Intent intent = new Intent(activity, HuaBanMeiziDetailsActivity.class);
+        Intent intent = new Intent(activity, SingleMeiziDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_URL, url);
         intent.putExtra(EXTRA_TITLE, title);
@@ -223,7 +217,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
             public boolean onLongClick(View v)
             {
 
-                new AlertDialog.Builder(HuaBanMeiziDetailsActivity.this)
+                new AlertDialog.Builder(SingleMeiziDetailsActivity.this)
                         .setMessage("是否保存到本地?")
                         .setNegativeButton("取消", new DialogInterface.OnClickListener()
                         {
@@ -259,7 +253,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
     {
        Observable.just("")
                 .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(HuaBanMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -278,7 +272,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
                     public Observable<Uri> call(Boolean aBoolean)
                     {
 
-                        return GlideDownloadImageUtil.saveImageToLocal(HuaBanMeiziDetailsActivity.this, url);
+                        return GlideDownloadImageUtil.saveImageToLocal(SingleMeiziDetailsActivity.this, url);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -291,7 +285,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
 
                         File appDir = new File(Environment.getExternalStorageDirectory(), ConstantUtil.FILE_DIR);
                         String msg = String.format("图片已保存至 %s 文件夹", appDir.getAbsolutePath());
-                        Toast.makeText(HuaBanMeiziDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleMeiziDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 }, new Action1<Throwable>()
                 {
@@ -300,7 +294,7 @@ public class HuaBanMeiziDetailsActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        Toast.makeText(HuaBanMeiziDetailsActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SingleMeiziDetailsActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

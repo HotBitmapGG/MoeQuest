@@ -15,7 +15,7 @@ import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.model.taomodel.Contentlist;
 import com.hotbitmapgg.moequest.model.taomodel.TaoFemale;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.ui.activity.HuaBanMeiziDetailsActivity;
+import com.hotbitmapgg.moequest.ui.activity.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 import com.hotbitmapgg.moequest.widget.loadmore.EndlessRecyclerOnScrollListener;
@@ -137,7 +137,7 @@ public class TaoFemaleFragment extends RxBaseFragment
             public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
             {
 
-                Intent intent = HuaBanMeiziDetailsActivity.LuanchActivity(getActivity(), datas.get(position).avatarUrl, datas.get(position).realName);
+                Intent intent = SingleMeiziDetailsActivity.LuanchActivity(getActivity(), datas.get(position).avatarUrl, datas.get(position).realName);
                 if (android.os.Build.VERSION.SDK_INT >= 21)
                 {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity(), holder.getParentView().findViewById(R.id.tao_avatar), "transitionImg").toBundle());

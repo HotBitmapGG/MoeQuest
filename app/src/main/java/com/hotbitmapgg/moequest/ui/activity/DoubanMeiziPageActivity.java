@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.entry.RxBus;
+import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
 import com.hotbitmapgg.moequest.ui.fragment.DoubanMeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;

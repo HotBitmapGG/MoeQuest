@@ -9,28 +9,11 @@
     <include layout="@layout/layout_toolbar" />
 
 
-    <FrameLayout
+    <ImageView
+        android:id="@+id/meizi"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/meizi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:transitionName="transitionImg" />
-
-
-        <TextView
-            android:id="@+id/meizi_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|left"
-            android:padding="10dp"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
-
-
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:transitionName="transitionImg" />
 
 
 </LinearLayout>

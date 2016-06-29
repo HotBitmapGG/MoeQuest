@@ -15,7 +15,7 @@ import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.model.huaban.HuaBanMeizi;
 import com.hotbitmapgg.moequest.model.huaban.HuaBanMeiziInfo;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.ui.activity.HuaBanMeiziDetailsActivity;
+import com.hotbitmapgg.moequest.ui.activity.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 
 import java.io.IOException;
@@ -186,7 +186,7 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
             public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
             {
 
-                Intent intent = HuaBanMeiziDetailsActivity.LuanchActivity(getActivity(), meiziInfos.get(position).getThumb(), meiziInfos.get(position).getTitle());
+                Intent intent = SingleMeiziDetailsActivity.LuanchActivity(getActivity(), meiziInfos.get(position).getThumb(), meiziInfos.get(position).getTitle());
                 if (android.os.Build.VERSION.SDK_INT >= 21)
                 {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity(), holder.getParentView().findViewById(R.id.item_img), "transitionImg").toBundle());

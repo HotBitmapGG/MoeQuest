@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.entry;
+package com.hotbitmapgg.moequest.rx;
 
 
 import rx.Observable;

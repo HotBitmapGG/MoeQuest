@@ -36,7 +36,7 @@
             android:theme="@style/AppTheme.StatusBar" />
 
         <activity
-            android:name=".ui.activity.HuaBanMeiziDetailsActivity"
+            android:name=".ui.activity.SingleMeiziDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.StatusBar" />
 
