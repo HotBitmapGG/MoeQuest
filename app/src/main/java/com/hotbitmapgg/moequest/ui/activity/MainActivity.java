@@ -2,6 +2,7 @@ package com.hotbitmapgg.moequest.ui.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -168,11 +169,12 @@ public class MainActivity extends RxBaseActivity
 
             case R.id.nav_about:
 
+                startActivity(new Intent(MainActivity.this, AppAboutActivity.class));
                 return true;
 
             case R.id.nav_share:
 
-                ShareUtil.shareLink("", "萌妹,每日更新妹子福利", MainActivity.this);
+                ShareUtil.shareLink(getString(R.string.project_link), "萌妹,每日更新妹子福利", MainActivity.this);
                 return true;
 
 
