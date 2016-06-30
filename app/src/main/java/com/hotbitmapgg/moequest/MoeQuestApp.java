@@ -3,6 +3,9 @@ package com.hotbitmapgg.moequest;
 import android.app.Application;
 import android.content.Context;
 
+import com.hotbitmapgg.moequest.utils.ConstantUtil;
+import com.tencent.bugly.crashreport.CrashReport;
+
 import io.realm.DynamicRealm;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -37,6 +40,9 @@ public class MoeQuestApp extends Application
         }).build();
 
         Realm.setDefaultConfiguration(configuration);
+
+        //配置腾讯bugly
+        CrashReport.initCrashReport(getApplicationContext(), ConstantUtil.BUGLY_ID, false);
     }
 
 

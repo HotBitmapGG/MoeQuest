@@ -11,35 +11,37 @@
         <item
             android:id="@+id/nav_tao"
             android:checked="true"
-            android:icon="@drawable/bra"
+            android:icon="@drawable/wedding_dress"
             android:title="淘女郎" />
         <item
             android:id="@+id/nav_douban"
-            android:icon="@drawable/businesswoman"
+            android:icon="@drawable/bow_tie"
             android:title="豆瓣妹子" />
         <item
             android:id="@+id/nav_huaban"
-            android:icon="@drawable/portrait_mode"
+            android:icon="@drawable/flower"
             android:title="花瓣妹子" />
 
         <item
             android:id="@+id/nav_jiandan"
-            android:icon="@drawable/geisha"
+            android:icon="@drawable/year_of_rooster"
             android:title="煎蛋妹子" />
     </group>
 
     <item android:title="Other">
         <menu>
 
-            <item
-                android:id="@+id/nav_about"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="关于App" />
 
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/share"
                 android:title="分享App" />
+
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/high_importance"
+                android:title="关于App" />
+
 
         </menu>
     </item>

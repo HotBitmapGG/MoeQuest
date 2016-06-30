@@ -16,4 +16,7 @@ public class ConstantUtil
 
     //本地存储dir目录
     public static final String FILE_DIR = "moe_quest";
+
+    //腾讯buglyID
+    public static final String BUGLY_ID = "900037370";
 }

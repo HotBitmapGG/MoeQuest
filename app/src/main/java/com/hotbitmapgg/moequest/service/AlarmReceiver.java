@@ -27,7 +27,7 @@ public class AlarmReceiver extends BroadcastReceiver
             HeadsUpUtils.show(context, MainActivity.class,
                     context.getString(R.string.headsup_title),
                     context.getString(R.string.headsup_content),
-                    R.mipmap.ic_launcher, R.drawable.ic_banana, 123123);
+                    R.mipmap.ic_launcher, R.drawable.bow_tie, 123123);
         }
     }
 }
