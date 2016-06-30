@@ -69,7 +69,8 @@ dependencies {
     compile 'com.android.support:support-v13:23.4.0'
     //Realm数据
     compile 'io.realm:realm-android:0.87.0'
-
+    //欢迎页动画库
+    compile 'com.flaviofaria:kenburnsview:1.0.7'
     //腾讯bugly
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
     compile 'com.tencent.bugly:crashreport:latest.release'

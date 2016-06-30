@@ -15,7 +15,10 @@ import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import butterknife.Bind;
 
 /**
- * 关于App
+ * Created by hcc on 16/6/30 21:57
+ * 100332338@qq.com
+ * <p/>
+ * App关于界面
  */
 public class AppAboutActivity extends RxBaseActivity
 {
