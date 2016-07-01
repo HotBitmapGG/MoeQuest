@@ -9,6 +9,9 @@
 * 2.使用Rxjava系列 + Realm数据库 + Glide实现.
 * 3.遵循Google的Material Design.
 
+## Apk下载
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/canvas.png?raw=true)
+
 ## 截图
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/01.jpg?raw=true)
