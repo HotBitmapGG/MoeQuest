@@ -74,7 +74,6 @@ public class JianDanMeiziFragment extends RxBaseFragment
 
         showProgress();
         initRecycle();
-        getJianDanMeizi();
     }
 
     private void getJianDanMeizi()
