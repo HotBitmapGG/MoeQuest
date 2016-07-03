@@ -1,11 +1,14 @@
 package com.hotbitmapgg.moequest.adapter;
 
 import android.app.Activity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +16,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.model.taomodel.Contentlist;
+import com.hotbitmapgg.moequest.ui.activity.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.ui.activity.TaoFemalePagerActivity;
 import com.hotbitmapgg.moequest.widget.CircleImageView;
 
@@ -28,11 +32,14 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
 
     private List<Contentlist> datas = new ArrayList<>();
 
-    public TaoFemaleAdapter(RecyclerView recyclerView, List<Contentlist> datas)
+    Context mContext;
+
+    public TaoFemaleAdapter(RecyclerView recyclerView, List<Contentlist> datas, Context context)
     {
 
         super(recyclerView);
         this.datas = datas;
+        this.mContext = context;
     }
 
     @Override
@@ -66,27 +73,45 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
             itemViewHolder.mUserFansNum.setText(contentlist.totalFanNum);
             itemViewHolder.mType.setText(contentlist.type);
 
-            setImageList(itemViewHolder, contentlist.imgList);
+            setImageList(itemViewHolder, contentlist.imgList, contentlist.avatarUrl, contentlist.realName);
         }
         super.onBindViewHolder(holder, position);
     }
 
-    private void setImageList(ItemViewHolder itemViewHolder, final ArrayList<String> imgList)
+    private void setImageList(final ItemViewHolder itemViewHolder, final ArrayList<String> imgList, final String url, final String name)
     {
 
-        itemViewHolder.mImageList.setHasFixedSize(false);
-        itemViewHolder.mImageList.setNestedScrollingEnabled(false);
-        itemViewHolder.mImageList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        TaoFemaleImageRecycleAdapter mTaoFemaleImageRecycleAdapter = new TaoFemaleImageRecycleAdapter(itemViewHolder.mImageList, imgList);
-        itemViewHolder.mImageList.setAdapter(mTaoFemaleImageRecycleAdapter);
-        mTaoFemaleImageRecycleAdapter.setOnItemClickListener(new OnItemClickListener()
+        Glide.clear(itemViewHolder.mImage);
+        Glide.with(getContext())
+                .load(url)
+                .centerCrop()
+                .placeholder(R.drawable.placeholder_image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(itemViewHolder.mImage);
+
+        itemViewHolder.mImageNum.setText(imgList.size() + "张");
+
+        itemViewHolder.mImage.setOnClickListener(new View.OnClickListener()
         {
 
             @Override
-            public void onItemClick(int position, ClickableViewHolder holder)
+            public void onClick(View v)
             {
 
-                TaoFemalePagerActivity.luancher((Activity) getContext(), imgList, position);
+                if (imgList.size() > 0)
+                {
+                    TaoFemalePagerActivity.luancher((Activity) getContext(), imgList, 0);
+                } else
+                {
+                    Intent intent = SingleMeiziDetailsActivity.LuanchActivity((Activity) mContext, url, name);
+                    if (android.os.Build.VERSION.SDK_INT >= 21)
+                    {
+                        mContext.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext, itemViewHolder.mImage, "transitionImg").toBundle());
+                    } else
+                    {
+                        mContext.startActivity(intent);
+                    }
+                }
             }
         });
     }
@@ -107,7 +132,7 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
 
         public TextView mUserLocation;
 
-        public RecyclerView mImageList;
+        public ImageView mImage;
 
         public TextView mUserFansNum;
 
@@ -117,6 +142,8 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
 
         public TextView mType;
 
+        public TextView mImageNum;
+
         public ItemViewHolder(View itemView)
         {
 
@@ -124,11 +151,12 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
             mAvatar = $(R.id.tao_avatar);
             mUserName = $(R.id.tao_name);
             mUserLocation = $(R.id.tao_location);
-            mImageList = $(R.id.tao_recycle);
+            mImage = $(R.id.tao_image);
             mUserFansNum = $(R.id.tao_fans_num);
             mUserHeight = $(R.id.tao_height);
             mUserWidth = $(R.id.tao_width);
             mType = $(R.id.tao_type);
+            mImageNum = $(R.id.tao_image_num);
         }
     }
 }

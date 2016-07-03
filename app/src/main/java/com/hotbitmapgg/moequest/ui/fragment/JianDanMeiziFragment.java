@@ -81,6 +81,7 @@ public class JianDanMeiziFragment extends RxBaseFragment
 
         RetrofitHelper.getJianDanApi()
                 .getJianDanMeizi(page)
+                .compose(this.<JianDanMeizi> bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<JianDanMeizi>()
@@ -171,6 +172,7 @@ public class JianDanMeiziFragment extends RxBaseFragment
 
                 page++;
                 getJianDanMeizi();
+                footView.setVisibility(View.VISIBLE);
             }
         });
     }

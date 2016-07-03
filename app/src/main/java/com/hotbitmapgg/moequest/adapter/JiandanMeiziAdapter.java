@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.model.jiandan.JianDanMeizi;
+import com.hotbitmapgg.moequest.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +48,29 @@ public class JiandanMeiziAdapter extends AbsRecyclerViewAdapter
         if (holder instanceof ItemViewHolder)
         {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            JianDanMeizi.JianDanMeiziData jianDanMeiziData = datas.get(position);
+            String picUrl;
+            if (jianDanMeiziData.pics[0].endsWith(".gif"))
+            {
+                picUrl = jianDanMeiziData.pics[0]
+                        .replace("mw600", "small")
+                        .replace("mw690", "small")
+                        .replace("mw1200", "small")
+                        .replace("mw1024", "small")
+                        .replace("large", "small");
+                LogUtil.all(picUrl);
+            } else
+            {
+                picUrl = jianDanMeiziData.pics[0];
+            }
+
+            Glide.clear(itemViewHolder.mImage);
             Glide.with(getContext())
-                    .load(datas.get(position).pics[0])
+                    .load(picUrl)
                     .centerCrop()
-                    .crossFade(0)
                     .placeholder(R.drawable.placeholder_image)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .override(200,200)
                     .into(itemViewHolder.mImage);
 
             itemViewHolder.mDesc.setText(datas.get(position).commentAuthor);

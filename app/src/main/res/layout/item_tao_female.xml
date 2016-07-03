@@ -21,8 +21,8 @@
             android:layout_height="60dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:transitionName="transitionImg"
-            android:src="@drawable/placeholder_image" />
+            android:src="@drawable/placeholder_image"
+            android:transitionName="transitionImg" />
 
 
         <LinearLayout
@@ -54,22 +54,38 @@
 
         </LinearLayout>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/tao_recycle"
+        <FrameLayout
+            android:id="@+id/tao_image_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:layout_below="@+id/tao_avatar"
-            android:layout_marginTop="10dp"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:padding="10dp" />
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/tao_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:transitionName="transitionImg" />
+
+
+            <TextView
+                android:id="@+id/tao_image_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:background="@android:color/darker_gray"
+                android:textSize="18sp" />
+
+        </FrameLayout>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tao_recycle"
+            android:layout_below="@+id/tao_image_layout"
             android:orientation="horizontal"
             android:padding="10dp">
 

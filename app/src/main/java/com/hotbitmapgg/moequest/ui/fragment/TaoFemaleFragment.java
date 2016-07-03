@@ -156,7 +156,7 @@ public class TaoFemaleFragment extends RxBaseFragment
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new TaoFemaleAdapter(mRecyclerView, datas);
+        mAdapter = new TaoFemaleAdapter(mRecyclerView, datas, getActivity());
         mHeaderViewRecyclerAdapter = new HeaderViewRecyclerAdapter(mAdapter);
         createFootView();
         mRecyclerView.setAdapter(mHeaderViewRecyclerAdapter);
