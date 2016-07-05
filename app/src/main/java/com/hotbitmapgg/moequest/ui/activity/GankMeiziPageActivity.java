@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.model.gank.GankMeizi;
-import com.hotbitmapgg.moequest.ui.fragment.GankMeiziDetailsFragment;
+import com.hotbitmapgg.moequest.rx.RxBus;
+import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
@@ -313,22 +313,6 @@ public class GankMeiziPageActivity extends RxBaseActivity
                 });
     }
 
-//    /**
-//     * 分享图片
-//     *
-//     * @param uri
-//     */
-//    private void share(Uri uri)
-//    {
-//
-//        Intent shareIntent = new Intent();
-//        shareIntent.setAction(Intent.ACTION_SEND);
-//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//        shareIntent.setType("image/jpeg");
-//        startActivity(Intent.createChooser(shareIntent, gankMeizis.get(currenIndex).getDesc()));
-//    }
-
-
     protected void hideOrShowToolbar()
     {
 
@@ -367,7 +351,7 @@ public class GankMeiziPageActivity extends RxBaseActivity
         public Fragment getItem(int position)
         {
 
-            return GankMeiziDetailsFragment.newInstance(gankMeizis.get(position).getUrl());
+            return MeiziDetailsFragment.newInstance(gankMeizis.get(position).getUrl());
         }
 
 

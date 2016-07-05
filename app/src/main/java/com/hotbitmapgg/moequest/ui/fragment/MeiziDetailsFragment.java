@@ -31,8 +31,14 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-
-public class DoubanMeiziDetailsFragment extends RxBaseFragment implements RequestListener<String,GlideDrawable>
+/**
+ * Created by hcc on 16/7/5 21:14
+ * 100332338@qq.com
+ * <p/>
+ * 去掉了重复的界面,整合为一个界面
+ * 妹子详情Fragment显示界面
+ */
+public class MeiziDetailsFragment extends RxBaseFragment implements RequestListener<String,GlideDrawable>
 {
 
     @Bind(R.id.meizi)
@@ -42,15 +48,15 @@ public class DoubanMeiziDetailsFragment extends RxBaseFragment implements Reques
 
     private String url;
 
-    public static DoubanMeiziDetailsFragment newInstance(String url)
+    public static MeiziDetailsFragment newInstance(String url)
     {
 
-        DoubanMeiziDetailsFragment mDoubanMeiziDetailsFragment = new DoubanMeiziDetailsFragment();
+        MeiziDetailsFragment mMeiziFragment = new MeiziDetailsFragment();
         Bundle mBundle = new Bundle();
         mBundle.putString(EXTRA_URL, url);
-        mDoubanMeiziDetailsFragment.setArguments(mBundle);
+        mMeiziFragment.setArguments(mBundle);
 
-        return mDoubanMeiziDetailsFragment;
+        return mMeiziFragment;
     }
 
     @Override
@@ -170,7 +176,6 @@ public class DoubanMeiziDetailsFragment extends RxBaseFragment implements Reques
                         Toast.makeText(getActivity(), "保存失败,请重试", Toast.LENGTH_SHORT).show();
                     }
                 });
-
     }
 
     @Override

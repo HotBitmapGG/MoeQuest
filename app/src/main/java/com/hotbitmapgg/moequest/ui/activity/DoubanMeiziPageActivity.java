@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
-import com.hotbitmapgg.moequest.ui.fragment.DoubanMeiziDetailsFragment;
+import com.hotbitmapgg.moequest.rx.RxBus;
+import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
@@ -318,21 +318,6 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                 });
     }
 
-//    /**
-//     * 分享图片
-//     *
-//     * @param uri
-//     */
-//    private void share(Uri uri)
-//    {
-//
-//        Intent shareIntent = new Intent();
-//        shareIntent.setAction(Intent.ACTION_SEND);
-//        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//        shareIntent.setType("image/jpeg");
-//        startActivity(Intent.createChooser(shareIntent, doubanMeizis.get(currenIndex).getTitle()));
-//    }
-
 
     protected void hideOrShowToolbar()
     {
@@ -372,7 +357,7 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
         public Fragment getItem(int position)
         {
 
-            return DoubanMeiziDetailsFragment.
+            return MeiziDetailsFragment.
                     newInstance(doubanMeizis.get(position).getUrl());
         }
 

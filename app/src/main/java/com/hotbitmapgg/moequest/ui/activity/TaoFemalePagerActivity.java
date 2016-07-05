@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.ui.fragment.TaoFemaleDetailsFragment;
+import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.widget.DepthTransFormes;
 
 import java.util.ArrayList;
@@ -123,7 +123,7 @@ public class TaoFemalePagerActivity extends RxBaseActivity
         public Fragment getItem(int position)
         {
 
-            return TaoFemaleDetailsFragment.newInstance(imgList.get(position));
+            return MeiziDetailsFragment.newInstance(imgList.get(position));
         }
 
         @Override
