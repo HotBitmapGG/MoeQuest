@@ -2,6 +2,7 @@ package com.hotbitmapgg.moequest.base;
 
 import android.os.Bundle;
 
+import com.hotbitmapgg.moequest.utils.StatusBarCompat;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import butterknife.ButterKnife;
@@ -22,6 +23,8 @@ public abstract class RxBaseActivity extends RxAppCompatActivity
         initViews(savedInstanceState);
         //初始化ToolBar
         initToolBar();
+        //适配4.4系统的StatusBar
+        StatusBarCompat.compat(this);
     }
 
 
