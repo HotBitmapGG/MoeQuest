@@ -117,7 +117,7 @@ public class JianDanMeiziFragment extends RxBaseFragment
                             }
                         });
                         footView.setVisibility(View.GONE);
-                        SnackbarUtil.showMessage(mRecyclerView, "加载失败,请重新下载加载数据~");
+                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
                     }
                 });
     }
@@ -188,7 +188,9 @@ public class JianDanMeiziFragment extends RxBaseFragment
             public void onRefresh()
             {
 
-                mSwipeRefreshLayout.setRefreshing(false);
+                page = 1;
+                jianDanMeiziDataList.clear();
+                getJianDanMeizi();
             }
         });
         mSwipeRefreshLayout.postDelayed(new Runnable()

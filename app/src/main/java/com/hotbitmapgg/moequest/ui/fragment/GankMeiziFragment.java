@@ -14,6 +14,7 @@ import com.hotbitmapgg.moequest.model.gank.GankMeiziInfo;
 import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.ui.activity.GankMeiziPageActivity;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import java.util.List;
 
@@ -81,7 +82,9 @@ public class GankMeiziFragment extends RxBaseFragment
             public void onRefresh()
             {
 
-                mSwipeRefreshLayout.setRefreshing(false);
+                page = 1;
+                clearCache();
+                getGankMeizi();
             }
         });
         showProgress();
@@ -199,7 +202,18 @@ public class GankMeiziFragment extends RxBaseFragment
                     public void call(Throwable throwable)
                     {
 
+                        mSwipeRefreshLayout.post(new Runnable()
+                        {
 
+                            @Override
+                            public void run()
+                            {
+
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
+
+                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
                     }
                 });
     }

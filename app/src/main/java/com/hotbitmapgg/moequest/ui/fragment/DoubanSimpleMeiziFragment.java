@@ -14,6 +14,7 @@ import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.ui.activity.DoubanMeiziPageActivity;
 import com.hotbitmapgg.moequest.utils.MeiziCacheUtil;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import butterknife.Bind;
 import io.realm.Realm;
@@ -164,7 +165,18 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
                     public void onFailure(Call<ResponseBody> call, Throwable t)
                     {
 
-                        mSwipeRefreshLayout.setRefreshing(false);
+                        mSwipeRefreshLayout.post(new Runnable()
+                        {
+
+                            @Override
+                            public void run()
+                            {
+
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
+
+                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
                     }
                 });
     }

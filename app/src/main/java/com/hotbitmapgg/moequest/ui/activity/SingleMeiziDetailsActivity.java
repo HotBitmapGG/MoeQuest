@@ -16,10 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
@@ -35,6 +39,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 
 public class SingleMeiziDetailsActivity extends RxBaseActivity
@@ -43,6 +48,9 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
 
     @Bind(R.id.meizi)
     ImageView mImageView;
+
+    @Bind(R.id.tv_image_error)
+    TextView mImageError;
 
     @Bind(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
@@ -59,6 +67,8 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
     private String title;
 
     private boolean isHide = false;
+
+    private PhotoViewAttacher mPhotoViewAttacher;
 
     @Override
     public int getLayoutId()
@@ -80,7 +90,29 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
 
         Glide.with(this).load(url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(mImageView);
+                .crossFade(0)
+                .listener(new RequestListener<String,GlideDrawable>()
+                {
+
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource)
+                    {
+
+                        mImageError.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource)
+                    {
+
+                        mImageView.setImageDrawable(resource);
+                        mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
+                        mImageError.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
+                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
 
         setUpPhotoAttacher();
     }
@@ -251,7 +283,8 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
 
     private void saveImageToGallery()
     {
-       Observable.just("")
+
+        Observable.just("")
                 .compose(bindToLifecycle())
                 .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())

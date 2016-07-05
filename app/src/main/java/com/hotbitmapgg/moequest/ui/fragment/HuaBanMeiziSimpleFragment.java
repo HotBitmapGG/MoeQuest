@@ -17,6 +17,7 @@ import com.hotbitmapgg.moequest.model.huaban.HuaBanMeiziInfo;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.ui.activity.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
             {
 
                 page = 1;
+                meiziInfos.clear();
                 getHuaBanMeizi();
             }
         });
@@ -159,8 +161,28 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                     @Override
                     public void call(HuaBanMeizi huaBanMeizi)
                     {
+
                         meiziInfos.addAll(huaBanMeizi.infos);
-                       finishTask();
+                        finishTask();
+                    }
+                }, new Action1<Throwable>()
+                {
+
+                    @Override
+                    public void call(Throwable throwable)
+                    {
+                        mSwipeRefreshLayout.post(new Runnable()
+                        {
+
+                            @Override
+                            public void run()
+                            {
+
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
+
+                        SnackbarUtil.showMessage(mRecyclerView , getString(R.string.error_message));
                     }
                 });
     }
@@ -224,12 +246,5 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                 }
             }
         };
-    }
-
-    @Override
-    public void onDestroy()
-    {
-
-        super.onDestroy();
     }
 }

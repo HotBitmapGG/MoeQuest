@@ -74,4 +74,6 @@ dependencies {
     compile 'com.tencent.bugly:crashreport:latest.release'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //photoView
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
 }

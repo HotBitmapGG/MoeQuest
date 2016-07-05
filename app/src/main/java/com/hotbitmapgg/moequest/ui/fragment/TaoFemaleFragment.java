@@ -104,7 +104,7 @@ public class TaoFemaleFragment extends RxBaseFragment
                     {
 
                         footView.setVisibility(View.GONE);
-                        SnackbarUtil.showMessage(mRecyclerView, "数据加载失败,下拉刷新重新加载!");
+                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
                         mSwipeRefreshLayout.post(new Runnable()
                         {
 
@@ -193,7 +193,9 @@ public class TaoFemaleFragment extends RxBaseFragment
             public void onRefresh()
             {
 
-                mSwipeRefreshLayout.setRefreshing(false);
+                page = 1;
+                datas.clear();
+                getTaoFemaleData();
             }
         });
         showRefreshProgress();

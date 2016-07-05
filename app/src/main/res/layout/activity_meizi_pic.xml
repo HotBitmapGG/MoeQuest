@@ -8,12 +8,28 @@
 
     <include layout="@layout/layout_toolbar" />
 
-
-    <ImageView
-        android:id="@+id/meizi"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:transitionName="transitionImg" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/meizi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:transitionName="transitionImg" />
+
+
+        <TextView
+            android:id="@+id/tv_image_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/image_error"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:textSize="18sp" />
+
+    </FrameLayout>
 
 
 </LinearLayout>

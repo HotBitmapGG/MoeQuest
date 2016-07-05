@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -43,6 +44,9 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
 
     @Bind(R.id.meizi)
     PhotoImageView mImageView;
+
+    @Bind(R.id.tv_image_error)
+    TextView mImageError;
 
     private static final String EXTRA_URL = "extra_url";
 
@@ -182,6 +186,7 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource)
     {
 
+        mImageError.setVisibility(View.VISIBLE);
         return false;
     }
 
@@ -190,6 +195,7 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     {
 
         mImageView.setImageDrawable(resource);
+        mImageError.setVisibility(View.GONE);
         return false;
     }
 }
