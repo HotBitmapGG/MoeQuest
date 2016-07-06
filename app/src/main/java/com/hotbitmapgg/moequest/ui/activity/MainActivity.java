@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -21,6 +22,7 @@ import com.hotbitmapgg.moequest.ui.fragment.JianDanMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.TaoFemaleFragment;
 import com.hotbitmapgg.moequest.utils.AlarmManagerUtils;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 import com.hotbitmapgg.moequest.widget.CircleImageView;
 
 import java.util.Random;
@@ -61,6 +63,8 @@ public class MainActivity extends RxBaseActivity
             R.drawable.ic_avatar10,
             R.drawable.ic_avatar11,
             };
+
+    private long exitTime;
 
 
     @Override
@@ -207,5 +211,31 @@ public class MainActivity extends RxBaseActivity
         }
         trx.show(fragments[index]).commit();
         currentTabIndex = index;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            logoutApp();
+        }
+
+        return true;
+    }
+
+    private void logoutApp()
+    {
+
+        if (System.currentTimeMillis() - exitTime > 2000)
+        {
+            SnackbarUtil.showMessage(mDrawerLayout, getString(R.string.back_message));
+
+            exitTime = System.currentTimeMillis();
+        } else
+        {
+            finish();
+        }
     }
 }
