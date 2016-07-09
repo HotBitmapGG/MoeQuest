@@ -10,7 +10,7 @@
 * 3.遵循Google的Material Design.
 
 ## Apk下载
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/canvas.png?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/qecode_moequest.png?raw=true)
 
 ## 截图
 
