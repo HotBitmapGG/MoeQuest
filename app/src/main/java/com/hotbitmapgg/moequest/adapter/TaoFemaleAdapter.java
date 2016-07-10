@@ -62,7 +62,7 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
                     .load(contentlist.avatarUrl)
                     .centerCrop()
                     .dontAnimate()
-                    .placeholder(R.drawable.placeholder_image)
+                    .placeholder(R.drawable.ic_slide_menu_avatar_no_login)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(itemViewHolder.mAvatar);
 

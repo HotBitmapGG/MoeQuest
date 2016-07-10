@@ -67,11 +67,13 @@ public class JiandanMeiziAdapter extends AbsRecyclerViewAdapter
             Glide.clear(itemViewHolder.mImage);
             Glide.with(getContext())
                     .load(picUrl)
+                    .asBitmap()
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_image)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(200,200)
+                    .override(200, 250)
                     .into(itemViewHolder.mImage);
+
 
             itemViewHolder.mDesc.setText(datas.get(position).commentAuthor);
             itemViewHolder.mDate.setText(datas.get(position).commentDate);
