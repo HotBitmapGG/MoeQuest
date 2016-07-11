@@ -1,9 +1,16 @@
 package com.hotbitmapgg.moequest.ui.fragment;
 
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.os.Build;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.GankMeiziAdapter;
@@ -13,10 +20,13 @@ import com.hotbitmapgg.moequest.model.gank.GankMeizi;
 import com.hotbitmapgg.moequest.model.gank.GankMeiziInfo;
 import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
+import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.ui.activity.GankMeiziPageActivity;
+import com.hotbitmapgg.moequest.utils.LogUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import io.realm.Realm;
@@ -57,6 +67,8 @@ public class GankMeiziFragment extends RxBaseFragment
 
     private Realm realm;
 
+    private int imageIndex;
+
     public static GankMeiziFragment newInstance()
     {
 
@@ -70,6 +82,7 @@ public class GankMeiziFragment extends RxBaseFragment
         return R.layout.fragment_gank_meizi;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void initViews()
     {
@@ -99,6 +112,49 @@ public class GankMeiziFragment extends RxBaseFragment
         mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
         mAdapter = new GankMeiziAdapter(mRecyclerView, gankMeizis);
         mRecyclerView.setAdapter(mAdapter);
+
+
+        RxBus.getInstance().toObserverable(Intent.class)
+                .subscribe(new Action1<Intent>()
+                {
+
+                    @Override
+                    public void call(Intent intent)
+                    {
+
+                        imageIndex = intent.getIntExtra("index", -1);
+                        scrollIndex();
+                        finishTask();
+                    }
+                }, new Action1<Throwable>()
+                {
+
+                    @Override
+                    public void call(Throwable throwable)
+                    {
+
+                        LogUtil.all(throwable.getMessage());
+                    }
+                });
+
+        setEnterSharedElementCallback(new SharedElementCallback()
+        {
+
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String,View> sharedElements)
+            {
+                super.onMapSharedElements(names, sharedElements);
+                String newTransitionName = gankMeizis.get(imageIndex).getUrl();
+                View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
+                if (newSharedView != null)
+                {
+                    names.clear();
+                    names.add(newTransitionName);
+                    sharedElements.clear();
+                    sharedElements.put(newTransitionName, newSharedView);
+                }
+            }
+        });
     }
 
 
@@ -238,7 +294,17 @@ public class GankMeiziFragment extends RxBaseFragment
             public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
             {
 
-                GankMeiziPageActivity.luanch(getActivity(), position);
+                Intent intent = GankMeiziPageActivity.luanch(getActivity(), position);
+                if (Build.VERSION.SDK_INT >= 21)
+                {
+                    startActivity(intent,
+                            ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                                    holder.getParentView().findViewById(R.id.item_img),
+                                    gankMeizis.get(position).getUrl()).toBundle());
+                } else
+                {
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -269,5 +335,28 @@ public class GankMeiziFragment extends RxBaseFragment
                 }
             }
         };
+    }
+
+
+    public void scrollIndex()
+    {
+        if (imageIndex != -1)
+        {
+            mRecyclerView.scrollToPosition(imageIndex);
+            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+            {
+
+                @Override
+                public boolean onPreDraw()
+                {
+
+                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    mRecyclerView.requestLayout();
+                    return true;
+                }
+            });
+        }
+
+        LogUtil.all("onResume" + "  index " + imageIndex);
     }
 }

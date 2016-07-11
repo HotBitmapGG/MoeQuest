@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <com.hotbitmapgg.moequest.widget.PhotoImageView
+    <ImageView
         android:id="@+id/meizi"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

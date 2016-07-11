@@ -1,5 +1,6 @@
 package com.hotbitmapgg.moequest.adapter;
 
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,9 @@ public class DoubanMeiziAdapter extends AbsRecyclerViewAdapter
                             }
                         }
                     });
+
+            itemViewHolder.ratioImageView.setTag(R.string.app_name, meiziList.get(position).getUrl());
+            ViewCompat.setTransitionName(itemViewHolder.ratioImageView, meiziList.get(position).getUrl());
         }
 
         super.onBindViewHolder(holder, position);

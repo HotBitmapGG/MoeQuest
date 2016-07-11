@@ -109,12 +109,11 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
                         mImageView.setImageDrawable(resource);
                         mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
                         mImageError.setVisibility(View.GONE);
+                        setUpPhotoAttacher();
                         return false;
                     }
                 })
                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
-
-        setUpPhotoAttacher();
     }
 
     @Override
@@ -231,18 +230,18 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
     private void setUpPhotoAttacher()
     {
 
-        mImageView.setOnClickListener(new View.OnClickListener()
+        mPhotoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener()
         {
 
             @Override
-            public void onClick(View v)
+            public void onViewTap(View view, float v, float v1)
             {
                 //隐藏ToolBar
                 hideOrShowToolbar();
             }
         });
 
-        mImageView.setOnLongClickListener(new View.OnLongClickListener()
+        mPhotoViewAttacher.setOnLongClickListener(new View.OnLongClickListener()
         {
 
             @Override

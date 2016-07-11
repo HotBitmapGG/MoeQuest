@@ -1,10 +1,10 @@
 package com.hotbitmapgg.moequest.ui.activity;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -102,7 +102,7 @@ public class MainActivity extends RxBaseActivity
         };
 
         //显示第一个 gank妹子
-        getFragmentManager().beginTransaction().replace(R.id.content, gankMeiziFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content, gankMeiziFragment).commit();
     }
 
     private void setNavigationView()
@@ -203,7 +203,7 @@ public class MainActivity extends RxBaseActivity
     public void switchFragment(Fragment fragment)
     {
 
-        FragmentTransaction trx = getFragmentManager().beginTransaction();
+        FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
         trx.hide(fragments[currentTabIndex]);
         if (!fragments[index].isAdded())
         {

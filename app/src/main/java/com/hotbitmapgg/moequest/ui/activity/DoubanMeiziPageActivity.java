@@ -2,16 +2,18 @@ package com.hotbitmapgg.moequest.ui.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
@@ -24,13 +26,14 @@ import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
-import com.hotbitmapgg.moequest.utils.LogUtil;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
 import com.hotbitmapgg.moequest.widget.DepthTransFormes;
 import com.jakewharton.rxbinding.view.RxMenuItem;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import io.realm.Realm;
@@ -69,6 +72,8 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
 
     private RealmResults<DoubanMeizi> doubanMeizis;
 
+    private MeiziPagerAdapter mPagerAdapter;
+
     @Override
     public int getLayoutId()
     {
@@ -91,7 +96,8 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                 .equalTo("type", type)
                 .findAll();
 
-        mViewPager.setAdapter(new MeiziPagerAdapter(getFragmentManager()));
+        mPagerAdapter = new MeiziPagerAdapter(getSupportFragmentManager());
+        mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setPageTransformer(true, new DepthTransFormes());
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
@@ -135,7 +141,6 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                     public void call(String s)
                     {
 
-                        LogUtil.all("隐藏toolbar");
                         hideOrShowToolbar();
                     }
                 }, new Action1<Throwable>()
@@ -145,9 +150,36 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        LogUtil.all("接收失败");
+
                     }
                 });
+
+
+        setEnterSharedElementCallback(new SharedElementCallback()
+        {
+
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String,View> sharedElements)
+            {
+
+                DoubanMeizi doubanMeizi = doubanMeizis.get(mViewPager.getCurrentItem());
+                MeiziDetailsFragment fragment = (MeiziDetailsFragment)
+                        mPagerAdapter.instantiateItem(mViewPager, currenIndex);
+                sharedElements.clear();
+                sharedElements.put(doubanMeizi.getUrl(), fragment.getSharedElement());
+            }
+        });
+    }
+
+    @Override
+    public void supportFinishAfterTransition()
+    {
+
+        Intent data = new Intent();
+        data.putExtra("index", currenIndex);
+        setResult(RESULT_OK, data);
+        RxBus.getInstance().post(data);
+        super.supportFinishAfterTransition();
     }
 
     @Override
@@ -163,7 +195,7 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
             public void onClick(View v)
             {
 
-                onBackPressed();
+                supportFinishAfterTransition();
             }
         });
         mToolbar.inflateMenu(R.menu.menu_meizi);
@@ -188,14 +220,14 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
         url = doubanMeizis.get(currenIndex).getUrl();
     }
 
-    public static void luanch(Activity activity, int index, int type)
+    public static Intent luanch(Activity activity, int index, int type)
     {
 
         Intent mIntent = new Intent(activity, DoubanMeiziPageActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mIntent.putExtra(EXTRA_INDEX, index);
         mIntent.putExtra(EXTRA_TYPE, type);
-        activity.startActivity(mIntent);
+        return mIntent;
     }
 
 
@@ -343,9 +375,20 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            supportFinishAfterTransition();
+        }
+        return true;
+    }
 
     private class MeiziPagerAdapter extends FragmentStatePagerAdapter
     {
+
 
         public MeiziPagerAdapter(FragmentManager fm)
         {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,6 @@ import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
-import com.hotbitmapgg.moequest.widget.PhotoImageView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
@@ -31,6 +31,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by hcc on 16/7/5 21:14
@@ -43,7 +44,7 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
 {
 
     @Bind(R.id.meizi)
-    PhotoImageView mImageView;
+    ImageView mImageView;
 
     @Bind(R.id.tv_image_error)
     TextView mImageError;
@@ -51,6 +52,8 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     private static final String EXTRA_URL = "extra_url";
 
     private String url;
+
+    private PhotoViewAttacher mPhotoViewAttacher;
 
     public static MeiziDetailsFragment newInstance(String url)
     {
@@ -81,53 +84,6 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
                 .listener(this)
                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
 
-
-        mImageView.setOnLongClickListener(new View.OnLongClickListener()
-        {
-
-            @Override
-            public boolean onLongClick(View v)
-            {
-
-                new AlertDialog.Builder(getActivity())
-                        .setMessage("是否保存到本地?")
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener()
-                        {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-
-                                dialog.cancel();
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener()
-                        {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-
-                                saveImageToGallery();
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-
-                return true;
-            }
-        });
-
-        mImageView.setOnClickListener(new View.OnClickListener()
-        {
-
-            @Override
-            public void onClick(View v)
-            {
-
-                RxBus.getInstance().post("hideAppBar");
-            }
-        });
     }
 
 
@@ -195,7 +151,64 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     {
 
         mImageView.setImageDrawable(resource);
+        mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
         mImageError.setVisibility(View.GONE);
+        setPhotoViewAttacher();
         return false;
+    }
+
+    private void setPhotoViewAttacher()
+    {
+        mPhotoViewAttacher.setOnLongClickListener(new View.OnLongClickListener()
+        {
+
+            @Override
+            public boolean onLongClick(View v)
+            {
+
+                new AlertDialog.Builder(getActivity())
+                        .setMessage("是否保存到本地?")
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener()
+                        {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                                dialog.cancel();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener()
+                        {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which)
+                            {
+
+                                saveImageToGallery();
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+
+                return true;
+            }
+        });
+
+        mPhotoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener()
+        {
+
+            @Override
+            public void onViewTap(View view, float v, float v1)
+            {
+                RxBus.getInstance().post("hideAppBar");
+            }
+        });
+    }
+
+    public View getSharedElement()
+    {
+
+        return mImageView;
     }
 }

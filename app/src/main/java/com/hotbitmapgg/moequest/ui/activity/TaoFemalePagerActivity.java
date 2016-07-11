@@ -1,11 +1,11 @@
 package com.hotbitmapgg.moequest.ui.activity;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.TextView;
 
@@ -60,7 +60,7 @@ public class TaoFemalePagerActivity extends RxBaseActivity
         }
 
         mIndex.setText((pos + 1) + " / " + imgList.size());
-        mViewPager.setAdapter(new TaoFemalePagerAdapter(getFragmentManager()));
+        mViewPager.setAdapter(new TaoFemalePagerAdapter(getSupportFragmentManager()));
         mViewPager.setPageTransformer(true, new DepthTransFormes());
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
         {
@@ -112,6 +112,7 @@ public class TaoFemalePagerActivity extends RxBaseActivity
 
     public class TaoFemalePagerAdapter extends FragmentStatePagerAdapter
     {
+
 
         public TaoFemalePagerAdapter(FragmentManager fm)
         {
