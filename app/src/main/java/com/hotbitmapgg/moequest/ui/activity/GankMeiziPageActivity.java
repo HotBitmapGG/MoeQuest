@@ -174,7 +174,6 @@ public class GankMeiziPageActivity extends RxBaseActivity
 
         Intent data = new Intent();
         data.putExtra("index", currenIndex);
-        setResult(RESULT_OK, data);
         RxBus.getInstance().post(data);
         super.supportFinishAfterTransition();
     }

@@ -26,6 +26,7 @@ import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
+import com.hotbitmapgg.moequest.utils.LogUtil;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
 import com.hotbitmapgg.moequest.widget.DepthTransFormes;
 import com.jakewharton.rxbinding.view.RxMenuItem;
@@ -112,7 +113,6 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
             @Override
             public void onPageSelected(int position)
             {
-
                 mToolbar.setTitle(doubanMeizis.get(position).getTitle());
                 currenIndex = position;
                 url = doubanMeizis.get(currenIndex).getUrl();
@@ -177,7 +177,6 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
 
         Intent data = new Intent();
         data.putExtra("index", currenIndex);
-        setResult(RESULT_OK, data);
         RxBus.getInstance().post(data);
         super.supportFinishAfterTransition();
     }
