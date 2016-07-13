@@ -8,8 +8,8 @@ android {
         applicationId "com.hotbitmapgg.moequest"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
 
         ndk {
             // 设置支持的SO库架构
