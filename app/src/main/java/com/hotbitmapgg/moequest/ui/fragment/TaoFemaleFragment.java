@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.hotbitmapgg.moequest.R;
@@ -55,6 +56,8 @@ public class TaoFemaleFragment extends RxBaseFragment
     private HeaderViewRecyclerAdapter mHeaderViewRecyclerAdapter;
 
     private TaoFemaleAdapter mAdapter;
+
+    private boolean mIsRefreshing = false;
 
     public static TaoFemaleFragment newInstance()
     {
@@ -130,6 +133,8 @@ public class TaoFemaleFragment extends RxBaseFragment
         if (mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);
 
+        mIsRefreshing = false;
+
         mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
         {
 
@@ -172,6 +177,7 @@ public class TaoFemaleFragment extends RxBaseFragment
                 getTaoFemaleData();
             }
         });
+        setRecycleScrollBug();
     }
 
     private void createFootView()
@@ -195,6 +201,7 @@ public class TaoFemaleFragment extends RxBaseFragment
 
                 page = 1;
                 datas.clear();
+                mIsRefreshing = true;
                 getTaoFemaleData();
             }
         });
@@ -212,8 +219,31 @@ public class TaoFemaleFragment extends RxBaseFragment
             {
 
                 mSwipeRefreshLayout.setRefreshing(true);
+                mIsRefreshing = true;
                 getTaoFemaleData();
             }
         }, 500);
+    }
+
+    private void setRecycleScrollBug()
+    {
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+
+                if (mIsRefreshing)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+        });
     }
 }

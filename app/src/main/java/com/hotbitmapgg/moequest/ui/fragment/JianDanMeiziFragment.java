@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.hotbitmapgg.moequest.R;
@@ -54,6 +55,8 @@ public class JianDanMeiziFragment extends RxBaseFragment
     private JiandanMeiziAdapter mAdapter;
 
     private View footView;
+
+    private boolean mIsRefreshing = false;
 
     public static JianDanMeiziFragment newInstance()
     {
@@ -133,6 +136,8 @@ public class JianDanMeiziFragment extends RxBaseFragment
         if (mSwipeRefreshLayout.isRefreshing())
             mSwipeRefreshLayout.setRefreshing(false);
 
+        mIsRefreshing = false;
+
         mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
         {
 
@@ -175,6 +180,7 @@ public class JianDanMeiziFragment extends RxBaseFragment
                 footView.setVisibility(View.VISIBLE);
             }
         });
+        setRecycleScrollBug();
     }
 
     private void showProgress()
@@ -190,6 +196,7 @@ public class JianDanMeiziFragment extends RxBaseFragment
 
                 page = 1;
                 jianDanMeiziDataList.clear();
+                mIsRefreshing = true;
                 getJianDanMeizi();
             }
         });
@@ -201,6 +208,7 @@ public class JianDanMeiziFragment extends RxBaseFragment
             {
 
                 mSwipeRefreshLayout.setRefreshing(true);
+                mIsRefreshing = true;
                 getJianDanMeizi();
             }
         }, 500);
@@ -212,5 +220,27 @@ public class JianDanMeiziFragment extends RxBaseFragment
         footView = LayoutInflater.from(getActivity()).inflate(R.layout.load_more_foot_layout, mRecyclerView, false);
         mHeaderViewRecyclerAdapter.addFooterView(footView);
         footView.setVisibility(View.GONE);
+    }
+
+    private void setRecycleScrollBug()
+    {
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+
+                if (mIsRefreshing)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+        });
     }
 }

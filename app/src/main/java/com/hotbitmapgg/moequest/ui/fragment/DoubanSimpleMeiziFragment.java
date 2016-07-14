@@ -8,6 +8,7 @@ import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -72,6 +73,8 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
 
     private int imageIndex;
 
+    private boolean mIsRefreshing = false;
+
 
     public static DoubanSimpleMeiziFragment newInstance(int cid, int type)
     {
@@ -101,20 +104,6 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         cid = getArguments().getInt(EXTRA_CID);
         type = getArguments().getInt(EXTRA_TYPE);
 
-        mSwipeRefreshLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
-        {
-
-            @Override
-            public void onGlobalLayout()
-            {
-
-                mSwipeRefreshLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                mSwipeRefreshLayout.setRefreshing(true);
-                clearCache();
-                getDoubanMeizi();
-            }
-        });
-
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
@@ -124,10 +113,25 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
             {
 
                 page = 1;
+                mIsRefreshing = true;
                 clearCache();
                 getDoubanMeizi();
             }
         });
+
+        mSwipeRefreshLayout.postDelayed(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+                mIsRefreshing = true;
+                clearCache();
+                getDoubanMeizi();
+            }
+        }, 500);
 
         doubanMeizis = realm.where(DoubanMeizi.class)
                 .equalTo("type", type)
@@ -139,7 +143,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
         mAdapter = new DoubanMeiziAdapter(mRecyclerView, doubanMeizis);
         mRecyclerView.setAdapter(mAdapter);
-
+        setRecycleScrollBug();
 
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
@@ -170,6 +174,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
             @Override
             public void onMapSharedElements(List<String> names, Map<String,View> sharedElements)
             {
+
                 super.onMapSharedElements(names, sharedElements);
                 String newTransitionName = doubanMeizis.get(imageIndex).getUrl();
                 View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
@@ -248,6 +253,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         {
             mSwipeRefreshLayout.setRefreshing(false);
         }
+        mIsRefreshing = false;
 
         mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
         {
@@ -309,6 +315,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
 
     public void scrollIndex()
     {
+
         if (imageIndex != -1)
         {
             mRecyclerView.scrollToPosition(imageIndex);
@@ -327,5 +334,27 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         }
 
         LogUtil.all("onResume" + "  index " + imageIndex);
+    }
+
+    private void setRecycleScrollBug()
+    {
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+
+                if (mIsRefreshing)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+        });
     }
 }

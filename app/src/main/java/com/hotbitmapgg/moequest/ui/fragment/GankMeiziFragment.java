@@ -9,6 +9,7 @@ import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -69,6 +70,9 @@ public class GankMeiziFragment extends RxBaseFragment
 
     private int imageIndex;
 
+    //RecycleView是否正在刷新
+    private boolean mIsRefreshing = false;
+
     public static GankMeiziFragment newInstance()
     {
 
@@ -97,6 +101,7 @@ public class GankMeiziFragment extends RxBaseFragment
 
                 page = 1;
                 clearCache();
+                mIsRefreshing = true;
                 getGankMeizi();
             }
         });
@@ -113,7 +118,7 @@ public class GankMeiziFragment extends RxBaseFragment
         mAdapter = new GankMeiziAdapter(mRecyclerView, gankMeizis);
         mRecyclerView.setAdapter(mAdapter);
 
-
+        setRecycleScrollBug();
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
                 {
@@ -143,6 +148,7 @@ public class GankMeiziFragment extends RxBaseFragment
             @Override
             public void onMapSharedElements(List<String> names, Map<String,View> sharedElements)
             {
+
                 super.onMapSharedElements(names, sharedElements);
                 String newTransitionName = gankMeizis.get(imageIndex).getUrl();
                 View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
@@ -170,6 +176,7 @@ public class GankMeiziFragment extends RxBaseFragment
 
                 mSwipeRefreshLayout.setRefreshing(true);
                 clearCache();
+                mIsRefreshing = true;
                 getGankMeizi();
             }
         });
@@ -287,6 +294,8 @@ public class GankMeiziFragment extends RxBaseFragment
             mSwipeRefreshLayout.setRefreshing(false);
         }
 
+        mIsRefreshing = false;
+
         mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
         {
 
@@ -340,6 +349,7 @@ public class GankMeiziFragment extends RxBaseFragment
 
     public void scrollIndex()
     {
+
         if (imageIndex != -1)
         {
             mRecyclerView.scrollToPosition(imageIndex);
@@ -358,5 +368,28 @@ public class GankMeiziFragment extends RxBaseFragment
         }
 
         LogUtil.all("onResume" + "  index " + imageIndex);
+    }
+
+
+    private void setRecycleScrollBug()
+    {
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+
+                if (mIsRefreshing)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+        });
     }
 }

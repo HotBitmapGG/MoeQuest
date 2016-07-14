@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.ViewTreeObserver;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.HuaBanMeiziAdapter;
@@ -63,6 +64,8 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
 
     private List<HuaBanMeiziInfo> meiziInfos = new ArrayList<>();
 
+    private boolean mIsRefreshing = false;
+
 
     public static HuaBanMeiziSimpleFragment newInstance(int cid, int type)
     {
@@ -86,21 +89,22 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
     @Override
     public void initViews()
     {
+
         cid = getArguments().getInt(EXTRA_CID);
         type = getArguments().getInt(EXTRA_TYPE);
 
-        mSwipeRefreshLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        mSwipeRefreshLayout.postDelayed(new Runnable()
         {
 
             @Override
-            public void onGlobalLayout()
+            public void run()
             {
 
-                mSwipeRefreshLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 mSwipeRefreshLayout.setRefreshing(true);
+                mIsRefreshing = true;
                 getHuaBanMeizi();
             }
-        });
+        }, 500);
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
@@ -112,6 +116,7 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
 
                 page = 1;
                 meiziInfos.clear();
+                mIsRefreshing = true;
                 getHuaBanMeizi();
             }
         });
@@ -122,6 +127,7 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
         mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
         mAdapter = new HuaBanMeiziAdapter(mRecyclerView, meiziInfos);
         mRecyclerView.setAdapter(mAdapter);
+        setRecycleScrollBug();
     }
 
     private void getHuaBanMeizi()
@@ -149,7 +155,6 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                             e.printStackTrace();
                             return null;
                         }
-
                     }
                 })
 
@@ -171,6 +176,7 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                     @Override
                     public void call(Throwable throwable)
                     {
+
                         mSwipeRefreshLayout.post(new Runnable()
                         {
 
@@ -182,11 +188,10 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                             }
                         });
 
-                        SnackbarUtil.showMessage(mRecyclerView , getString(R.string.error_message));
+                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
                     }
                 });
     }
-
 
 
     private void finishTask()
@@ -200,6 +205,8 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
         {
             mSwipeRefreshLayout.setRefreshing(false);
         }
+
+        mIsRefreshing = false;
 
         mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
         {
@@ -246,5 +253,27 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                 }
             }
         };
+    }
+
+    private void setRecycleScrollBug()
+    {
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener()
+        {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+
+
+                if (mIsRefreshing)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+        });
     }
 }
