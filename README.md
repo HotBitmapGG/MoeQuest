@@ -9,6 +9,13 @@
 * 2.使用Rxjava系列 + Realm数据库 + Glide实现.
 * 3.遵循Google的Material Design.
 
+## 更新说明
+
+  * v2.0
+  * 1.关闭了两个issuse,修改了一个RecycleView刷新的bug,解决方案来自@drakeet大神.
+  * 2.增加了gank和豆瓣妹纸的界面共享元素动画效果.
+  * 3.优化了部门代码,会持续优化中.
+
 ## Apk下载
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/qecode_moequest.png?raw=true)
 
