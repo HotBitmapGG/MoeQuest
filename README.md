@@ -17,6 +17,9 @@
   * 3.优化了部门代码,会持续优化中.
 
 ## Apk下载
+
+* 更新到v2.0
+
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/qecode_moequest.png?raw=true)
 
 ## 截图
