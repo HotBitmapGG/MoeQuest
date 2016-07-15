@@ -92,19 +92,6 @@ public class GankMeiziFragment extends RxBaseFragment
     {
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-
-            @Override
-            public void onRefresh()
-            {
-
-                page = 1;
-                clearCache();
-                mIsRefreshing = true;
-                getGankMeizi();
-            }
-        });
         showProgress();
 
         realm = Realm.getDefaultInstance();
@@ -175,6 +162,20 @@ public class GankMeiziFragment extends RxBaseFragment
             {
 
                 mSwipeRefreshLayout.setRefreshing(true);
+                clearCache();
+                mIsRefreshing = true;
+                getGankMeizi();
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+
+            @Override
+            public void onRefresh()
+            {
+
+                page = 1;
                 clearCache();
                 mIsRefreshing = true;
                 getGankMeizi();

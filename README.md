@@ -24,6 +24,8 @@
 
 ## 截图
 
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/main.gif?raw=true)
+
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/01.jpg?raw=true)
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/02.jpg?raw=true)
