@@ -143,7 +143,7 @@ public class MainActivity extends RxBaseActivity
                 return true;
 
             case R.id.nav_meizitu:
-                changIndex(1,"妹子图",item);
+                changIndex(1, getResources().getString(R.string.meizitu), item);
                 return true;
 
             case R.id.nav_tao:

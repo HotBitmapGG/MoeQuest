@@ -15,6 +15,10 @@
   * 1.关闭了两个issuse,修改了一个RecycleView刷新的bug,解决方案来自@drakeet大神.
   * 2.增加了gank和豆瓣妹纸的界面共享元素动画效果.
   * 3.优化了部门代码,会持续优化中.
+  
+  * v2.1
+  * 1.修复了部门bug.
+  * 2.新增妹纸图模块.
 
 ## Apk下载
 
@@ -24,23 +28,21 @@
 
 ## 截图
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/main.gif?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/01.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/01.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/02.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/02.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/03.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/03.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/04.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/04.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/05.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/05.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/06.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/06.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/07.png?raw=true)
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/07.jpg?raw=true)
-
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/08.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/08.png?raw=true)
 
 
 ## 声明

@@ -25,7 +25,6 @@ public class MeiziCacheUtil
     private MeiziCacheUtil()
     {
 
-        throw new RuntimeException("Unable to create the object");
     }
 
     public static MeiziCacheUtil getInstance()

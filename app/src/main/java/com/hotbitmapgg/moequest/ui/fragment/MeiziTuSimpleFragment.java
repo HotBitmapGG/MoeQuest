@@ -219,7 +219,7 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
                         try
                         {
                             String html = responseBody.string();
-                            List<MeiziTu> list = MeiziCacheUtil.ParserMainBean(html, type);
+                            List<MeiziTu> list = MeiziCacheUtil.ParserMeiziTuHtml(html, type);
                             MeiziCacheUtil.putMeiziTuCache(list);
                             finishTask();
                         } catch (IOException e)

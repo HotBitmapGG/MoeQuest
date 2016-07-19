@@ -7,6 +7,7 @@
     <string name="action_about">关于萌妹子</string>
     <string name="back_message">再按一次退出萌妹子~</string>
     <string name="gank_meizi">首页</string>
+    <string name="meizitu">妹纸图</string>
     <string name="tao_female">淘女郎</string>
     <string name="douban_meizi">豆瓣妹子</string>
     <string name="huaban_meizi">花瓣妹子</string>
@@ -23,7 +24,7 @@
     <string name="about_introduce_and_help">介绍与帮助</string>
     <string name="about_open_source_libraries_list">com.squareup.retrofit2:retrofit:2.0.0-beta4\ncom.squareup.okhttp3:okhttp:3.2.0\nio.reactivex:rxandroid:1.1.0\nio.reactivex:rxjava:1.1.0\ncom.jakewharton:butterknife:7.0.1\ncom.github.bumptech.glide:glide:3.7.0\ncom.trello:rxlifecycle-components:0.6.1\ncom.jakewharton.rxbinding:rxbinding:0.3.0\ncom.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar</string>
     <string name="about_function">功能介绍</string>
-    <string name="about_function_list">1.Gank妹子\n2.淘女郎\n3.豆瓣妹子\n4.花瓣妹子\n5.煎蛋妹子\n6.每日更新提醒\n7. 妹子图片保存与分享</string>
+    <string name="about_function_list">1.Gank妹子\n2.淘女郎\n3.豆瓣妹子\n4.花瓣妹子\n5.煎蛋妹子\n6.每日更新提醒\n7.新增妹纸图\n8.妹子图片保存与分享</string>
     <string name="about">关于</string>
     <string name="about_version">1.0</string>
     <string name="project_link">https://github.com/HotBitmapGG/MoeQuest</string>
