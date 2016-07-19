@@ -6,6 +6,7 @@ import com.hotbitmapgg.moequest.network.api.DoubanMeizhiApi;
 import com.hotbitmapgg.moequest.network.api.GankMeiziApi;
 import com.hotbitmapgg.moequest.network.api.HuaBanMeiziApi;
 import com.hotbitmapgg.moequest.network.api.JianDanMeiziApi;
+import com.hotbitmapgg.moequest.network.api.MeiziTuApi;
 import com.hotbitmapgg.moequest.network.api.TaoFemaleaApi;
 
 import java.io.File;
@@ -30,6 +31,8 @@ public class RetrofitHelper
     public static final String BASE_DOUBAN_URL = "http://www.dbmeinv.com/dbgroup/";
 
     public static final String BASE_JIANDAN_URL = "http://jandan.net/";
+
+    public static final String BASE_MEIZITU_URL = "http://www.mzitu.com/";
 
     private static OkHttpClient mOkHttpClient;
 
@@ -128,6 +131,25 @@ public class RetrofitHelper
                 .build();
 
         return retrofit.create(JianDanMeiziApi.class);
+    }
+
+
+    /**
+     * 获取妹子图Api
+     *
+     * @return
+     */
+    public static MeiziTuApi getMeiziTuApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_MEIZITU_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(MeiziTuApi.class);
     }
 
 

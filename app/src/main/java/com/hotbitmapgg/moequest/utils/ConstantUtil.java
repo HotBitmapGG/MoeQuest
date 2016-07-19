@@ -19,4 +19,24 @@ public class ConstantUtil
 
     //腾讯buglyID
     public static final String BUGLY_ID = "900037370";
+
+    /*** 妹子图Type分类 **/
+
+    //性感妹子
+    public static final String XINGGAN_MEIZI = "xinggan";
+
+    //日本妹子
+    public static final String JAPAN_MEIZI = "japan";
+
+    //台湾妹子
+    public static final String TAIWAN_MEIZI = "taiwan";
+
+    //清纯妹子
+    public static final String QINGCHUN_MEIZI = "mm";
+
+    //自拍妹子
+    public static final String ZIPAI_MEIZI = "share";
+
+    //每日更新
+    public static final String UPDATE_MEIZI = "all";
 }

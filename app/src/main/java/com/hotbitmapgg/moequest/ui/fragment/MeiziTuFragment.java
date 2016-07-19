@@ -1,0 +1,102 @@
+package com.hotbitmapgg.moequest.ui.fragment;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+
+import com.flyco.tablayout.SlidingTabLayout;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.base.RxBaseFragment;
+import com.hotbitmapgg.moequest.utils.ConstantUtil;
+
+import java.util.Arrays;
+import java.util.List;
+
+import butterknife.Bind;
+
+/**
+ * Created by hcc on 16/7/19 20:39
+ * 100332338@qq.com
+ * <p/>
+ * 妹子图
+ */
+public class MeiziTuFragment extends RxBaseFragment
+{
+
+    @Bind(R.id.sliding_tabs)
+    SlidingTabLayout mSlidingTabLayout;
+
+    @Bind(R.id.view_pager)
+    ViewPager mViewPager;
+
+    private List<String> titles = Arrays.asList("清纯妹子", "台湾妹子", "日本妹子", "性感妹子");
+
+    private List<String> types = Arrays.asList(
+            ConstantUtil.QINGCHUN_MEIZI,
+            ConstantUtil.TAIWAN_MEIZI,
+            ConstantUtil.JAPAN_MEIZI,
+            ConstantUtil.XINGGAN_MEIZI);
+
+
+    public static MeiziTuFragment newInstance()
+    {
+
+        return new MeiziTuFragment();
+    }
+
+    @Override
+    public int getLayoutId()
+    {
+
+        return R.layout.fragment_meizitu;
+    }
+
+    @Override
+    public void initViews()
+    {
+
+        initFragments();
+    }
+
+    private void initFragments()
+    {
+
+        mViewPager.setAdapter(new MeiziTuPageAdapter(getChildFragmentManager()));
+        mViewPager.setOffscreenPageLimit(1);
+        mSlidingTabLayout.setViewPager(mViewPager);
+    }
+
+
+    private class MeiziTuPageAdapter extends FragmentStatePagerAdapter
+    {
+
+
+        public MeiziTuPageAdapter(FragmentManager fm)
+        {
+
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position)
+        {
+
+            return MeiziTuSimpleFragment.newInstance(types.get(position));
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position)
+        {
+
+            return titles.get(position);
+        }
+
+        @Override
+        public int getCount()
+        {
+
+            return titles.size();
+        }
+    }
+}

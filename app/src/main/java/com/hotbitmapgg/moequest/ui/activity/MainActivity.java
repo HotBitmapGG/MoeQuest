@@ -18,6 +18,7 @@ import com.hotbitmapgg.moequest.ui.fragment.DoubanMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.GankMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.HuaBanMeiziFragment;
 import com.hotbitmapgg.moequest.ui.fragment.JianDanMeiziFragment;
+import com.hotbitmapgg.moequest.ui.fragment.MeiziTuFragment;
 import com.hotbitmapgg.moequest.ui.fragment.TaoFemaleFragment;
 import com.hotbitmapgg.moequest.utils.AlarmManagerUtils;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
@@ -87,6 +88,7 @@ public class MainActivity extends RxBaseActivity
 
         // 初始化Fragment
         GankMeiziFragment gankMeiziFragment = GankMeiziFragment.newInstance();
+        MeiziTuFragment meiziTuFragment = MeiziTuFragment.newInstance();
         DoubanMeiziFragment doubanMeiziFragment = DoubanMeiziFragment.newInstance();
         HuaBanMeiziFragment huaBanMeiziFragment = HuaBanMeiziFragment.newInstance();
         TaoFemaleFragment taoFemaleFragment = TaoFemaleFragment.newInstance();
@@ -94,6 +96,7 @@ public class MainActivity extends RxBaseActivity
 
         fragments = new Fragment[]{
                 gankMeiziFragment,
+                meiziTuFragment,
                 taoFemaleFragment,
                 doubanMeiziFragment,
                 huaBanMeiziFragment,
@@ -139,20 +142,24 @@ public class MainActivity extends RxBaseActivity
                 changIndex(0, getResources().getString(R.string.gank_meizi), item);
                 return true;
 
+            case R.id.nav_meizitu:
+                changIndex(1,"妹子图",item);
+                return true;
+
             case R.id.nav_tao:
-                changIndex(1, getResources().getString(R.string.tao_female), item);
+                changIndex(2, getResources().getString(R.string.tao_female), item);
                 return true;
 
             case R.id.nav_douban:
-                changIndex(2, getResources().getString(R.string.douban_meizi), item);
+                changIndex(3, getResources().getString(R.string.douban_meizi), item);
                 return true;
 
             case R.id.nav_huaban:
-                changIndex(3, getResources().getString(R.string.huaban_meizi), item);
+                changIndex(4, getResources().getString(R.string.huaban_meizi), item);
                 return true;
 
             case R.id.nav_jiandan:
-                changIndex(4, getResources().getString(R.string.jiandan_meizi), item);
+                changIndex(5, getResources().getString(R.string.jiandan_meizi), item);
                 return true;
 
 

@@ -204,6 +204,16 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
                 RxBus.getInstance().post("hideAppBar");
             }
         });
+
+        mImageError.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                RxBus.getInstance().post("hideAppBar");
+            }
+        });
     }
 
     public View getSharedElement()

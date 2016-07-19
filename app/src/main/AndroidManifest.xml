@@ -56,6 +56,11 @@
             android:theme="@style/AppTheme.StatusBar" />
 
         <activity
+            android:name=".ui.activity.MeiziTuPageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.StatusBar" />
+
+        <activity
             android:name=".ui.activity.AppAboutActivity"
             android:screenOrientation="portrait" />
 
