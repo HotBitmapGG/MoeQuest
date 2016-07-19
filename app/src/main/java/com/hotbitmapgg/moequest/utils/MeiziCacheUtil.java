@@ -92,7 +92,7 @@ public class MeiziCacheUtil
      * @param type
      * @return
      */
-    public static List<MeiziTu> ParserMeiziTuHtml(String html, String type)
+    public List<MeiziTu> ParserMeiziTuHtml(String html, String type)
     {
 
         List<MeiziTu> list = new ArrayList<>();
@@ -126,7 +126,7 @@ public class MeiziCacheUtil
      * @param url
      * @return
      */
-    private static int url2groupid(String url)
+    private int url2groupid(String url)
     {
 
         return Integer.parseInt(url.split("/")[3]);
@@ -137,7 +137,7 @@ public class MeiziCacheUtil
      *
      * @param list
      */
-    public static void putMeiziTuCache(List<MeiziTu> list)
+    public void putMeiziTuCache(List<MeiziTu> list)
     {
 
         Realm realm = Realm.getDefaultInstance();
