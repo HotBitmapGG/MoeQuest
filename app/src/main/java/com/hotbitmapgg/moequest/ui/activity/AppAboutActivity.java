@@ -55,7 +55,7 @@ public class AppAboutActivity extends RxBaseActivity
         if (supportActionBar != null)
             supportActionBar.setDisplayHomeAsUpEnabled(true);
 
-        mCollapsingToolbarLayout.setTitle("关于萌妹");
+        mCollapsingToolbarLayout.setTitle("关于萌妹纸");
         String version = getVersion();
         mVersionTv.setText("版本号:" + " V" + version);
     }
