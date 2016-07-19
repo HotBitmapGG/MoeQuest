@@ -22,7 +22,7 @@
 
 ## Apk下载
 
-* 更新到v2.0
+* 更新到v2.1
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/qecode_moequest.png?raw=true)
 

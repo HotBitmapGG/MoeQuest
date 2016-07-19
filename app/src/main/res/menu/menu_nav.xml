@@ -6,32 +6,32 @@
             android:id="@+id/nav_home"
             android:checked="true"
             android:icon="@drawable/home"
-            android:title="首页" />
+            android:title="@string/gank_meizi" />
 
         <item
             android:id="@+id/nav_meizitu"
             android:checked="true"
             android:icon="@drawable/picture"
-            android:title="妹纸图" />
+            android:title="@string/meizitu" />
 
         <item
             android:id="@+id/nav_tao"
             android:checked="true"
             android:icon="@drawable/wedding_dress"
-            android:title="淘女郎" />
+            android:title="@string/tao_female" />
         <item
             android:id="@+id/nav_douban"
             android:icon="@drawable/bow_tie"
-            android:title="豆瓣妹子" />
+            android:title="@string/douban_meizi" />
         <item
             android:id="@+id/nav_huaban"
             android:icon="@drawable/flower"
-            android:title="花瓣妹子" />
+            android:title="@string/huaban_meizi" />
 
         <item
             android:id="@+id/nav_jiandan"
             android:icon="@drawable/year_of_rooster"
-            android:title="煎蛋妹子" />
+            android:title="@string/jiandan_meizi" />
     </group>
 
     <item android:title="Other">
