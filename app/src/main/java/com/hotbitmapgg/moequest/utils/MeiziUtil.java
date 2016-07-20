@@ -17,26 +17,26 @@ import io.realm.Realm;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
-public class MeiziCacheUtil
+public class MeiziUtil
 {
 
-    private static volatile MeiziCacheUtil mCache;
+    private static volatile MeiziUtil mCache;
 
-    private MeiziCacheUtil()
+    private MeiziUtil()
     {
 
     }
 
-    public static MeiziCacheUtil getInstance()
+    public static MeiziUtil getInstance()
     {
 
         if (mCache == null)
         {
-            synchronized (MeiziCacheUtil.class)
+            synchronized (MeiziUtil.class)
             {
                 if (mCache == null)
                 {
-                    mCache = new MeiziCacheUtil();
+                    mCache = new MeiziUtil();
                 }
             }
         }
@@ -92,7 +92,7 @@ public class MeiziCacheUtil
      * @param type
      * @return
      */
-    public List<MeiziTu> ParserMeiziTuHtml(String html, String type)
+    public List<MeiziTu> parserMeiziTuHtml(String html, String type)
     {
 
         List<MeiziTu> list = new ArrayList<>();

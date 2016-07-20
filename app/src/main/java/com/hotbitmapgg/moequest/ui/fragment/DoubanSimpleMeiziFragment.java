@@ -21,7 +21,7 @@ import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.ui.activity.DoubanMeiziPageActivity;
 import com.hotbitmapgg.moequest.utils.LogUtil;
-import com.hotbitmapgg.moequest.utils.MeiziCacheUtil;
+import com.hotbitmapgg.moequest.utils.MeiziUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import java.util.List;
@@ -218,7 +218,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
                     {
 
 
-                        MeiziCacheUtil.getInstance().putDoubanMeiziCache(getActivity(), type, response);
+                        MeiziUtil.getInstance().putDoubanMeiziCache(getActivity(), type, response);
                         finishTask();
                     }
 

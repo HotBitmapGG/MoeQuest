@@ -71,7 +71,7 @@ public class JiandanMeiziAdapter extends AbsRecyclerViewAdapter
                     .centerCrop()
                     .placeholder(R.drawable.placeholder_image)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(200, 250)
+                    //.override(200, 250)
                     .into(itemViewHolder.mImage);
 
 

@@ -12,8 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
-import com.hotbitmapgg.moequest.adapter.MeiziTuAdapter;
 import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.adapter.MeiziTuAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
@@ -21,7 +21,7 @@ import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.ui.activity.MeiziTuPageActivity;
 import com.hotbitmapgg.moequest.utils.LogUtil;
-import com.hotbitmapgg.moequest.utils.MeiziCacheUtil;
+import com.hotbitmapgg.moequest.utils.MeiziUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import java.io.IOException;
@@ -219,8 +219,8 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
                         try
                         {
                             String html = responseBody.string();
-                            List<MeiziTu> list = MeiziCacheUtil.getInstance().ParserMeiziTuHtml(html, type);
-                            MeiziCacheUtil.getInstance().putMeiziTuCache(list);
+                            List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuHtml(html, type);
+                            MeiziUtil.getInstance().putMeiziTuCache(list);
                             finishTask();
                         } catch (IOException e)
                         {
