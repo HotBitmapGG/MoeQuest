@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.fragment;
+package com.hotbitmapgg.moequest.module.douban;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.ui.activity.DoubanMeiziPageActivity;
 import com.hotbitmapgg.moequest.utils.LogUtil;
 import com.hotbitmapgg.moequest.utils.MeiziUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;

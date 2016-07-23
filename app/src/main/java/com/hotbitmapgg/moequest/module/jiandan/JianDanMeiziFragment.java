@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.fragment;
+package com.hotbitmapgg.moequest.module.jiandan;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -15,7 +15,7 @@ import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.model.jiandan.JianDanMeizi;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.ui.activity.SingleMeiziDetailsActivity;
+import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.LogUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 import com.hotbitmapgg.moequest.widget.loadmore.EndlessRecyclerOnScrollListener;

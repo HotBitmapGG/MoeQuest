@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.fragment;
+package com.hotbitmapgg.moequest.module.meizitu;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

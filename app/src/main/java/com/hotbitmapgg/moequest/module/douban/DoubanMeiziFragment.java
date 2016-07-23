@@ -1,5 +1,4 @@
-package com.hotbitmapgg.moequest.ui.fragment;
-
+package com.hotbitmapgg.moequest.module.douban;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,16 +15,12 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
- * 花瓣妹子接口对应type:
- * 大胸妹=34
- * 小清新=35
- * 文艺范=36
- * 性感妹=37
- * 大长腿=38
- * 黑丝袜=39
- * 小翘臀=40
+ * Created by hcc on 16/6/25 19:48
+ * 100332338@qq.com
+ * <p/>
+ * 豆瓣妹子
  */
-public class HuaBanMeiziFragment extends RxBaseFragment
+public class DoubanMeiziFragment extends RxBaseFragment
 {
 
     @Bind(R.id.sliding_tabs)
@@ -34,38 +29,45 @@ public class HuaBanMeiziFragment extends RxBaseFragment
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
 
-    private List<String> titles = Arrays.asList("大胸妹", "小清新", "文艺范", "性感妹", "大长腿", "黑丝袜", "小翘臀");
+    private List<String> titles = Arrays.asList("大胸妹", "小翘臀", "黑丝袜", "美图控", "高颜值");
 
-    private List<Integer> cids = Arrays.asList(34, 35, 36, 37, 38, 39, 40);
+    private List<Integer> cids = Arrays.asList(2, 6, 7, 3, 4);
 
 
-    public static HuaBanMeiziFragment newInstance()
+    public static DoubanMeiziFragment newInstance()
     {
 
-        return new HuaBanMeiziFragment();
+        return new DoubanMeiziFragment();
     }
 
     @Override
     public int getLayoutId()
     {
 
-        return R.layout.fragment_huaban_meizi;
+        return R.layout.fragment_douban_meizi;
     }
 
     @Override
     public void initViews()
     {
 
-        mViewPager.setAdapter(new HuaBanMeiziPageAdapter(getChildFragmentManager()));
+        initFragments();
+    }
+
+    private void initFragments()
+    {
+
+        mViewPager.setAdapter(new DoubanMeiziPageAdapter(getChildFragmentManager()));
+        mViewPager.setOffscreenPageLimit(1);
         mSlidingTabLayout.setViewPager(mViewPager);
     }
 
 
-    private class HuaBanMeiziPageAdapter extends FragmentStatePagerAdapter
+    private class DoubanMeiziPageAdapter extends FragmentStatePagerAdapter
     {
 
 
-        public HuaBanMeiziPageAdapter(FragmentManager fm)
+        public DoubanMeiziPageAdapter(FragmentManager fm)
         {
 
             super(fm);
@@ -75,7 +77,7 @@ public class HuaBanMeiziFragment extends RxBaseFragment
         public Fragment getItem(int position)
         {
 
-            return HuaBanMeiziSimpleFragment.newInstance(cids.get(position), position);
+            return DoubanSimpleMeiziFragment.newInstance(cids.get(position), position);
         }
 
         @Override

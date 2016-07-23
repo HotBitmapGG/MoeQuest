@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.activity;
+package com.hotbitmapgg.moequest.module.commonality;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,12 +14,12 @@ import android.view.View;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.ui.fragment.DoubanMeiziFragment;
-import com.hotbitmapgg.moequest.ui.fragment.GankMeiziFragment;
-import com.hotbitmapgg.moequest.ui.fragment.HuaBanMeiziFragment;
-import com.hotbitmapgg.moequest.ui.fragment.JianDanMeiziFragment;
-import com.hotbitmapgg.moequest.ui.fragment.MeiziTuFragment;
-import com.hotbitmapgg.moequest.ui.fragment.TaoFemaleFragment;
+import com.hotbitmapgg.moequest.module.douban.DoubanMeiziFragment;
+import com.hotbitmapgg.moequest.module.gank.GankMeiziFragment;
+import com.hotbitmapgg.moequest.module.huaban.HuaBanMeiziFragment;
+import com.hotbitmapgg.moequest.module.jiandan.JianDanMeiziFragment;
+import com.hotbitmapgg.moequest.module.meizitu.MeiziTuFragment;
+import com.hotbitmapgg.moequest.module.taogirl.TaoFemaleFragment;
 import com.hotbitmapgg.moequest.utils.AlarmManagerUtils;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;

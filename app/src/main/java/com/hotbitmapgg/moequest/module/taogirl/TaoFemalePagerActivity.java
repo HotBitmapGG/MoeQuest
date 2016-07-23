@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.activity;
+package com.hotbitmapgg.moequest.module.taogirl;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
+import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.widget.DepthTransFormes;
 
 import java.util.ArrayList;

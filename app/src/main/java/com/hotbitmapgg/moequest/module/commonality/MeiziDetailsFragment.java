@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.fragment;
+package com.hotbitmapgg.moequest.module.commonality;
 
 import android.Manifest;
 import android.content.DialogInterface;

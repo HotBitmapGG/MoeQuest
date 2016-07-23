@@ -1,9 +1,10 @@
-package com.hotbitmapgg.moequest.ui.fragment;
+package com.hotbitmapgg.moequest.module.gank;
 
+
+import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
@@ -13,135 +14,97 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.MeiziTuAdapter;
+import com.hotbitmapgg.moequest.adapter.GankMeiziAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.model.gank.GankMeizi;
+import com.hotbitmapgg.moequest.model.gank.GankMeiziInfo;
+import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.ui.activity.MeiziTuPageActivity;
 import com.hotbitmapgg.moequest.utils.LogUtil;
-import com.hotbitmapgg.moequest.utils.MeiziUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import io.realm.Realm;
 import io.realm.RealmResults;
-import okhttp3.ResponseBody;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by hcc on 16/7/19 20:44
+ * Created by hcc on 16/6/25 19:48
  * 100332338@qq.com
  * <p/>
- * 妹子图详情
+ * gank妹子
  */
-public class MeiziTuSimpleFragment extends RxBaseFragment
+public class GankMeiziFragment extends RxBaseFragment
 {
-
-    @Bind(R.id.recycle)
-    RecyclerView mRecyclerView;
 
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private static final int PRELOAD_SIZE = 6;
-
-    public static final String EXTRA_TYPE = "extra_type";
-
-    private boolean mIsLoadMore = true;
-
-    private int pageNum = 24;
-
-    private int page = 1;
-
-    private MeiziTuAdapter mAdapter;
+    @Bind(R.id.recycle)
+    RecyclerView mRecyclerView;
 
     private StaggeredGridLayoutManager mLayoutManager;
 
-    private String type;
+    private RealmResults<GankMeizi> gankMeizis;
+
+    private int pageNum = 20;
+
+    private int page = 1;
+
+    private static final int PRELOAD_SIZE = 6;
+
+    private boolean mIsLoadMore = true;
+
+    private GankMeiziAdapter mAdapter;
 
     private Realm realm;
 
-    private RealmResults<MeiziTu> meizis;
-
     private int imageIndex;
 
+    //RecycleView是否正在刷新
     private boolean mIsRefreshing = false;
 
-
-    public static MeiziTuSimpleFragment newInstance(String type)
+    public static GankMeiziFragment newInstance()
     {
 
-        MeiziTuSimpleFragment mFragment = new MeiziTuSimpleFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_TYPE, type);
-        mFragment.setArguments(bundle);
-
-        return mFragment;
+        return new GankMeiziFragment();
     }
 
     @Override
     public int getLayoutId()
     {
 
-        return R.layout.fragment_simple_meizitu;
+        return R.layout.fragment_gank_meizi;
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void initViews()
     {
 
-        realm = Realm.getDefaultInstance();
-        type = getArguments().getString(EXTRA_TYPE);
-
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        showProgress();
 
-            @Override
-            public void onRefresh()
-            {
+        realm = Realm.getDefaultInstance();
+        gankMeizis = realm.where(GankMeizi.class).findAll();
 
-                page = 1;
-                mIsRefreshing = true;
-                clearCache();
-                getMeizis();
-            }
-        });
-
-        mSwipeRefreshLayout.postDelayed(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-
-                mSwipeRefreshLayout.setRefreshing(true);
-                mIsRefreshing = true;
-                clearCache();
-                getMeizis();
-            }
-        }, 500);
-
-        meizis = realm.where(MeiziTu.class)
-                .equalTo("type", type)
-                .findAll();
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
-        mAdapter = new MeiziTuAdapter(mRecyclerView, meizis);
+        mAdapter = new GankMeiziAdapter(mRecyclerView, gankMeizis);
         mRecyclerView.setAdapter(mAdapter);
-        setRecycleScrollBug();
 
+        setRecycleScrollBug();
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
                 {
@@ -173,7 +136,7 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
             {
 
                 super.onMapSharedElements(names, sharedElements);
-                String newTransitionName = meizis.get(imageIndex).getImageurl();
+                String newTransitionName = gankMeizis.get(imageIndex).getUrl();
                 View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
                 if (newSharedView != null)
                 {
@@ -186,14 +149,46 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         });
     }
 
+
+    public void showProgress()
+    {
+
+        mSwipeRefreshLayout.post(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+                clearCache();
+                mIsRefreshing = true;
+                getGankMeizi();
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+
+            @Override
+            public void onRefresh()
+            {
+
+                page = 1;
+                clearCache();
+                mIsRefreshing = true;
+                getGankMeizi();
+            }
+        });
+    }
+
     private void clearCache()
     {
 
         try
         {
             realm.beginTransaction();
-            realm.where(MeiziTu.class)
-                    .equalTo("type", type)
+            realm.where(GankMeizi.class)
                     .findAll().clear();
             realm.commitTransaction();
         } catch (Exception e)
@@ -202,30 +197,66 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         }
     }
 
-    private void getMeizis()
+
+    private void getGankMeizi()
     {
 
-        RetrofitHelper.getMeiziTuApi()
-                .getMeiziTuApi(type, page)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ResponseBody>()
+        RetrofitHelper.getGankMeiziApi()
+                .getGankMeizi(pageNum, page)
+                .filter(new Func1<GankMeiziResult,Boolean>()
                 {
 
                     @Override
-                    public void call(ResponseBody responseBody)
+                    public Boolean call(GankMeiziResult gankMeiziResult)
                     {
 
-                        try
+                        return !gankMeiziResult.error;
+                    }
+                })
+                .map(new Func1<GankMeiziResult,List<GankMeiziInfo>>()
+                {
+
+                    @Override
+                    public List<GankMeiziInfo> call(GankMeiziResult gankMeiziResult)
+                    {
+
+                        return gankMeiziResult.gankMeizis;
+                    }
+                })
+                .doOnNext(new Action1<List<GankMeiziInfo>>()
+                {
+
+                    @Override
+                    public void call(List<GankMeiziInfo> gankMeiziInfos)
+                    {
+
+                        GankMeizi meizi;
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+                        for (int i = 0; i < gankMeiziInfos.size(); i++)
                         {
-                            String html = responseBody.string();
-                            List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuHtml(html, type);
-                            MeiziUtil.getInstance().putMeiziTuCache(list);
-                            finishTask();
-                        } catch (IOException e)
-                        {
-                            e.printStackTrace();
+                            meizi = new GankMeizi();
+                            String url = gankMeiziInfos.get(i).url;
+                            String desc = gankMeiziInfos.get(i).desc;
+                            meizi.setUrl(url);
+                            meizi.setDesc(desc);
+                            realm.copyToRealm(meizi);
                         }
+                        realm.commitTransaction();
+                        realm.close();
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<GankMeiziInfo>>()
+                {
+
+                    @Override
+                    public void call(List<GankMeiziInfo> gankMeiziInfos)
+                    {
+
+
+                        finishTask();
                     }
                 }, new Action1<Throwable>()
                 {
@@ -246,10 +277,10 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
                         });
 
                         SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
-                        LogUtil.all(throwable.getMessage());
                     }
                 });
     }
+
 
     private void finishTask()
     {
@@ -262,6 +293,7 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         {
             mSwipeRefreshLayout.setRefreshing(false);
         }
+
         mIsRefreshing = false;
 
         mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
@@ -271,13 +303,13 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
             public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
             {
 
-                Intent intent = MeiziTuPageActivity.luanch(getActivity(), position, type);
+                Intent intent = GankMeiziPageActivity.luanch(getActivity(), position);
                 if (Build.VERSION.SDK_INT >= 21)
                 {
                     startActivity(intent,
                             ActivityOptions.makeSceneTransitionAnimation(getActivity(),
                                     holder.getParentView().findViewById(R.id.item_img),
-                                    meizis.get(position).getImageurl()).toBundle());
+                                    gankMeizis.get(position).getUrl()).toBundle());
                 } else
                 {
                     startActivity(intent);
@@ -304,7 +336,7 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
                     {
                         mSwipeRefreshLayout.setRefreshing(true);
                         page++;
-                        getMeizis();
+                        getGankMeizi();
                     } else
                     {
                         mIsLoadMore = false;
@@ -314,13 +346,6 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         };
     }
 
-    @Override
-    public void onDestroy()
-    {
-
-        super.onDestroy();
-        realm.close();
-    }
 
     public void scrollIndex()
     {
@@ -344,6 +369,7 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
 
         LogUtil.all("onResume" + "  index " + imageIndex);
     }
+
 
     private void setRecycleScrollBug()
     {

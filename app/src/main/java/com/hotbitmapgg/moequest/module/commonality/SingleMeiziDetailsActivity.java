@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.activity;
+package com.hotbitmapgg.moequest.module.commonality;
 
 import android.Manifest;
 import android.app.Activity;

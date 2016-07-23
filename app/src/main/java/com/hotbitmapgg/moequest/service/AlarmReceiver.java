@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.ui.activity.MainActivity;
+import com.hotbitmapgg.moequest.module.commonality.MainActivity;
 import com.hotbitmapgg.moequest.utils.HeadsUpUtils;
 import com.hotbitmapgg.moequest.utils.PreferencesLoader;
 

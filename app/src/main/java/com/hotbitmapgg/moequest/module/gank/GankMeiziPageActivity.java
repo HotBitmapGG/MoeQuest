@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.activity;
+package com.hotbitmapgg.moequest.module.gank;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -24,7 +24,7 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import com.hotbitmapgg.moequest.model.gank.GankMeizi;
 import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
+import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;

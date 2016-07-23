@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.fragment;
+package com.hotbitmapgg.moequest.module.huaban;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.model.huaban.HuaBanMeizi;
 import com.hotbitmapgg.moequest.model.huaban.HuaBanMeiziInfo;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.ui.activity.SingleMeiziDetailsActivity;
+import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 

@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.ui.activity;
+package com.hotbitmapgg.moequest.module.douban;
 
 import android.Manifest;
 import android.app.Activity;
@@ -20,9 +20,9 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
 import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.ui.fragment.MeiziDetailsFragment;
+import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
@@ -44,7 +44,7 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class MeiziTuPageActivity extends RxBaseActivity
+public class DoubanMeiziPageActivity extends RxBaseActivity
 {
 
     @Bind(R.id.view_pager)
@@ -64,13 +64,13 @@ public class MeiziTuPageActivity extends RxBaseActivity
 
     private Realm realm;
 
-    private String type;
+    private int type;
 
     private boolean isHide = false;
 
     private String url;
 
-    private RealmResults<MeiziTu> meizis;
+    private RealmResults<DoubanMeizi> doubanMeizis;
 
     private MeiziPagerAdapter mPagerAdapter;
 
@@ -89,10 +89,10 @@ public class MeiziTuPageActivity extends RxBaseActivity
         if (intent != null)
         {
             currenIndex = intent.getIntExtra(EXTRA_INDEX, -1);
-            type = intent.getStringExtra(EXTRA_TYPE);
+            type = intent.getIntExtra(EXTRA_TYPE, -1);
         }
         realm = Realm.getDefaultInstance();
-        meizis = realm.where(MeiziTu.class)
+        doubanMeizis = realm.where(DoubanMeizi.class)
                 .equalTo("type", type)
                 .findAll();
 
@@ -112,13 +112,12 @@ public class MeiziTuPageActivity extends RxBaseActivity
             @Override
             public void onPageSelected(int position)
             {
-
-                mToolbar.setTitle(meizis.get(position).getTitle());
+                mToolbar.setTitle(doubanMeizis.get(position).getTitle());
                 currenIndex = position;
-                url = meizis.get(currenIndex).getImageurl();
+                url = doubanMeizis.get(currenIndex).getUrl();
 
                 //切换ViewPager时隐藏ToolBar
-                ImmersiveUtil.enter(MeiziTuPageActivity.this);
+                ImmersiveUtil.enter(DoubanMeiziPageActivity.this);
                 mAppBarLayout.animate()
                         .translationY(-mAppBarLayout.getHeight())
                         .setInterpolator(new DecelerateInterpolator(2))
@@ -162,11 +161,11 @@ public class MeiziTuPageActivity extends RxBaseActivity
             public void onMapSharedElements(List<String> names, Map<String,View> sharedElements)
             {
 
-                MeiziTu meiziTu = meizis.get(mViewPager.getCurrentItem());
+                DoubanMeizi doubanMeizi = doubanMeizis.get(mViewPager.getCurrentItem());
                 MeiziDetailsFragment fragment = (MeiziDetailsFragment)
                         mPagerAdapter.instantiateItem(mViewPager, currenIndex);
                 sharedElements.clear();
-                sharedElements.put(meiziTu.getImageurl(), fragment.getSharedElement());
+                sharedElements.put(doubanMeizi.getUrl(), fragment.getSharedElement());
             }
         });
     }
@@ -185,7 +184,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
     public void initToolBar()
     {
 
-        mToolbar.setTitle(meizis.get(currenIndex).getTitle());
+        mToolbar.setTitle(doubanMeizis.get(currenIndex).getTitle());
         mToolbar.setNavigationIcon(R.drawable.ic_back);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener()
         {
@@ -216,13 +215,13 @@ public class MeiziTuPageActivity extends RxBaseActivity
 
         super.onResume();
         mViewPager.setCurrentItem(currenIndex);
-        url = meizis.get(currenIndex).getImageurl();
+        url = doubanMeizis.get(currenIndex).getUrl();
     }
 
-    public static Intent luanch(Activity activity, int index, String type)
+    public static Intent luanch(Activity activity, int index, int type)
     {
 
-        Intent mIntent = new Intent(activity, MeiziTuPageActivity.class);
+        Intent mIntent = new Intent(activity, DoubanMeiziPageActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mIntent.putExtra(EXTRA_INDEX, index);
         mIntent.putExtra(EXTRA_TYPE, type);
@@ -238,7 +237,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_save))
                 .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(MeiziTuPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(RxPermissions.getInstance(DoubanMeiziPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -257,7 +256,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
                     public Observable<Uri> call(Boolean aBoolean)
                     {
 
-                        return GlideDownloadImageUtil.saveImageToLocal(MeiziTuPageActivity.this, url);
+                        return GlideDownloadImageUtil.saveImageToLocal(DoubanMeiziPageActivity.this, url);
                     }
                 })
                 .map(new Func1<Uri,String>()
@@ -282,7 +281,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
                     public void call(String s)
                     {
 
-                        Toast.makeText(MeiziTuPageActivity.this, s, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DoubanMeiziPageActivity.this, s, Toast.LENGTH_SHORT).show();
                     }
                 }, new Action1<Throwable>()
                 {
@@ -291,7 +290,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        Toast.makeText(MeiziTuPageActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DoubanMeiziPageActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -304,7 +303,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_share))
                 .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(MeiziTuPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(RxPermissions.getInstance(DoubanMeiziPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -323,7 +322,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
                     public Observable<Uri> call(Boolean aBoolean)
                     {
 
-                        return GlideDownloadImageUtil.saveImageToLocal(MeiziTuPageActivity.this, url);
+                        return GlideDownloadImageUtil.saveImageToLocal(DoubanMeiziPageActivity.this, url);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -335,7 +334,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
                     public void call(Uri uri)
                     {
 
-                        ShareUtil.sharePic(uri, meizis.get(currenIndex).getTitle(), MeiziTuPageActivity.this);
+                        ShareUtil.sharePic(uri, doubanMeizis.get(currenIndex).getTitle(), DoubanMeiziPageActivity.this);
                     }
                 }, new Action1<Throwable>()
                 {
@@ -344,7 +343,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        Toast.makeText(MeiziTuPageActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DoubanMeiziPageActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -400,7 +399,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
         {
 
             return MeiziDetailsFragment.
-                    newInstance(meizis.get(position).getImageurl());
+                    newInstance(doubanMeizis.get(position).getUrl());
         }
 
 
@@ -408,7 +407,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
         public int getCount()
         {
 
-            return meizis.size();
+            return doubanMeizis.size();
         }
     }
 }

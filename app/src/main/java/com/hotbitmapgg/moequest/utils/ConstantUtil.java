@@ -20,8 +20,6 @@ public class ConstantUtil
     //腾讯buglyID
     public static final String BUGLY_ID = "900037370";
 
-    /*** 妹子图Type分类 **/
-
     //性感妹子
     public static final String XINGGAN_MEIZI = "xinggan";
 
