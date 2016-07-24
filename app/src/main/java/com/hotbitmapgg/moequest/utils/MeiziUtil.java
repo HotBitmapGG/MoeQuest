@@ -110,12 +110,46 @@ public class MeiziUtil
 
             bean.setTitle(imgelement.attr("alt").toString());
             bean.setType(type);
-            bean.setHeight(354);//element.attr("height")
+            bean.setHeight(354);
             bean.setWidth(236);
             bean.setImageurl(imgelement.attr("data-original"));
             bean.setUrl(aelement.attr("href"));
             bean.setGroupid(url2groupid(bean.getUrl()));
             list.add(bean);
+        }
+        return list;
+    }
+
+
+    /**
+     * 解析自拍妹子Html
+     *
+     * @param html
+     * @param type
+     * @return
+     */
+    public List<MeiziTu> parserMeiziTuByAutodyne(String html, String type)
+    {
+
+        List<MeiziTu> list = new ArrayList<>();
+        Document doc = Jsoup.parse(html);
+
+        Elements p = doc.getElementsByTag("p");
+        MeiziTu meiziTu;
+        Element img;
+        for (int i = 0; i < 15; i++)
+        {
+            meiziTu = new MeiziTu();
+            img = p.get(i).select("img").first();
+            String src = img.attr("src");
+            String title = img.attr("alt");
+            meiziTu.setOrder(i);
+            meiziTu.setType(type);
+            meiziTu.setWidth(0);
+            meiziTu.setHeight(0);
+            meiziTu.setImageurl(src);
+            meiziTu.setTitle(title);
+            list.add(meiziTu);
         }
         return list;
     }

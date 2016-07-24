@@ -30,9 +30,14 @@ public class MeiziTuFragment extends RxBaseFragment
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
 
-    private List<String> titles = Arrays.asList("清纯妹子", "台湾妹子", "日本妹子", "性感妹子");
+    //"最新",
+    private List<String> titles = Arrays.asList("热门", "推荐", "清纯", "台湾", "日本", "性感");
 
+    //ConstantUtil.ZIPAI_MEIZI,
     private List<String> types = Arrays.asList(
+
+            ConstantUtil.HOT_MEIZI,
+            ConstantUtil.TUIJIAN_MEIZI,
             ConstantUtil.QINGCHUN_MEIZI,
             ConstantUtil.TAIWAN_MEIZI,
             ConstantUtil.JAPAN_MEIZI,
