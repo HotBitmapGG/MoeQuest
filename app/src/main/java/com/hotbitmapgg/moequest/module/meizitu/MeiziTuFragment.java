@@ -30,12 +30,10 @@ public class MeiziTuFragment extends RxBaseFragment
     @Bind(R.id.view_pager)
     ViewPager mViewPager;
 
-    //"最新",
-    private List<String> titles = Arrays.asList("热门", "推荐", "清纯", "台湾", "日本", "性感");
+    private List<String> titles = Arrays.asList("自拍", "热门", "推荐", "清纯", "台湾", "日本", "性感");
 
-    //ConstantUtil.ZIPAI_MEIZI,
     private List<String> types = Arrays.asList(
-
+            ConstantUtil.ZIPAI_MEIZI,
             ConstantUtil.HOT_MEIZI,
             ConstantUtil.TUIJIAN_MEIZI,
             ConstantUtil.QINGCHUN_MEIZI,
@@ -87,7 +85,10 @@ public class MeiziTuFragment extends RxBaseFragment
         public Fragment getItem(int position)
         {
 
-            return MeiziTuSimpleFragment.newInstance(types.get(position));
+            if (position == 0)
+                return ZiPaiMeiziFragment.newInstance(types.get(0));
+            else
+                return MeiziTuSimpleFragment.newInstance(types.get(position));
         }
 
         @Override

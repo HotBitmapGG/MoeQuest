@@ -14,4 +14,8 @@ public interface MeiziTuApi
 
     @GET("{type}/page/{pageNum}")
     Observable<ResponseBody> getMeiziTuApi(@Path("type") String type, @Path("pageNum") int pageNum);
+
+
+    @GET("{type}/comment-page-{page}#comments")
+    Observable<ResponseBody> getHomeMeiziApi(@Path("type") String type, @Path("page") int page);
 }

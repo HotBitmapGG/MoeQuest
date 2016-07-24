@@ -16,7 +16,7 @@
         android:paddingRight="10dp"
         app:tl_indicator_corner_radius="1.5dp"
         app:tl_indicator_height="2dp"
-        app:tl_indicator_width="40dp"
+        app:tl_indicator_width="30dp"
         app:tl_tab_space_equal="true" />
 
 
