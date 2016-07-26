@@ -1,4 +1,7 @@
 # MoeQuest
+
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/icon.png?raw=true)
+
 基于Rxjava+Realm实现的妹子福利App.
 
 # 简介
