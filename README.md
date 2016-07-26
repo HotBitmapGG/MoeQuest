@@ -1,13 +1,16 @@
-# MoeQuest
+# 萌妹纸
+
+The sister of a material design style welfare App & 一款材料设计风格的妹子福利App.
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/icon.png?raw=true)
 
-基于Rxjava+Realm实现的妹子福利App.
 
 # 简介
-每天更新各种妹子福利,喜欢的请star一波,谢谢啦~
+
+* 每日更新各种妹纸福利,喜欢的请star一波,谢谢啦.
 
 ## 功能介绍
+
 * 1.数据均来自抓取各大网站妹子福利图,gank,豆瓣,花瓣,煎蛋,淘女郎.
 * 2.使用Rxjava系列 + Realm数据库 + Glide实现.
 * 3.遵循Google的Material Design.
