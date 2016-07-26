@@ -37,7 +37,7 @@ public class ZiPaiMeiziAdapter extends AbsRecyclerViewAdapter
     {
 
         bindContext(parent.getContext());
-        return new ItemViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_home_meizi, parent, false));
+        return new ItemViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_zipai_meizi, parent, false));
     }
 
     @Override

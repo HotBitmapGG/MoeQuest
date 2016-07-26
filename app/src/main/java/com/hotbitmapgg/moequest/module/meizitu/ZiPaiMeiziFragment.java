@@ -90,7 +90,7 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
     public int getLayoutId()
     {
 
-        return R.layout.fragment_simple_meizitu;
+        return R.layout.fragment_simple_meizi;
     }
 
     @Override

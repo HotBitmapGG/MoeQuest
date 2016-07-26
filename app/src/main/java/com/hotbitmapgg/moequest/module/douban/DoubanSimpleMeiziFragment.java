@@ -91,7 +91,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
     public int getLayoutId()
     {
 
-        return R.layout.fragment_simple_douban_meizi;
+        return R.layout.fragment_simple_meizi;
     }
 
     @Override
