@@ -1,6 +1,6 @@
 # 萌妹纸
 
-The sister of a material design style welfare App & 一款材料设计风格的妹子福利App.
+The sister of a material design style welfare App & 一款MaterialDesign风格的妹子福利App.
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/icon.png?raw=true)
 
