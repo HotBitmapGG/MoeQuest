@@ -2,7 +2,7 @@
 
 The meizi of a material design style welfare App & 一款MaterialDesign风格的妹子福利App.
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/bg.png?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/bg.jpg?raw=true)
 
 # 简介
 
