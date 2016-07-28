@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
@@ -84,6 +83,7 @@ public class GankMeiziPageActivity extends RxBaseActivity
     @Override
     public void initViews(Bundle savedInstanceState)
     {
+
         Intent intent = getIntent();
         if (intent != null)
         {
@@ -182,7 +182,7 @@ public class GankMeiziPageActivity extends RxBaseActivity
             public void onClick(View v)
             {
 
-                supportFinishAfterTransition();
+                onBackPressed();
             }
         });
         mToolbar.inflateMenu(R.menu.menu_meizi);
@@ -362,14 +362,10 @@ public class GankMeiziPageActivity extends RxBaseActivity
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
+    public void onBackPressed()
     {
 
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            supportFinishAfterTransition();
-        }
-        return true;
+        supportFinishAfterTransition();
     }
 
     private class MeiziPagerAdapter extends FragmentStatePagerAdapter

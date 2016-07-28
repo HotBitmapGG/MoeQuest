@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
@@ -21,8 +20,8 @@ import android.widget.Toast;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
-import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
+import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
@@ -185,7 +184,7 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
             public void onClick(View v)
             {
 
-                supportFinishAfterTransition();
+                onBackPressed();
             }
         });
         mToolbar.inflateMenu(R.menu.menu_meizi);
@@ -365,15 +364,12 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
         }
     }
 
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
+    public void onBackPressed()
     {
 
-        if (keyCode == KeyEvent.KEYCODE_BACK)
-        {
-            supportFinishAfterTransition();
-        }
-        return true;
+        supportFinishAfterTransition();
     }
 
     private class MeiziPagerAdapter extends FragmentStatePagerAdapter
