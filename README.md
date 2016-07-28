@@ -2,9 +2,6 @@
 
 The sister of a material design style welfare App & 一款MaterialDesign风格的妹子福利App.
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/icon.png?raw=true)
-
-
 # 简介
 
 * 每日更新各种妹纸福利,喜欢的请star一波,谢谢啦.
