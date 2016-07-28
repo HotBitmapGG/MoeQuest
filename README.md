@@ -10,29 +10,29 @@ The meizi of a material design style welfare App & 一款MaterialDesign风格的
 
 ## 功能介绍
 
-* 1.数据均来自抓取各大网站妹子福利图,gank,豆瓣,花瓣,煎蛋,淘女郎.
-* 2.使用Rxjava系列 + Realm数据库 + Glide实现.
+* 1.数据均来自抓取各大网站妹子福利图,gank,豆瓣,花瓣,煎蛋,淘女郎,妹子图.
+* 2.使用Rxjava系列类库 + Realm数据库 + Glide实现.
 * 3.遵循Google的Material Design.
 
 ## 更新说明
 
-  ###V2.1.1
-  * 修复了一个issuse提出的崩溃问题,界面共享元素动画使用的问题.
+### V2.1.1
+  * 1.修复了一个issuse提出的崩溃问题,界面共享元素动画使用的问题.
 
 
-  ### v2.1
+### v2.1
   * 1.修复了部分bug.
   * 2.新增妹纸图模块.
 
 
-  ### v2.0
+### v2.0
   * 1.关闭了两个issuse,修改了一个RecycleView刷新的bug,解决方案来自@drakeet大神.
   * 2.增加了gank和豆瓣妹纸的界面共享元素动画效果.
   * 3.优化了部分代码,会持续优化中.
 
 ## Apk下载
 
-* 更新到v2.1
+* 更新到v2.1.1
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/canvas.png?raw=true)
 
