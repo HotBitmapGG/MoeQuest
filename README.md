@@ -35,7 +35,7 @@ The sister of a material design style welfare App & 一款MaterialDesign风格�
 
 * 更新到v2.1
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/qecode_moequest.png?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/canvas.png?raw=true)
 
 ## 截图
 
