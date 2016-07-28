@@ -62,7 +62,8 @@
 
         <activity
             android:name=".module.commonality.AppAboutActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.StatusBar" />
 
         <receiver android:name=".service.AlarmReceiver">
             <intent-filter>

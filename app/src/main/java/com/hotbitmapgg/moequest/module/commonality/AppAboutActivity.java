@@ -7,7 +7,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
@@ -28,10 +27,6 @@ public class AppAboutActivity extends RxBaseActivity
 
     @Bind(R.id.collapsing_toolbar)
     CollapsingToolbarLayout mCollapsingToolbarLayout;
-
-    @Bind(R.id.tv_version)
-    TextView mVersionTv;
-
 
     @Override
     public int getLayoutId()
@@ -55,9 +50,8 @@ public class AppAboutActivity extends RxBaseActivity
         if (supportActionBar != null)
             supportActionBar.setDisplayHomeAsUpEnabled(true);
 
-        mCollapsingToolbarLayout.setTitle("关于萌妹纸");
         String version = getVersion();
-        mVersionTv.setText("版本号:" + " V" + version);
+        mCollapsingToolbarLayout.setTitle("关于萌妹纸" + "v" + version);
     }
 
     @Override
