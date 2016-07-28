@@ -115,14 +115,6 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                 mToolbar.setTitle(doubanMeizis.get(position).getTitle());
                 currenIndex = position;
                 url = doubanMeizis.get(currenIndex).getUrl();
-
-                //切换ViewPager时隐藏ToolBar
-                ImmersiveUtil.enter(DoubanMeiziPageActivity.this);
-                mAppBarLayout.animate()
-                        .translationY(-mAppBarLayout.getHeight())
-                        .setInterpolator(new DecelerateInterpolator(2))
-                        .start();
-                isHide = true;
             }
 
             @Override

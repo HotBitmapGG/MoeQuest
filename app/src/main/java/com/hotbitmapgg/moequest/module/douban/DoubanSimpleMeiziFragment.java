@@ -262,7 +262,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
             {
 
                 Intent intent = DoubanMeiziPageActivity.luanch(getActivity(), position, type);
-                if (Build.VERSION.SDK_INT >= 21)
+                if (Build.VERSION.SDK_INT >= 22)
                 {
                     startActivity(intent,
                             ActivityOptions.makeSceneTransitionAnimation(getActivity(),
@@ -332,7 +332,6 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
             });
         }
 
-        LogUtil.all("onResume" + "  index " + imageIndex);
     }
 
     private void setRecycleScrollBug()

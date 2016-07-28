@@ -23,8 +23,8 @@ import android.widget.Toast;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import com.hotbitmapgg.moequest.model.gank.GankMeizi;
-import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
+import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
 import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
 import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
@@ -84,7 +84,6 @@ public class GankMeiziPageActivity extends RxBaseActivity
     @Override
     public void initViews(Bundle savedInstanceState)
     {
-
         Intent intent = getIntent();
         if (intent != null)
         {
@@ -114,14 +113,6 @@ public class GankMeiziPageActivity extends RxBaseActivity
                 mToolbar.setTitle(gankMeizis.get(position).getDesc());
                 currenIndex = position;
                 url = gankMeizis.get(currenIndex).getUrl();
-
-                //切换ViewPager时隐藏ToolBar
-                ImmersiveUtil.enter(GankMeiziPageActivity.this);
-                mAppBarLayout.animate()
-                        .translationY(-mAppBarLayout.getHeight())
-                        .setInterpolator(new DecelerateInterpolator(2))
-                        .start();
-                isHide = true;
             }
 
             @Override

@@ -271,7 +271,7 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
             {
 
                 Intent intent = MeiziTuPageActivity.luanch(getActivity(), position, type);
-                if (Build.VERSION.SDK_INT >= 21)
+                if (Build.VERSION.SDK_INT >= 22)
                 {
                     startActivity(intent,
                             ActivityOptions.makeSceneTransitionAnimation(getActivity(),

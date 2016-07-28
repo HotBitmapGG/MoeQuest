@@ -116,14 +116,6 @@ public class MeiziTuPageActivity extends RxBaseActivity
                 mToolbar.setTitle(meizis.get(position).getTitle());
                 currenIndex = position;
                 url = meizis.get(currenIndex).getImageurl();
-
-                //切换ViewPager时隐藏ToolBar
-                ImmersiveUtil.enter(MeiziTuPageActivity.this);
-                mAppBarLayout.animate()
-                        .translationY(-mAppBarLayout.getHeight())
-                        .setInterpolator(new DecelerateInterpolator(2))
-                        .start();
-                isHide = true;
             }
 
             @Override

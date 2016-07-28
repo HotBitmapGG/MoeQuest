@@ -304,7 +304,7 @@ public class GankMeiziFragment extends RxBaseFragment
             {
 
                 Intent intent = GankMeiziPageActivity.luanch(getActivity(), position);
-                if (Build.VERSION.SDK_INT >= 21)
+                if (Build.VERSION.SDK_INT >= 22)
                 {
                     startActivity(intent,
                             ActivityOptions.makeSceneTransitionAnimation(getActivity(),
@@ -366,8 +366,6 @@ public class GankMeiziFragment extends RxBaseFragment
                 }
             });
         }
-
-        LogUtil.all("onResume" + "  index " + imageIndex);
     }
 
 
