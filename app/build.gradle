@@ -71,9 +71,9 @@ dependencies {
     compile 'io.realm:realm-android:0.87.0'
     //腾讯bugly
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.1.5
-    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:crashreport:2.1.5'
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:2.2.0'
     //photoView
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
 }
