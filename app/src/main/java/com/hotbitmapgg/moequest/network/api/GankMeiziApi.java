@@ -10,6 +10,13 @@ import rx.Observable;
 public interface GankMeiziApi
 {
 
+    /**
+     * gank妹子,福利
+     *
+     * @param number
+     * @param page
+     * @return
+     */
     @GET("data/福利/{number}/{page}")
     Observable<GankMeiziResult> getGankMeizi(@Path("number") int number, @Path("page") int page);
 }

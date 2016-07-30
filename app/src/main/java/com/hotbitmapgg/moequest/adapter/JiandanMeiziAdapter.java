@@ -17,10 +17,6 @@ import com.hotbitmapgg.moequest.utils.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hcc on 16/6/28 21:35
- * 100332338@qq.com
- */
 public class JiandanMeiziAdapter extends AbsRecyclerViewAdapter
 {
 

@@ -97,49 +97,15 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
     public void initViews()
     {
 
-        realm = Realm.getDefaultInstance();
         type = getArguments().getString(EXTRA_TYPE);
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        showProgress();
+        initRecycleView();
 
-            @Override
-            public void onRefresh()
-            {
-
-                page = 1;
-                mIsRefreshing = true;
-                clearCache();
-                getMeizis();
-            }
-        });
-
-        mSwipeRefreshLayout.postDelayed(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-
-                mSwipeRefreshLayout.setRefreshing(true);
-                mIsRefreshing = true;
-                clearCache();
-                getMeizis();
-            }
-        }, 500);
-
+        realm = Realm.getDefaultInstance();
         meizis = realm.where(MeiziTu.class)
                 .equalTo("type", type)
                 .findAll();
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
-        mAdapter = new MeiziTuAdapter(mRecyclerView, meizis);
-        mRecyclerView.setAdapter(mAdapter);
-        setRecycleScrollBug();
 
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
@@ -185,9 +151,53 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         });
     }
 
-    private void clearCache()
+    private void initRecycleView()
     {
 
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
+        mAdapter = new MeiziTuAdapter(mRecyclerView, meizis);
+        mRecyclerView.setAdapter(mAdapter);
+        setRecycleScrollBug();
+    }
+
+    private void showProgress()
+    {
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+
+            @Override
+            public void onRefresh()
+            {
+
+                page = 1;
+                mIsRefreshing = true;
+                clearCache();
+                getMeizis();
+            }
+        });
+
+        mSwipeRefreshLayout.postDelayed(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+                mIsRefreshing = true;
+                clearCache();
+                getMeizis();
+            }
+        }, 500);
+    }
+
+    private void clearCache()
+    {
         try
         {
             realm.beginTransaction();
@@ -313,14 +323,6 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         };
     }
 
-    @Override
-    public void onDestroy()
-    {
-
-        super.onDestroy();
-        realm.close();
-    }
-
     public void scrollIndex()
     {
 
@@ -340,8 +342,6 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
                 }
             });
         }
-
-        LogUtil.all("onResume" + "  index " + imageIndex);
     }
 
     private void setRecycleScrollBug()

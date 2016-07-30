@@ -10,6 +10,7 @@ public interface DoubanMeizhiApi
 
     /**
      * 根据cid查询不同类型的妹子图片
+     *
      * @param cid
      * @param pageNum
      * @return

@@ -23,10 +23,6 @@ import com.hotbitmapgg.moequest.widget.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hcc on 16/6/25 20:55
- * 100332338@qq.com
- */
 public class TaoFemaleAdapter extends AbsRecyclerViewAdapter
 {
 

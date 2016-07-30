@@ -283,7 +283,7 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
     private void saveImageToGallery()
     {
 
-        Observable.just("")
+        Observable.just(R.string.app_name)
                 .compose(bindToLifecycle())
                 .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())

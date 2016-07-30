@@ -84,7 +84,9 @@ public class TaoFemaleFragment extends RxBaseFragment
     public void getTaoFemaleData()
     {
 
-        RetrofitHelper.getTaoFemaleApi().getTaoFemale(String.valueOf(page), ConstantUtil.APP_ID, ConstantUtil.APP_SIGN)
+        RetrofitHelper.getTaoFemaleApi()
+                .getTaoFemale(String.valueOf(page),
+                        ConstantUtil.APP_ID, ConstantUtil.APP_SIGN)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<TaoFemale>()

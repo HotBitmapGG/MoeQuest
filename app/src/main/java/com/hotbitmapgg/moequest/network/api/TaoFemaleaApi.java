@@ -6,13 +6,17 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 
-/**
- * Created by hcc on 16/6/25 19:44
- * 100332338@qq.com
- */
 public interface TaoFemaleaApi
 {
 
+    /**
+     * 来自易源接口的淘女郎
+     *
+     * @param page
+     * @param appId
+     * @param sign
+     * @return
+     */
     @GET("126-2")
     Observable<TaoFemale> getTaoFemale(@Query("page") String page,
                                        @Query("showapi_appid") String appId,

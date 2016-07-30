@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -35,6 +36,8 @@ public class AppSplashActivity extends Activity
 
     private static final float SCALE_END = 1.13F;
 
+    private Subscription subscribe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -42,7 +45,7 @@ public class AppSplashActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-        Observable.timer(1000, TimeUnit.MILLISECONDS)
+        subscribe = Observable.timer(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>()
                 {
@@ -79,4 +82,16 @@ public class AppSplashActivity extends Activity
             }
         });
     }
+
+    @Override
+    public void onBackPressed()
+    {
+
+        super.onBackPressed();
+        if(subscribe != null)
+        {
+            subscribe.unsubscribe();
+        }
+    }
+
 }

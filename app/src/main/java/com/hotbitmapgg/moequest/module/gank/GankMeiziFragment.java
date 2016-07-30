@@ -23,6 +23,7 @@ import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.LogUtil;
+import com.hotbitmapgg.moequest.utils.MeiziUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 
 import java.util.List;
@@ -90,21 +91,11 @@ public class GankMeiziFragment extends RxBaseFragment
     public void initViews()
     {
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         showProgress();
-
         realm = Realm.getDefaultInstance();
         gankMeizis = realm.where(GankMeizi.class).findAll();
+        initRecycleView();
 
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
-        mAdapter = new GankMeiziAdapter(mRecyclerView, gankMeizis);
-        mRecyclerView.setAdapter(mAdapter);
-
-        setRecycleScrollBug();
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
                 {
@@ -149,10 +140,22 @@ public class GankMeiziFragment extends RxBaseFragment
         });
     }
 
+    private void initRecycleView()
+    {
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
+        mAdapter = new GankMeiziAdapter(mRecyclerView, gankMeizis);
+        mRecyclerView.setAdapter(mAdapter);
+        setRecycleScrollBug();
+    }
+
 
     public void showProgress()
     {
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.post(new Runnable()
         {
 
@@ -230,20 +233,7 @@ public class GankMeiziFragment extends RxBaseFragment
                     public void call(List<GankMeiziInfo> gankMeiziInfos)
                     {
 
-                        GankMeizi meizi;
-                        Realm realm = Realm.getDefaultInstance();
-                        realm.beginTransaction();
-                        for (int i = 0; i < gankMeiziInfos.size(); i++)
-                        {
-                            meizi = new GankMeizi();
-                            String url = gankMeiziInfos.get(i).url;
-                            String desc = gankMeiziInfos.get(i).desc;
-                            meizi.setUrl(url);
-                            meizi.setDesc(desc);
-                            realm.copyToRealm(meizi);
-                        }
-                        realm.commitTransaction();
-                        realm.close();
+                        MeiziUtil.getInstance().putGankMeiziCache(gankMeiziInfos);
                     }
                 })
                 .subscribeOn(Schedulers.io())

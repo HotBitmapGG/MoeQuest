@@ -90,7 +90,7 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     private void saveImageToGallery()
     {
 
-        Observable.just("")
+        Observable.just(R.string.app_name)
                 .compose(bindToLifecycle())
                 .compose(RxPermissions.getInstance(getActivity()).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())

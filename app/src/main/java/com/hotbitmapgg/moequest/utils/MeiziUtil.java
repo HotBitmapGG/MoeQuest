@@ -1,8 +1,8 @@
 package com.hotbitmapgg.moequest.utils;
 
-import android.content.Context;
-
 import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
+import com.hotbitmapgg.moequest.model.gank.GankMeizi;
+import com.hotbitmapgg.moequest.model.gank.GankMeiziInfo;
 import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
 
 import org.jsoup.Jsoup;
@@ -17,6 +17,9 @@ import io.realm.Realm;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
+/**
+ * 萌妹纸工具类
+ */
 public class MeiziUtil
 {
 
@@ -44,14 +47,40 @@ public class MeiziUtil
         return mCache;
     }
 
+
+    /**
+     * 保存gank妹子到数据库中
+     *
+     * @param gankMeiziInfos
+     */
+
+    public void putGankMeiziCache(List<GankMeiziInfo> gankMeiziInfos)
+    {
+
+        GankMeizi meizi;
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        for (int i = 0; i < gankMeiziInfos.size(); i++)
+        {
+            meizi = new GankMeizi();
+            String url = gankMeiziInfos.get(i).url;
+            String desc = gankMeiziInfos.get(i).desc;
+            meizi.setUrl(url);
+            meizi.setDesc(desc);
+            realm.copyToRealm(meizi);
+        }
+        realm.commitTransaction();
+        realm.close();
+    }
+
+
     /**
      * 保存豆瓣妹子数据到数据库中
      *
-     * @param context
      * @param type
      * @param response
      */
-    public void putDoubanMeiziCache(Context context, int type, Response<ResponseBody> response)
+    public void putDoubanMeiziCache(int type, Response<ResponseBody> response)
     {
 
         try

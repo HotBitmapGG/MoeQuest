@@ -98,51 +98,16 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
     public void initViews()
     {
 
-        realm = Realm.getDefaultInstance();
-
         cid = getArguments().getInt(EXTRA_CID);
         type = getArguments().getInt(EXTRA_TYPE);
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        showProgress();
+        initRecycleView();
 
-            @Override
-            public void onRefresh()
-            {
-
-                page = 1;
-                mIsRefreshing = true;
-                clearCache();
-                getDoubanMeizi();
-            }
-        });
-
-        mSwipeRefreshLayout.postDelayed(new Runnable()
-        {
-
-            @Override
-            public void run()
-            {
-
-                mSwipeRefreshLayout.setRefreshing(true);
-                mIsRefreshing = true;
-                clearCache();
-                getDoubanMeizi();
-            }
-        }, 500);
-
+        realm = Realm.getDefaultInstance();
         doubanMeizis = realm.where(DoubanMeizi.class)
                 .equalTo("type", type)
                 .findAll();
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
-        mAdapter = new DoubanMeiziAdapter(mRecyclerView, doubanMeizis);
-        mRecyclerView.setAdapter(mAdapter);
-        setRecycleScrollBug();
 
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
@@ -188,6 +153,51 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         });
     }
 
+    private void showProgress()
+    {
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+
+            @Override
+            public void onRefresh()
+            {
+
+                page = 1;
+                mIsRefreshing = true;
+                clearCache();
+                getDoubanMeizi();
+            }
+        });
+
+        mSwipeRefreshLayout.postDelayed(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+
+                mSwipeRefreshLayout.setRefreshing(true);
+                mIsRefreshing = true;
+                clearCache();
+                getDoubanMeizi();
+            }
+        }, 500);
+    }
+
+    private void initRecycleView()
+    {
+
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
+        mAdapter = new DoubanMeiziAdapter(mRecyclerView, doubanMeizis);
+        mRecyclerView.setAdapter(mAdapter);
+        setRecycleScrollBug();
+    }
+
     private void clearCache()
     {
 
@@ -217,7 +227,7 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
                     {
 
 
-                        MeiziUtil.getInstance().putDoubanMeiziCache(getActivity(), type, response);
+                        MeiziUtil.getInstance().putDoubanMeiziCache(type, response);
                         finishTask();
                     }
 
@@ -304,14 +314,6 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         };
     }
 
-    @Override
-    public void onDestroy()
-    {
-
-        super.onDestroy();
-        realm.close();
-    }
-
     public void scrollIndex()
     {
 
@@ -331,7 +333,6 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
                 }
             });
         }
-
     }
 
     private void setRecycleScrollBug()

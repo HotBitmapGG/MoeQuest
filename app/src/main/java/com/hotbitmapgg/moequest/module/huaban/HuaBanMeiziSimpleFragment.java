@@ -93,6 +93,26 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
         cid = getArguments().getInt(EXTRA_CID);
         type = getArguments().getInt(EXTRA_TYPE);
 
+        showProgress();
+        initRecycleView();
+    }
+
+    private void initRecycleView()
+    {
+
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
+        mAdapter = new HuaBanMeiziAdapter(mRecyclerView, meiziInfos);
+        mRecyclerView.setAdapter(mAdapter);
+        setRecycleScrollBug();
+    }
+
+    private void showProgress()
+    {
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.postDelayed(new Runnable()
         {
 
@@ -106,7 +126,6 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
             }
         }, 500);
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
 
@@ -120,14 +139,6 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                 getHuaBanMeizi();
             }
         });
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
-        mAdapter = new HuaBanMeiziAdapter(mRecyclerView, meiziInfos);
-        mRecyclerView.setAdapter(mAdapter);
-        setRecycleScrollBug();
     }
 
     private void getHuaBanMeizi()

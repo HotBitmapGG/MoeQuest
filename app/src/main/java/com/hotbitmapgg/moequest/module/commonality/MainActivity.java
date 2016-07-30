@@ -29,6 +29,12 @@ import java.util.Random;
 
 import butterknife.Bind;
 
+/**
+ * Created by hcc on 16/7/30 12:57
+ * 100332338@qq.com
+ * <p/>
+ * 萌妹纸主界面
+ */
 public class MainActivity extends RxBaseActivity
         implements NavigationView.OnNavigationItemSelectedListener
 {
@@ -121,7 +127,7 @@ public class MainActivity extends RxBaseActivity
     public void initToolBar()
     {
 
-        mToolbar.setTitle("首页");
+        mToolbar.setTitle("MoeQuest");
         setSupportActionBar(mToolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -170,7 +176,7 @@ public class MainActivity extends RxBaseActivity
 
             case R.id.nav_share:
 
-                ShareUtil.shareLink(getString(R.string.project_link), "萌妹,每日更新妹子福利", MainActivity.this);
+                ShareUtil.shareLink(getString(R.string.project_link), "萌妹纸,每日更新妹子福利", MainActivity.this);
                 return true;
 
 

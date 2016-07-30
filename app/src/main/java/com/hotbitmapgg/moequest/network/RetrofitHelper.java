@@ -49,16 +49,14 @@ public class RetrofitHelper
     public static GankMeiziApi getGankMeiziApi()
     {
 
-        Retrofit mRetrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_GANK_URL)
                 .client(mOkHttpClient)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        GankMeiziApi gankMeiziApi = mRetrofit.create(GankMeiziApi.class);
-
-        return gankMeiziApi;
+        return retrofit.create(GankMeiziApi.class);
     }
 
 
@@ -76,9 +74,7 @@ public class RetrofitHelper
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
-        HuaBanMeiziApi huaBanMeiziApi = retrofit.create(HuaBanMeiziApi.class);
-
-        return huaBanMeiziApi;
+        return retrofit.create(HuaBanMeiziApi.class);
     }
 
     /**
