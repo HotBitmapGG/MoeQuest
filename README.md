@@ -34,7 +34,7 @@ The meizi of a material design style welfare App & 一款MaterialDesign风格的
 
 * 更新到v2.1.1
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/canvas.png?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/index.png?raw=true)
 
 ## 截图
 
