@@ -100,12 +100,11 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
         type = getArguments().getString(EXTRA_TYPE);
 
         showProgress();
-        initRecycleView();
-
         realm = Realm.getDefaultInstance();
         meizis = realm.where(MeiziTu.class)
                 .equalTo("type", type)
                 .findAll();
+        initRecycleView();
 
         RxBus.getInstance().toObserverable(Intent.class)
                 .subscribe(new Action1<Intent>()
