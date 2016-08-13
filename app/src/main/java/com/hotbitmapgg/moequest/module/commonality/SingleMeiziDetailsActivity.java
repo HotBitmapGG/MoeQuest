@@ -41,7 +41,12 @@ import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-
+/**
+ * Created by hcc on 16/8/13 12:14
+ * 100332338@qq.com
+ * <p/>
+ * 单个妹子大图浏览界面
+ */
 public class SingleMeiziDetailsActivity extends RxBaseActivity
 {
 
@@ -95,7 +100,8 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
                 {
 
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource)
+                    public boolean onException(Exception e, String model,
+                                               Target<GlideDrawable> target, boolean isFirstResource)
                     {
 
                         mImageError.setVisibility(View.VISIBLE);
@@ -103,7 +109,9 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource)
+                    public boolean onResourceReady(GlideDrawable resource, String model,
+                                                   Target<GlideDrawable> target, boolean isFromMemoryCache,
+                                                   boolean isFirstResource)
                     {
 
                         mImageView.setImageDrawable(resource);
@@ -160,9 +168,10 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
         {
             case R.id.action_fuli_share:
                 // 分享
-                Observable.just("")
-                        .compose(bindToLifecycle())
-                        .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                Observable.just(R.string.app_name)
+                        .compose(this.<Integer>bindToLifecycle())
+                        .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this)
+                                .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                         .observeOn(Schedulers.io())
                         .filter(new Func1<Boolean,Boolean>()
                         {
@@ -181,7 +190,8 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
                             public Observable<Uri> call(Boolean aBoolean)
                             {
 
-                                return GlideDownloadImageUtil.saveImageToLocal(SingleMeiziDetailsActivity.this, url);
+                                return GlideDownloadImageUtil.
+                                        saveImageToLocal(SingleMeiziDetailsActivity.this, url);
                             }
                         })
                         .observeOn(AndroidSchedulers.mainThread())
@@ -202,7 +212,8 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
                             public void call(Throwable throwable)
                             {
 
-                                Toast.makeText(SingleMeiziDetailsActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SingleMeiziDetailsActivity.this, "分享失败,请重试",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         });
                 return true;
@@ -284,8 +295,9 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity
     {
 
         Observable.just(R.string.app_name)
-                .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(this.<Integer>bindToLifecycle())
+                .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {

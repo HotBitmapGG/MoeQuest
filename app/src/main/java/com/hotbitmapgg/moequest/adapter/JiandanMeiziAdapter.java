@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.model.jiandan.JianDanMeizi;
+import com.hotbitmapgg.moequest.entity.jiandan.JianDanMeizi;
 import com.hotbitmapgg.moequest.utils.LogUtil;
 
 import java.util.ArrayList;

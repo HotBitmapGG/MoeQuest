@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.jiandan;
+package com.hotbitmapgg.moequest.entity.jiandan;
 
 import com.google.gson.annotations.SerializedName;
 

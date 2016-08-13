@@ -13,7 +13,7 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.JiandanMeiziAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.jiandan.JianDanMeizi;
+import com.hotbitmapgg.moequest.entity.jiandan.JianDanMeizi;
 import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.utils.LogUtil;
@@ -149,7 +149,10 @@ public class JianDanMeiziFragment extends RxBaseFragment
                         jianDanMeiziDataList.get(position).pics[0], jianDanMeiziDataList.get(position).commentAuthor);
                 if (android.os.Build.VERSION.SDK_INT >= 21)
                 {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity(), holder.getParentView().findViewById(R.id.item_fill_image), "transitionImg").toBundle());
+                    startActivity(intent, ActivityOptions.
+                            makeSceneTransitionAnimation(getActivity(),
+                                    holder.getParentView().findViewById(R.id.item_fill_image),
+                                    "transitionImg").toBundle());
                 } else
                 {
                     startActivity(intent);

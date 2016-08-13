@@ -1,6 +1,6 @@
 package com.hotbitmapgg.moequest.network.api;
 
-import com.hotbitmapgg.moequest.model.jiandan.JianDanMeizi;
+import com.hotbitmapgg.moequest.entity.jiandan.JianDanMeizi;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

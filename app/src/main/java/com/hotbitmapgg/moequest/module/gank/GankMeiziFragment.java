@@ -17,9 +17,9 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.GankMeiziAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.gank.GankMeizi;
-import com.hotbitmapgg.moequest.model.gank.GankMeiziInfo;
-import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;
+import com.hotbitmapgg.moequest.entity.gank.GankMeizi;
+import com.hotbitmapgg.moequest.entity.gank.GankMeiziInfo;
+import com.hotbitmapgg.moequest.entity.gank.GankMeiziResult;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.LogUtil;
@@ -97,6 +97,7 @@ public class GankMeiziFragment extends RxBaseFragment
         initRecycleView();
 
         RxBus.getInstance().toObserverable(Intent.class)
+                .compose(this.<Intent>bindToLifecycle())
                 .subscribe(new Action1<Intent>()
                 {
 
@@ -206,6 +207,7 @@ public class GankMeiziFragment extends RxBaseFragment
 
         RetrofitHelper.getGankMeiziApi()
                 .getGankMeizi(pageNum, page)
+                .compose(this.<GankMeiziResult>bindToLifecycle())
                 .filter(new Func1<GankMeiziResult,Boolean>()
                 {
 

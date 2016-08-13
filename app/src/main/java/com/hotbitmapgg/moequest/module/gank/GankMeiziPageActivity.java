@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.model.gank.GankMeizi;
+import com.hotbitmapgg.moequest.entity.gank.GankMeizi;
 import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
@@ -45,6 +45,12 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+/**
+ * Created by hcc on 16/6/25 19:48
+ * 100332338@qq.com
+ * <p/>
+ * gank妹子pager界面
+ */
 public class GankMeiziPageActivity extends RxBaseActivity
 {
 
@@ -123,6 +129,7 @@ public class GankMeiziPageActivity extends RxBaseActivity
         });
 
         RxBus.getInstance().toObserverable(String.class)
+                .compose(this.<String>bindToLifecycle())
                 .subscribe(new Action1<String>()
                 {
 
@@ -138,7 +145,6 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     @Override
                     public void call(Throwable throwable)
                     {
-
 
                     }
                 });
@@ -226,7 +232,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_save))
                 .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(GankMeiziPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(RxPermissions.getInstance(GankMeiziPageActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -256,7 +263,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     {
 
                         String msg = String.format("图片已保存至 %s 文件夹",
-                                new File(Environment.getExternalStorageDirectory(), ConstantUtil.FILE_DIR)
+                                new File(Environment.getExternalStorageDirectory(),
+                                        ConstantUtil.FILE_DIR)
                                         .getAbsolutePath());
                         return msg;
                     }
@@ -270,7 +278,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     public void call(String s)
                     {
 
-                        Toast.makeText(GankMeiziPageActivity.this, s, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GankMeiziPageActivity.this, s,
+                                Toast.LENGTH_SHORT).show();
                     }
                 }, new Action1<Throwable>()
                 {
@@ -279,7 +288,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        Toast.makeText(GankMeiziPageActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GankMeiziPageActivity.this, "保存失败,请重试",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -292,7 +302,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_share))
                 .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(GankMeiziPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(RxPermissions.getInstance(GankMeiziPageActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -311,7 +322,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     public Observable<Uri> call(Boolean aBoolean)
                     {
 
-                        return GlideDownloadImageUtil.saveImageToLocal(GankMeiziPageActivity.this, url);
+                        return GlideDownloadImageUtil.
+                                saveImageToLocal(GankMeiziPageActivity.this, url);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -323,7 +335,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     public void call(Uri uri)
                     {
 
-                        ShareUtil.sharePic(uri, gankMeizis.get(currenIndex).getDesc(), GankMeiziPageActivity.this);
+                        ShareUtil.sharePic(uri, gankMeizis.get(currenIndex).getDesc(),
+                                GankMeiziPageActivity.this);
                     }
                 }, new Action1<Throwable>()
                 {
@@ -332,7 +345,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        Toast.makeText(GankMeiziPageActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GankMeiziPageActivity.this, "分享失败,请重试",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -382,7 +396,8 @@ public class GankMeiziPageActivity extends RxBaseActivity
         public Fragment getItem(int position)
         {
 
-            return MeiziDetailsFragment.newInstance(gankMeizis.get(position).getUrl());
+            return MeiziDetailsFragment.
+                    newInstance(gankMeizis.get(position).getUrl());
         }
 
 

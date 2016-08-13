@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.gank;
+package com.hotbitmapgg.moequest.entity.gank;
 
 import com.google.gson.annotations.SerializedName;
 

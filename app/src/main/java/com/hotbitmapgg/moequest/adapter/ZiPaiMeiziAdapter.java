@@ -14,7 +14,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 
 import java.util.ArrayList;
 import java.util.List;

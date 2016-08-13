@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.huaban;
+package com.hotbitmapgg.moequest.entity.huaban;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

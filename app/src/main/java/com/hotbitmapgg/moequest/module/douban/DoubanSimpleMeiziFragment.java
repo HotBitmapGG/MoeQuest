@@ -16,7 +16,7 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.DoubanMeiziAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
+import com.hotbitmapgg.moequest.entity.douban.DoubanMeizi;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.LogUtil;
@@ -35,7 +35,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import rx.functions.Action1;
 
-
+/**
+ * Created by hcc on 16/8/13 12:48
+ * 100332338@qq.com
+ * <p/>
+ * 豆瓣妹子详情界面
+ */
 public class DoubanSimpleMeiziFragment extends RxBaseFragment
 {
 
@@ -106,9 +111,11 @@ public class DoubanSimpleMeiziFragment extends RxBaseFragment
         doubanMeizis = realm.where(DoubanMeizi.class)
                 .equalTo("type", type)
                 .findAll();
+
         initRecycleView();
 
         RxBus.getInstance().toObserverable(Intent.class)
+                .compose(this.<Intent>bindToLifecycle())
                 .subscribe(new Action1<Intent>()
                 {
 

@@ -1,7 +1,7 @@
 package com.hotbitmapgg.moequest.network.api;
 
 
-import com.hotbitmapgg.moequest.model.gank.GankMeiziResult;
+import com.hotbitmapgg.moequest.entity.gank.GankMeiziResult;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

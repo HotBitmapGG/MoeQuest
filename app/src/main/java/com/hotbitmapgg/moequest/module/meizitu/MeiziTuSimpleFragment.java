@@ -16,7 +16,7 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.MeiziTuAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.LogUtil;
@@ -39,7 +39,7 @@ import rx.schedulers.Schedulers;
  * Created by hcc on 16/7/19 20:44
  * 100332338@qq.com
  * <p/>
- * 妹子图详情
+ * 妹子图详情界面
  */
 public class MeiziTuSimpleFragment extends RxBaseFragment
 {
@@ -104,9 +104,11 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
         meizis = realm.where(MeiziTu.class)
                 .equalTo("type", type)
                 .findAll();
+
         initRecycleView();
 
         RxBus.getInstance().toObserverable(Intent.class)
+                .compose(this.<Intent>bindToLifecycle())
                 .subscribe(new Action1<Intent>()
                 {
 
@@ -215,6 +217,7 @@ public class MeiziTuSimpleFragment extends RxBaseFragment
 
         RetrofitHelper.getMeiziTuApi()
                 .getMeiziTuApi(type, page)
+                .compose(this.<ResponseBody>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ResponseBody>()

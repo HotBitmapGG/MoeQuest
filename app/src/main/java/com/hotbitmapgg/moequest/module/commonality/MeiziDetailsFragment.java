@@ -91,8 +91,9 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     {
 
         Observable.just(R.string.app_name)
-                .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(getActivity()).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(this.<Integer>bindToLifecycle())
+                .compose(RxPermissions.getInstance(getActivity())
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -139,7 +140,8 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     }
 
     @Override
-    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource)
+    public boolean onException(Exception e, String model,
+                               Target<GlideDrawable> target, boolean isFirstResource)
     {
 
         mImageError.setVisibility(View.VISIBLE);
@@ -147,7 +149,9 @@ public class MeiziDetailsFragment extends RxBaseFragment implements RequestListe
     }
 
     @Override
-    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource)
+    public boolean onResourceReady(GlideDrawable resource, String model,
+                                   Target<GlideDrawable> target, boolean
+                                               isFromMemoryCache, boolean isFirstResource)
     {
 
         mImageView.setImageDrawable(resource);

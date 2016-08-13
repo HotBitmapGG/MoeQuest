@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
+import com.hotbitmapgg.moequest.entity.douban.DoubanMeizi;
 import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
@@ -42,7 +42,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-
+/**
+ * Created by hcc on 16/8/13 12:48
+ * 100332338@qq.com
+ * <p/>
+ * 豆瓣妹子
+ */
 public class DoubanMeiziPageActivity extends RxBaseActivity
 {
 
@@ -227,8 +232,9 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
     {
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_save))
-                .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(DoubanMeiziPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(this.<Void>bindToLifecycle())
+                .compose(RxPermissions.getInstance(DoubanMeiziPageActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -293,8 +299,9 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
     {
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_share))
-                .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(DoubanMeiziPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(this.<Void>bindToLifecycle())
+                .compose(RxPermissions.getInstance(DoubanMeiziPageActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -313,7 +320,8 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                     public Observable<Uri> call(Boolean aBoolean)
                     {
 
-                        return GlideDownloadImageUtil.saveImageToLocal(DoubanMeiziPageActivity.this, url);
+                        return GlideDownloadImageUtil.
+                                saveImageToLocal(DoubanMeiziPageActivity.this, url);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -325,7 +333,8 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                     public void call(Uri uri)
                     {
 
-                        ShareUtil.sharePic(uri, doubanMeizis.get(currenIndex).getTitle(), DoubanMeiziPageActivity.this);
+                        ShareUtil.sharePic(uri, doubanMeizis.get(currenIndex).getTitle(),
+                                DoubanMeiziPageActivity.this);
                     }
                 }, new Action1<Throwable>()
                 {
@@ -334,7 +343,8 @@ public class DoubanMeiziPageActivity extends RxBaseActivity
                     public void call(Throwable throwable)
                     {
 
-                        Toast.makeText(DoubanMeiziPageActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DoubanMeiziPageActivity.this, "分享失败,请重试",
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }

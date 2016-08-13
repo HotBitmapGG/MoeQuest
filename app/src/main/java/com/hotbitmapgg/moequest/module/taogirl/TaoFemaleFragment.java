@@ -13,8 +13,8 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.TaoFemaleAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.taomodel.Contentlist;
-import com.hotbitmapgg.moequest.model.taomodel.TaoFemale;
+import com.hotbitmapgg.moequest.entity.taomodel.Contentlist;
+import com.hotbitmapgg.moequest.entity.taomodel.TaoFemale;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
@@ -87,6 +87,7 @@ public class TaoFemaleFragment extends RxBaseFragment
         RetrofitHelper.getTaoFemaleApi()
                 .getTaoFemale(String.valueOf(page),
                         ConstantUtil.APP_ID, ConstantUtil.APP_SIGN)
+                .compose(this.<TaoFemale>bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<TaoFemale>()
@@ -144,10 +145,16 @@ public class TaoFemaleFragment extends RxBaseFragment
             public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
             {
 
-                Intent intent = SingleMeiziDetailsActivity.LuanchActivity(getActivity(), datas.get(position).avatarUrl, datas.get(position).realName);
+                Intent intent = SingleMeiziDetailsActivity.
+                        LuanchActivity(getActivity(),
+                                datas.get(position).avatarUrl,
+                                datas.get(position).realName);
                 if (android.os.Build.VERSION.SDK_INT >= 21)
                 {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity(), holder.getParentView().findViewById(R.id.tao_avatar), "transitionImg").toBundle());
+                    startActivity(intent, ActivityOptions.
+                            makeSceneTransitionAnimation(getActivity(),
+                                    holder.getParentView().findViewById(R.id.tao_avatar),
+                                    "transitionImg").toBundle());
                 } else
                 {
                     startActivity(intent);

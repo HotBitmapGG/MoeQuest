@@ -1,9 +1,9 @@
 package com.hotbitmapgg.moequest.utils;
 
-import com.hotbitmapgg.moequest.model.douban.DoubanMeizi;
-import com.hotbitmapgg.moequest.model.gank.GankMeizi;
-import com.hotbitmapgg.moequest.model.gank.GankMeiziInfo;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.entity.douban.DoubanMeizi;
+import com.hotbitmapgg.moequest.entity.gank.GankMeizi;
+import com.hotbitmapgg.moequest.entity.gank.GankMeiziInfo;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -88,7 +88,7 @@ public class AppSplashActivity extends Activity
     {
 
         super.onBackPressed();
-        if(subscribe != null)
+        if(subscribe != null && !subscribe.isUnsubscribed())
         {
             subscribe.unsubscribe();
         }

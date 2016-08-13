@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.taomodel;
+package com.hotbitmapgg.moequest.entity.taomodel;
 
 import java.util.ArrayList;
 

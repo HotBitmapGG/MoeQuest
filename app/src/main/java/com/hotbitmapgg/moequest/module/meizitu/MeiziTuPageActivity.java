@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
@@ -43,6 +43,12 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+/**
+ * Created by hcc on 16/8/13 13:02
+ * 100332338@qq.com
+ * <p/>
+ * 妹子图pager界面
+ */
 public class MeiziTuPageActivity extends RxBaseActivity
 {
 
@@ -228,8 +234,9 @@ public class MeiziTuPageActivity extends RxBaseActivity
     {
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_save))
-                .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(MeiziTuPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(this.<Void>bindToLifecycle())
+                .compose(RxPermissions.getInstance(MeiziTuPageActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -294,8 +301,9 @@ public class MeiziTuPageActivity extends RxBaseActivity
     {
 
         RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_share))
-                .compose(bindToLifecycle())
-                .compose(RxPermissions.getInstance(MeiziTuPageActivity.this).ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                .compose(this.<Void>bindToLifecycle())
+                .compose(RxPermissions.getInstance(MeiziTuPageActivity.this)
+                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .observeOn(Schedulers.io())
                 .filter(new Func1<Boolean,Boolean>()
                 {
@@ -369,7 +377,7 @@ public class MeiziTuPageActivity extends RxBaseActivity
     public void onBackPressed()
     {
 
-       supportFinishAfterTransition();
+        supportFinishAfterTransition();
     }
 
     private class MeiziPagerAdapter extends FragmentStatePagerAdapter

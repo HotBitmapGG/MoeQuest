@@ -1,6 +1,6 @@
 package com.hotbitmapgg.moequest.network.api;
 
-import com.hotbitmapgg.moequest.model.taomodel.TaoFemale;
+import com.hotbitmapgg.moequest.entity.taomodel.TaoFemale;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

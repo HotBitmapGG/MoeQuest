@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.douban;
+package com.hotbitmapgg.moequest.entity.douban;
 
 import io.realm.RealmObject;
 

@@ -13,8 +13,8 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.HuaBanMeiziAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.huaban.HuaBanMeizi;
-import com.hotbitmapgg.moequest.model.huaban.HuaBanMeiziInfo;
+import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeizi;
+import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeiziInfo;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.utils.ConstantUtil;
@@ -31,7 +31,12 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-
+/**
+ * Created by hcc on 16/8/13 12:50
+ * 100332338@qq.com
+ * <p/>
+ * 花瓣妹子详情界面
+ */
 public class HuaBanMeiziSimpleFragment extends RxBaseFragment
 {
 
@@ -149,6 +154,7 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
                 .getHuaBanMeizi(pageNum + "", page + "",
                         ConstantUtil.APP_ID, cid + "",
                         ConstantUtil.APP_SIGN)
+                .compose(this.<ResponseBody>bindToLifecycle())
                 .map(new Func1<ResponseBody,HuaBanMeizi>()
                 {
 
@@ -226,10 +232,15 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment
             public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
             {
 
-                Intent intent = SingleMeiziDetailsActivity.LuanchActivity(getActivity(), meiziInfos.get(position).getThumb(), meiziInfos.get(position).getTitle());
+                Intent intent = SingleMeiziDetailsActivity
+                        .LuanchActivity(getActivity(), meiziInfos.get(position).getThumb(),
+                                meiziInfos.get(position).getTitle());
                 if (android.os.Build.VERSION.SDK_INT >= 21)
                 {
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity(), holder.getParentView().findViewById(R.id.item_img), "transitionImg").toBundle());
+                    startActivity(intent, ActivityOptions
+                            .makeSceneTransitionAnimation(getActivity(),
+                                    holder.getParentView().findViewById(R.id.item_img),
+                                    "transitionImg").toBundle());
                 } else
                 {
                     startActivity(intent);

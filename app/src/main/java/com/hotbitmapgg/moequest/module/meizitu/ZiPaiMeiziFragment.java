@@ -16,7 +16,7 @@ import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.ZiPaiMeiziAdapter;
 import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.model.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 import com.hotbitmapgg.moequest.network.RetrofitHelper;
 import com.hotbitmapgg.moequest.rx.RxBus;
 import com.hotbitmapgg.moequest.utils.LogUtil;
@@ -39,7 +39,7 @@ import rx.schedulers.Schedulers;
  * Created by hcc on 16/7/19 20:44
  * 100332338@qq.com
  * <p/>
- * 妹子图详情
+ * 自拍妹子图界面
  */
 public class ZiPaiMeiziFragment extends RxBaseFragment
 {
@@ -104,9 +104,11 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
         meizis = realm.where(MeiziTu.class)
                 .equalTo("type", type)
                 .findAll();
+
         initRecycleView();
 
         RxBus.getInstance().toObserverable(Intent.class)
+                .compose(this.<Intent> bindToLifecycle())
                 .subscribe(new Action1<Intent>()
                 {
 
@@ -197,6 +199,7 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
 
     private void clearCache()
     {
+
         try
         {
             realm.beginTransaction();
@@ -215,6 +218,7 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
 
         RetrofitHelper.getMeiziTuApi()
                 .getHomeMeiziApi(type, page)
+                .compose(this.<ResponseBody> bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ResponseBody>()
@@ -227,7 +231,8 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
                         try
                         {
                             String html = responseBody.string();
-                            List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuByAutodyne(html, type);
+                            List<MeiziTu> list = MeiziUtil.getInstance()
+                                    .parserMeiziTuByAutodyne(html, type);
                             MeiziUtil.getInstance().putMeiziTuCache(list);
                             finishTask();
                         } catch (IOException e)
@@ -253,7 +258,8 @@ public class ZiPaiMeiziFragment extends RxBaseFragment
                             }
                         });
 
-                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
+                        SnackbarUtil.showMessage(mRecyclerView,
+                                getString(R.string.error_message));
                         LogUtil.all(throwable.getMessage());
                     }
                 });

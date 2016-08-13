@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.taomodel;
+package com.hotbitmapgg.moequest.entity.taomodel;
 
 import com.google.gson.annotations.SerializedName;
 

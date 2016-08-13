@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.model.meizitu;
+package com.hotbitmapgg.moequest.entity.meizitu;
 
 import java.io.Serializable;
 

@@ -16,6 +16,9 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
+ * Created by hcc on 16/8/13 12:50
+ * 100332338@qq.com
+ * <p/>
  * 花瓣妹子接口对应type:
  * 大胸妹=34
  * 小清新=35
@@ -75,7 +78,8 @@ public class HuaBanMeiziFragment extends RxBaseFragment
         public Fragment getItem(int position)
         {
 
-            return HuaBanMeiziSimpleFragment.newInstance(cids.get(position), position);
+            return HuaBanMeiziSimpleFragment
+                    .newInstance(cids.get(position), position);
         }
 
         @Override

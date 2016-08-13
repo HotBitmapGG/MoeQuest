@@ -22,7 +22,7 @@ import butterknife.Bind;
  * Created by hcc on 16/6/26 14:56
  * 100332338@qq.com
  * <p/>
- * 大图浏览界面
+ * 淘女郎大图浏览界面
  */
 public class TaoFemalePagerActivity extends RxBaseActivity
 {
