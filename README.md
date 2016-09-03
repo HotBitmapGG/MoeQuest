@@ -2,7 +2,7 @@
 
 The meizi of a material design style welfare App & 一款MaterialDesign风格的妹子福利App.
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/bg.jpg?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/art/bg.jpg?raw=true)
 
 # 简介
 
@@ -34,31 +34,24 @@ The meizi of a material design style welfare App & 一款MaterialDesign风格的
 
 * 更新到v2.1.1
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/index.png?raw=true)
+![](https://github.com/HotBitmapGG/MoeQuest/blob/master/art/index.png?raw=true)
 
 ## 截图
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/01.png?raw=true)
+<a href="art/01.png"><img src="art/01.png" width="40%"/></a> <a href="art/02.png"><img src="art/02.png" width="40%"/></a>
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/02.png?raw=true)
+<a href="art/03.png"><img src="art/03.png" width="40%"/></a> <a href="art/04.png"><img src="art/04.png" width="40%"/></a>
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/03.png?raw=true)
+<a href="art/05.png"><img src="art/05.png" width="40%"/></a> <a href="art/06.png"><img src="art/06.png" width="40%"/></a>
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/04.png?raw=true)
+<a href="art/07.png"><img src="art/07.png" width="40%"/></a> <a href="art/08.png"><img src="art/08.png" width="40%"/></a>
 
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/05.png?raw=true)
-
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/06.png?raw=true)
-
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/07.png?raw=true)
-
-![](https://github.com/HotBitmapGG/MoeQuest/blob/master/meizi_pic/08.png?raw=true)
+<a href="art/09.png"><img src="art/09.png" width="40%"/></a> <a href="art/10.png"><img src="art/10.png" width="40%"/></a>
 
 
 ## 声明
 
-本项目所使用API主要来Gank.io,以及抓取各网站数据,
-若被告知需停止共享与使用，本人会及时删除此页面与整个项目,
+本项目所使用API主要来Gank.io,以及抓取各网站数据,若被告知需停止共享与使用，本人会及时删除此页面与整个项目,
 请您暸解相关情况，并遵守开源协议.
 
 ## Other
