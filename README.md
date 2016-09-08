@@ -1,5 +1,7 @@
 # 萌妹纸
 
+[![Github All Releases](https://img.shields.io/badge/Android%20Circular-MoeQuest-brightgreen.svg)]() [![Wercker](https://img.shields.io/wercker/ci/wercker/docs.svg?maxAge=2592000)]() [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg?maxAge=2592000)]()
+
 The meizi of a material design style welfare App & 一款MaterialDesign风格的妹子福利App.
 
 ![](https://github.com/HotBitmapGG/MoeQuest/blob/master/art/bg.jpg?raw=true)
