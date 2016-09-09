@@ -62,15 +62,13 @@ The meizi of a material design style welfare App & 一款MaterialDesign风格的
 
   * 高仿BiliBili客户端: https://github.com/HotBitmapGG/OhMyBiliBili
 
-  * Gank.IO客户端: https://github.com/HotBitmapGG/StudyProject
+  * Gank.io客户端: https://github.com/HotBitmapGG/StudyProject
 
   * 妹子福利App: https://github.com/HotBitmapGG/MoeQuest
 
   * 圆环进度条:https://github.com/HotBitmapGG/RingProgressBar
 
-  * 仿芝麻信用圆环进度:https://github.com/HotBitmapGG/CreditSesameRingView
-  
-  * 轻量级的RecycleViewAdapter辅助类库 :https://github.com/HotBitmapGG/EasyRecycleAdapterHelper
+  * 仿芝麻信用分仪表盘:https://github.com/HotBitmapGG/CreditSesameRingView
 
 ## License
 
