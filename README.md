@@ -1,6 +1,6 @@
 # 萌妹纸
 
-[![Github All Releases](https://img.shields.io/badge/Android%20Circular-MoeQuest-brightgreen.svg)]() [![Wercker](https://img.shields.io/wercker/ci/wercker/docs.svg?maxAge=2592000)]() [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000)]()
+[![Wercker](https://img.shields.io/badge/Android%20Client-MoeQuest-brightgreen.svg)]() [![Wercker](https://img.shields.io/badge/Gradle-2.1.3-brightgreen.svg)]() [![Wercker](https://img.shields.io/wercker/ci/wercker/docs.svg?maxAge=2592000)]() [![Crates.io](https://img.shields.io/crates/l/rustc-serialize.svg?maxAge=2592000)]()
 
 The meizi of a material design style welfare App & 一款MaterialDesign风格的妹子福利App.
 
