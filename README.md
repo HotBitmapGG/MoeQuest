@@ -53,22 +53,17 @@ The meizi of a material design style welfare App & 一款MaterialDesign风格的
 
 ## 声明
 
-本项目所使用API主要来Gank.io,以及抓取各网站数据,若被告知需停止共享与使用，本人会及时删除此页面与整个项目,
-请您暸解相关情况，并遵守开源协议.
+本项目所使用API主要来Gank.io,易源接口,以及抓取各网站数据,若被告知需停止共享与使用，本人会及时删除此页面与整个项目,请您暸解相关情况，并遵守开源协议.
 
-## Other
 
-  * 知了日报客户端: https://github.com/HotBitmapGG/RxZhiHu
+## About me
 
-  * 高仿BiliBili客户端: https://github.com/HotBitmapGG/OhMyBiliBili
+[![Wercker](https://img.shields.io/badge/weibo-HotBitmapGG-blue.svg)](http://weibo.com/3223089177/profile?topnav=1&wvr=6&is_all=1)
 
-  * Gank.io客户端: https://github.com/HotBitmapGG/StudyProject
+An android developer in Wuhan.
 
-  * 妹子福利App: https://github.com/HotBitmapGG/MoeQuest
+If you want to make friends with me, You can focus on my weibo.
 
-  * 圆环进度条:https://github.com/HotBitmapGG/RingProgressBar
-
-  * 仿芝麻信用分仪表盘:https://github.com/HotBitmapGG/CreditSesameRingView
 
 ## License
 
