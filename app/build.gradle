@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.hotbitmapgg.moequest"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 23
         versionCode 3
         versionName "2.1.1"
@@ -32,9 +32,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     //AndroidLib
-    compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:cardview-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     //Retrofit2
