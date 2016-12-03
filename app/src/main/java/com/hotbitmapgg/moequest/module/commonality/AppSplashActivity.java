@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
 import com.hotbitmapgg.moequest.R;
