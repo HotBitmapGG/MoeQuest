@@ -38,6 +38,8 @@ public class AppSplashActivity extends Activity
 
     private Subscription subscribe;
 
+	private AnimatorSet mSplashSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -65,11 +67,11 @@ public class AppSplashActivity extends Activity
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(mSplashImage, "scaleX", 1f, SCALE_END);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(mSplashImage, "scaleY", 1f, SCALE_END);
 
-        AnimatorSet set = new AnimatorSet();
-        set.setDuration(ANIMATION_TIME).play(animatorX).with(animatorY);
-        set.start();
+        mSplashSet = new AnimatorSet();
+	    mSplashSet.setDuration(ANIMATION_TIME).play(animatorX).with(animatorY);
+	    mSplashSet.start();
 
-        set.addListener(new AnimatorListenerAdapter()
+	    mSplashSet.addListener(new AnimatorListenerAdapter()
         {
 
             @Override
@@ -92,6 +94,9 @@ public class AppSplashActivity extends Activity
         {
             subscribe.unsubscribe();
         }
+	    if (mSplashSet != null) {
+		    mSplashSet.removeAllListeners();
+	    }
     }
 
 }

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -198,7 +199,7 @@ public class MainActivity extends RxBaseActivity
     }
 
 
-    public void switchFragment(Fragment fragment)
+    private void switchFragment(Fragment fragment)
     {
 
         FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
@@ -218,7 +219,12 @@ public class MainActivity extends RxBaseActivity
 
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
-            logoutApp();
+
+	        if (mNavigationView.isShown()) {
+		        mDrawerLayout.closeDrawer(Gravity.START);
+	        } else {
+		        logoutApp();
+	        }
         }
 
         return true;
