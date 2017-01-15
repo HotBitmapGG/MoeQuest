@@ -2,48 +2,47 @@ package com.hotbitmapgg.moequest.entity.douban;
 
 import io.realm.RealmObject;
 
-public class DoubanMeizi extends RealmObject
-{
+public class DoubanMeizi extends RealmObject {
 
-    private String url;
+  private String url;
 
-    private String title;
+  private String title;
 
-    private int type;
+  private int type;
 
-    public int getType()
-    {
 
-        return type;
-    }
+  public int getType() {
 
-    public void setType(int type)
-    {
+    return type;
+  }
 
-        this.type = type;
-    }
 
-    public String getUrl()
-    {
+  public void setType(int type) {
 
-        return url;
-    }
+    this.type = type;
+  }
 
-    public void setUrl(String url)
-    {
 
-        this.url = url;
-    }
+  public String getUrl() {
 
-    public String getTitle()
-    {
+    return url;
+  }
 
-        return title;
-    }
 
-    public void setTitle(String title)
-    {
+  public void setUrl(String url) {
 
-        this.title = title;
-    }
+    this.url = url;
+  }
+
+
+  public String getTitle() {
+
+    return title;
+  }
+
+
+  public void setTitle(String title) {
+
+    this.title = title;
+  }
 }

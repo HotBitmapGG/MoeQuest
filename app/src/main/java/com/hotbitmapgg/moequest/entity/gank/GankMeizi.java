@@ -2,132 +2,131 @@ package com.hotbitmapgg.moequest.entity.gank;
 
 import io.realm.RealmObject;
 
-public class GankMeizi extends RealmObject
-{
+public class GankMeizi extends RealmObject {
 
-    private String _id;
+  private String _id;
 
-    private String createdAt;
+  private String createdAt;
 
-    private String desc;
+  private String desc;
 
-    private String publishedAt;
+  private String publishedAt;
 
-    private String source;
+  private String source;
 
-    private String type;
+  private String type;
 
-    private String url;
+  private String url;
 
-    private boolean used;
+  private boolean used;
 
-    private String who;
+  private String who;
 
-    public String get_id()
-    {
 
-        return _id;
-    }
+  public String get_id() {
 
-    public void set_id(String _id)
-    {
+    return _id;
+  }
 
-        this._id = _id;
-    }
 
-    public String getCreatedAt()
-    {
+  public void set_id(String _id) {
 
-        return createdAt;
-    }
+    this._id = _id;
+  }
 
-    public void setCreatedAt(String createdAt)
-    {
 
-        this.createdAt = createdAt;
-    }
+  public String getCreatedAt() {
 
-    public String getDesc()
-    {
+    return createdAt;
+  }
 
-        return desc;
-    }
 
-    public void setDesc(String desc)
-    {
+  public void setCreatedAt(String createdAt) {
 
-        this.desc = desc;
-    }
+    this.createdAt = createdAt;
+  }
 
-    public String getPublishedAt()
-    {
 
-        return publishedAt;
-    }
+  public String getDesc() {
 
-    public void setPublishedAt(String publishedAt)
-    {
+    return desc;
+  }
 
-        this.publishedAt = publishedAt;
-    }
 
-    public String getSource()
-    {
+  public void setDesc(String desc) {
 
-        return source;
-    }
+    this.desc = desc;
+  }
 
-    public void setSource(String source)
-    {
 
-        this.source = source;
-    }
+  public String getPublishedAt() {
 
-    public String getType()
-    {
+    return publishedAt;
+  }
 
-        return type;
-    }
 
-    public void setType(String type)
-    {
+  public void setPublishedAt(String publishedAt) {
 
-        this.type = type;
-    }
+    this.publishedAt = publishedAt;
+  }
 
-    public String getUrl()
-    {
 
-        return url;
-    }
+  public String getSource() {
 
-    public void setUrl(String url)
-    {
+    return source;
+  }
 
-        this.url = url;
-    }
 
-    public boolean isUsed()
-    {
+  public void setSource(String source) {
 
-        return used;
-    }
+    this.source = source;
+  }
 
-    public void setUsed(boolean used)
-    {
 
-        this.used = used;
-    }
+  public String getType() {
 
-    public String getWho()
-    {
+    return type;
+  }
 
-        return who;
-    }
 
-    public void setWho(String who)
-    {
+  public void setType(String type) {
 
-        this.who = who;
-    }
+    this.type = type;
+  }
+
+
+  public String getUrl() {
+
+    return url;
+  }
+
+
+  public void setUrl(String url) {
+
+    this.url = url;
+  }
+
+
+  public boolean isUsed() {
+
+    return used;
+  }
+
+
+  public void setUsed(boolean used) {
+
+    this.used = used;
+  }
+
+
+  public String getWho() {
+
+    return who;
+  }
+
+
+  public void setWho(String who) {
+
+    this.who = who;
+  }
 }

@@ -2,12 +2,10 @@ package com.hotbitmapgg.moequest.entity.taomodel;
 
 import com.google.gson.annotations.SerializedName;
 
+public class ShowapiResBody {
 
-public class ShowapiResBody
-{
+  @SerializedName("ret_code")
+  public String retCode;
 
-    @SerializedName("ret_code")
-    public String retCode;
-
-    public Pagebean pagebean;
+  public Pagebean pagebean;
 }

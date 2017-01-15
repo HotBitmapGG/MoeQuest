@@ -19,65 +19,62 @@ import butterknife.Bind;
  * <p/>
  * App关于界面
  */
-public class AppAboutActivity extends RxBaseActivity
-{
+public class AppAboutActivity extends RxBaseActivity {
 
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
+  @Bind(R.id.toolbar)
+  Toolbar mToolbar;
 
-    @Bind(R.id.collapsing_toolbar)
-    CollapsingToolbarLayout mCollapsingToolbarLayout;
+  @Bind(R.id.collapsing_toolbar)
+  CollapsingToolbarLayout mCollapsingToolbarLayout;
 
-    @Override
-    public int getLayoutId()
-    {
 
-        return R.layout.activity_about;
+  @Override
+  public int getLayoutId() {
+
+    return R.layout.activity_about;
+  }
+
+
+  @Override
+  public void initViews(Bundle savedInstanceState) {
+
+  }
+
+
+  @Override
+  public void initToolBar() {
+
+    setSupportActionBar(mToolbar);
+    ActionBar supportActionBar = getSupportActionBar();
+    if (supportActionBar != null) {
+      supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    public void initViews(Bundle savedInstanceState)
-    {
+    String version = getVersion();
+    mCollapsingToolbarLayout.setTitle("关于萌妹纸" + "v" + version);
+  }
 
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+
+    switch (item.getItemId()) {
+      case android.R.id.home:
+        onBackPressed();
+        return true;
     }
+    return super.onOptionsItemSelected(item);
+  }
 
-    @Override
-    public void initToolBar()
-    {
 
-        setSupportActionBar(mToolbar);
-        ActionBar supportActionBar = getSupportActionBar();
-        if (supportActionBar != null)
-            supportActionBar.setDisplayHomeAsUpEnabled(true);
+  private String getVersion() {
 
-        String version = getVersion();
-        mCollapsingToolbarLayout.setTitle("关于萌妹纸" + "v" + version);
+    try {
+      PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+      return pi.versionName;
+    } catch (PackageManager.NameNotFoundException e) {
+      e.printStackTrace();
+      return getString(R.string.about_version);
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-
-        switch (item.getItemId())
-        {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private String getVersion()
-    {
-
-        try
-        {
-            PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
-            return pi.versionName;
-        } catch (PackageManager.NameNotFoundException e)
-        {
-            e.printStackTrace();
-            return getString(R.string.about_version);
-        }
-    }
+  }
 }

@@ -20,78 +20,73 @@ import butterknife.Bind;
  * <p/>
  * 豆瓣妹子
  */
-public class DoubanMeiziFragment extends RxBaseFragment
-{
+public class DoubanMeiziFragment extends RxBaseFragment {
 
-    @Bind(R.id.sliding_tabs)
-    SlidingTabLayout mSlidingTabLayout;
+  @Bind(R.id.sliding_tabs)
+  SlidingTabLayout mSlidingTabLayout;
 
-    @Bind(R.id.view_pager)
-    ViewPager mViewPager;
+  @Bind(R.id.view_pager)
+  ViewPager mViewPager;
 
-    private List<String> titles = Arrays.asList("大胸妹", "小翘臀", "黑丝袜", "美图控", "高颜值");
+  private List<String> titles = Arrays.asList("大胸妹", "小翘臀", "黑丝袜", "美图控", "高颜值");
 
-    private List<Integer> cids = Arrays.asList(2, 6, 7, 3, 4);
+  private List<Integer> cids = Arrays.asList(2, 6, 7, 3, 4);
 
 
-    public static DoubanMeiziFragment newInstance()
-    {
+  public static DoubanMeiziFragment newInstance() {
 
-        return new DoubanMeiziFragment();
+    return new DoubanMeiziFragment();
+  }
+
+
+  @Override
+  public int getLayoutId() {
+
+    return R.layout.fragment_douban_meizi;
+  }
+
+
+  @Override
+  public void initViews() {
+
+    initFragments();
+  }
+
+
+  private void initFragments() {
+
+    mViewPager.setAdapter(new DoubanMeiziPageAdapter(getChildFragmentManager()));
+    mViewPager.setOffscreenPageLimit(1);
+    mSlidingTabLayout.setViewPager(mViewPager);
+  }
+
+
+  private class DoubanMeiziPageAdapter extends FragmentStatePagerAdapter {
+
+    public DoubanMeiziPageAdapter(FragmentManager fm) {
+
+      super(fm);
     }
+
 
     @Override
-    public int getLayoutId()
-    {
+    public Fragment getItem(int position) {
 
-        return R.layout.fragment_douban_meizi;
+      return DoubanSimpleMeiziFragment.newInstance(cids.get(position), position);
     }
+
 
     @Override
-    public void initViews()
-    {
+    public CharSequence getPageTitle(int position) {
 
-        initFragments();
-    }
-
-    private void initFragments()
-    {
-
-        mViewPager.setAdapter(new DoubanMeiziPageAdapter(getChildFragmentManager()));
-        mViewPager.setOffscreenPageLimit(1);
-        mSlidingTabLayout.setViewPager(mViewPager);
+      return titles.get(position);
     }
 
 
-    private class DoubanMeiziPageAdapter extends FragmentStatePagerAdapter
-    {
+    @Override
+    public int getCount() {
 
-
-        public DoubanMeiziPageAdapter(FragmentManager fm)
-        {
-
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position)
-        {
-
-            return DoubanSimpleMeiziFragment.newInstance(cids.get(position), position);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-
-            return titles.get(position);
-        }
-
-        @Override
-        public int getCount()
-        {
-
-            return titles.size();
-        }
+      return titles.size();
     }
+  }
 }

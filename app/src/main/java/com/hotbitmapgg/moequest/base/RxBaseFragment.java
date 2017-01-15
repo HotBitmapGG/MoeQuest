@@ -10,38 +10,38 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 
 import butterknife.ButterKnife;
 
-public abstract class RxBaseFragment extends RxFragment
-{
+public abstract class RxBaseFragment extends RxFragment {
 
-    private View rootView;
+  private View rootView;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
 
-        rootView = inflater.inflate(getLayoutId(), container, false);
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        return rootView;
-    }
+    rootView = inflater.inflate(getLayoutId(), container, false);
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState)
-    {
+    return rootView;
+  }
 
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        initViews();
-    }
 
-    @Override
-    public void onDetach()
-    {
+  @Override
+  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        super.onDetach();
-    }
+    super.onViewCreated(view, savedInstanceState);
+    ButterKnife.bind(this, view);
+    initViews();
+  }
 
-    public abstract int getLayoutId();
 
-    public abstract void initViews();
+  @Override
+  public void onDetach() {
+
+    super.onDetach();
+  }
+
+
+  public abstract int getLayoutId();
+
+  public abstract void initViews();
 }

@@ -41,330 +41,291 @@ import rx.schedulers.Schedulers;
  * <p/>
  * 妹子图详情界面
  */
-public class MeiziTuSimpleFragment extends RxBaseFragment
-{
+public class MeiziTuSimpleFragment extends RxBaseFragment {
 
-    @Bind(R.id.recycle)
-    RecyclerView mRecyclerView;
+  @Bind(R.id.recycle)
+  RecyclerView mRecyclerView;
 
-    @Bind(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+  @Bind(R.id.swipe_refresh)
+  SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private static final int PRELOAD_SIZE = 6;
+  private static final int PRELOAD_SIZE = 6;
 
-    public static final String EXTRA_TYPE = "extra_type";
+  public static final String EXTRA_TYPE = "extra_type";
 
-    private boolean mIsLoadMore = true;
+  private boolean mIsLoadMore = true;
 
-    private int pageNum = 24;
+  private int pageNum = 24;
 
-    private int page = 1;
+  private int page = 1;
 
-    private MeiziTuAdapter mAdapter;
+  private MeiziTuAdapter mAdapter;
 
-    private StaggeredGridLayoutManager mLayoutManager;
+  private StaggeredGridLayoutManager mLayoutManager;
 
-    private String type;
+  private String type;
 
-    private Realm realm;
+  private Realm realm;
 
-    private RealmResults<MeiziTu> meizis;
+  private RealmResults<MeiziTu> meizis;
 
-    private int imageIndex;
+  private int imageIndex;
 
-    private boolean mIsRefreshing = false;
+  private boolean mIsRefreshing = false;
 
 
-    public static MeiziTuSimpleFragment newInstance(String type)
-    {
+  public static MeiziTuSimpleFragment newInstance(String type) {
 
-        MeiziTuSimpleFragment mFragment = new MeiziTuSimpleFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_TYPE, type);
-        mFragment.setArguments(bundle);
+    MeiziTuSimpleFragment mFragment = new MeiziTuSimpleFragment();
+    Bundle bundle = new Bundle();
+    bundle.putString(EXTRA_TYPE, type);
+    mFragment.setArguments(bundle);
 
-        return mFragment;
-    }
+    return mFragment;
+  }
 
-    @Override
-    public int getLayoutId()
-    {
 
-        return R.layout.fragment_simple_meizi;
-    }
+  @Override
+  public int getLayoutId() {
 
-    @Override
-    public void initViews()
-    {
+    return R.layout.fragment_simple_meizi;
+  }
 
-        type = getArguments().getString(EXTRA_TYPE);
 
-        showProgress();
-        realm = Realm.getDefaultInstance();
-        meizis = realm.where(MeiziTu.class)
-                .equalTo("type", type)
-                .findAll();
+  @Override
+  public void initViews() {
 
-        initRecycleView();
+    type = getArguments().getString(EXTRA_TYPE);
 
-        RxBus.getInstance().toObserverable(Intent.class)
-                .compose(this.<Intent>bindToLifecycle())
-                .subscribe(new Action1<Intent>()
-                {
+    showProgress();
+    realm = Realm.getDefaultInstance();
+    meizis = realm.where(MeiziTu.class)
+        .equalTo("type", type)
+        .findAll();
 
-                    @Override
-                    public void call(Intent intent)
-                    {
+    initRecycleView();
 
-                        imageIndex = intent.getIntExtra("index", -1);
-                        scrollIndex();
-                        finishTask();
-                    }
-                }, new Action1<Throwable>()
-                {
+    RxBus.getInstance().toObserverable(Intent.class)
+        .compose(this.<Intent>bindToLifecycle())
+        .subscribe(new Action1<Intent>() {
 
-                    @Override
-                    public void call(Throwable throwable)
-                    {
+          @Override
+          public void call(Intent intent) {
 
-                        LogUtil.all(throwable.getMessage());
-                    }
-                });
+            imageIndex = intent.getIntExtra("index", -1);
+            scrollIndex();
+            finishTask();
+          }
+        }, new Action1<Throwable>() {
 
-        setEnterSharedElementCallback(new SharedElementCallback()
-        {
+          @Override
+          public void call(Throwable throwable) {
 
-            @Override
-            public void onMapSharedElements(List<String> names, Map<String,View> sharedElements)
-            {
-
-                super.onMapSharedElements(names, sharedElements);
-                String newTransitionName = meizis.get(imageIndex).getImageurl();
-                View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
-                if (newSharedView != null)
-                {
-                    names.clear();
-                    names.add(newTransitionName);
-                    sharedElements.clear();
-                    sharedElements.put(newTransitionName, newSharedView);
-                }
-            }
-        });
-    }
-
-    private void initRecycleView()
-    {
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
-        mAdapter = new MeiziTuAdapter(mRecyclerView, meizis);
-        mRecyclerView.setAdapter(mAdapter);
-        setRecycleScrollBug();
-    }
-
-    private void showProgress()
-    {
-
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-
-            @Override
-            public void onRefresh()
-            {
-
-                page = 1;
-                mIsRefreshing = true;
-                clearCache();
-                getMeizis();
-            }
+            LogUtil.all(throwable.getMessage());
+          }
         });
 
-        mSwipeRefreshLayout.postDelayed(new Runnable()
-        {
+    setEnterSharedElementCallback(new SharedElementCallback() {
 
-            @Override
-            public void run()
-            {
+      @Override
+      public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
 
-                mSwipeRefreshLayout.setRefreshing(true);
-                mIsRefreshing = true;
-                clearCache();
-                getMeizis();
-            }
-        }, 500);
-    }
-
-    private void clearCache()
-    {
-        try
-        {
-            realm.beginTransaction();
-            realm.where(MeiziTu.class)
-                    .equalTo("type", type)
-                    .findAll().clear();
-            realm.commitTransaction();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
+        super.onMapSharedElements(names, sharedElements);
+        String newTransitionName = meizis.get(imageIndex).getImageurl();
+        View newSharedView = mRecyclerView.findViewWithTag(newTransitionName);
+        if (newSharedView != null) {
+          names.clear();
+          names.add(newTransitionName);
+          sharedElements.clear();
+          sharedElements.put(newTransitionName, newSharedView);
         }
+      }
+    });
+  }
+
+
+  private void initRecycleView() {
+
+    mRecyclerView.setHasFixedSize(true);
+    mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+    mRecyclerView.setLayoutManager(mLayoutManager);
+    mRecyclerView.addOnScrollListener(OnLoadMoreListener(mLayoutManager));
+    mAdapter = new MeiziTuAdapter(mRecyclerView, meizis);
+    mRecyclerView.setAdapter(mAdapter);
+    setRecycleScrollBug();
+  }
+
+
+  private void showProgress() {
+
+    mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+      @Override
+      public void onRefresh() {
+
+        page = 1;
+        mIsRefreshing = true;
+        clearCache();
+        getMeizis();
+      }
+    });
+
+    mSwipeRefreshLayout.postDelayed(new Runnable() {
+
+      @Override
+      public void run() {
+
+        mSwipeRefreshLayout.setRefreshing(true);
+        mIsRefreshing = true;
+        clearCache();
+        getMeizis();
+      }
+    }, 500);
+  }
+
+
+  private void clearCache() {
+    try {
+      realm.beginTransaction();
+      realm.where(MeiziTu.class)
+          .equalTo("type", type)
+          .findAll().clear();
+      realm.commitTransaction();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    private void getMeizis()
-    {
 
-        RetrofitHelper.getMeiziTuApi()
-                .getMeiziTuApi(type, page)
-                .compose(this.<ResponseBody>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ResponseBody>()
-                {
+  private void getMeizis() {
 
-                    @Override
-                    public void call(ResponseBody responseBody)
-                    {
+    RetrofitHelper.getMeiziTuApi()
+        .getMeiziTuApi(type, page)
+        .compose(this.<ResponseBody>bindToLifecycle())
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<ResponseBody>() {
 
-                        try
-                        {
-                            String html = responseBody.string();
-                            List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuHtml(html, type);
-                            MeiziUtil.getInstance().putMeiziTuCache(list);
-                            finishTask();
-                        } catch (IOException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Action1<Throwable>()
-                {
+          @Override
+          public void call(ResponseBody responseBody) {
 
-                    @Override
-                    public void call(Throwable throwable)
-                    {
-
-                        mSwipeRefreshLayout.post(new Runnable()
-                        {
-
-                            @Override
-                            public void run()
-                            {
-
-                                mSwipeRefreshLayout.setRefreshing(false);
-                            }
-                        });
-
-                        SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
-                        LogUtil.all(throwable.getMessage());
-                    }
-                });
-    }
-
-    private void finishTask()
-    {
-
-        if (page * pageNum - pageNum - 1 > 0)
-            mAdapter.notifyItemRangeChanged(page * pageNum - pageNum - 1, pageNum);
-        else
-            mAdapter.notifyDataSetChanged();
-        if (mSwipeRefreshLayout.isRefreshing())
-        {
-            mSwipeRefreshLayout.setRefreshing(false);
-        }
-        mIsRefreshing = false;
-
-        mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener()
-        {
-
-            @Override
-            public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder)
-            {
-
-                Intent intent = MeiziTuPageActivity.luanch(getActivity(), position, type);
-                if (Build.VERSION.SDK_INT >= 22)
-                {
-                    startActivity(intent,
-                            ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                                    holder.getParentView().findViewById(R.id.item_img),
-                                    meizis.get(position).getImageurl()).toBundle());
-                } else
-                {
-                    startActivity(intent);
-                }
+            try {
+              String html = responseBody.string();
+              List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuHtml(html, type);
+              MeiziUtil.getInstance().putMeiziTuCache(list);
+              finishTask();
+            } catch (IOException e) {
+              e.printStackTrace();
             }
-        });
-    }
+          }
+        }, new Action1<Throwable>() {
 
-    RecyclerView.OnScrollListener OnLoadMoreListener(StaggeredGridLayoutManager layoutManager)
-    {
+          @Override
+          public void call(Throwable throwable) {
 
-        return new RecyclerView.OnScrollListener()
-        {
+            mSwipeRefreshLayout.post(new Runnable() {
 
-            @Override
-            public void onScrolled(RecyclerView rv, int dx, int dy)
-            {
+              @Override
+              public void run() {
 
-                boolean isBottom = mLayoutManager.findLastCompletelyVisibleItemPositions(
-                        new int[2])[1] >= mAdapter.getItemCount() - PRELOAD_SIZE;
-                if (!mSwipeRefreshLayout.isRefreshing() && isBottom)
-                {
-                    if (!mIsLoadMore)
-                    {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                        page++;
-                        getMeizis();
-                    } else
-                    {
-                        mIsLoadMore = false;
-                    }
-                }
-            }
-        };
-    }
-
-    public void scrollIndex()
-    {
-
-        if (imageIndex != -1)
-        {
-            mRecyclerView.scrollToPosition(imageIndex);
-            mRecyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
-            {
-
-                @Override
-                public boolean onPreDraw()
-                {
-
-                    mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    mRecyclerView.requestLayout();
-                    return true;
-                }
+                mSwipeRefreshLayout.setRefreshing(false);
+              }
             });
-        }
+
+            SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
+            LogUtil.all(throwable.getMessage());
+          }
+        });
+  }
+
+
+  private void finishTask() {
+
+    if (page * pageNum - pageNum - 1 > 0) {
+      mAdapter.notifyItemRangeChanged(page * pageNum - pageNum - 1, pageNum);
+    } else {
+      mAdapter.notifyDataSetChanged();
     }
+    if (mSwipeRefreshLayout.isRefreshing()) {
+      mSwipeRefreshLayout.setRefreshing(false);
+    }
+    mIsRefreshing = false;
 
-    private void setRecycleScrollBug()
-    {
+    mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener() {
 
-        mRecyclerView.setOnTouchListener(new View.OnTouchListener()
-        {
+      @Override
+      public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder) {
+
+        Intent intent = MeiziTuPageActivity.luanch(getActivity(), position, type);
+        if (Build.VERSION.SDK_INT >= 22) {
+          startActivity(intent,
+              ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                  holder.getParentView().findViewById(R.id.item_img),
+                  meizis.get(position).getImageurl()).toBundle());
+        } else {
+          startActivity(intent);
+        }
+      }
+    });
+  }
+
+
+  RecyclerView.OnScrollListener OnLoadMoreListener(StaggeredGridLayoutManager layoutManager) {
+
+    return new RecyclerView.OnScrollListener() {
+
+      @Override
+      public void onScrolled(RecyclerView rv, int dx, int dy) {
+
+        boolean isBottom = mLayoutManager.findLastCompletelyVisibleItemPositions(
+            new int[2])[1] >= mAdapter.getItemCount() - PRELOAD_SIZE;
+        if (!mSwipeRefreshLayout.isRefreshing() && isBottom) {
+          if (!mIsLoadMore) {
+            mSwipeRefreshLayout.setRefreshing(true);
+            page++;
+            getMeizis();
+          } else {
+            mIsLoadMore = false;
+          }
+        }
+      }
+    };
+  }
+
+
+  public void scrollIndex() {
+
+    if (imageIndex != -1) {
+      mRecyclerView.scrollToPosition(imageIndex);
+      mRecyclerView.getViewTreeObserver()
+          .addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 
             @Override
-            public boolean onTouch(View v, MotionEvent event)
-            {
+            public boolean onPreDraw() {
 
-
-                if (mIsRefreshing)
-                {
-                    return true;
-                } else
-                {
-                    return false;
-                }
+              mRecyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+              mRecyclerView.requestLayout();
+              return true;
             }
-        });
+          });
     }
+  }
+
+
+  private void setRecycleScrollBug() {
+
+    mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+
+        if (mIsRefreshing) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    });
+  }
 }

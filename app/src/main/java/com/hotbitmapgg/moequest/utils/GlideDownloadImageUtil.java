@@ -21,86 +21,72 @@ import rx.schedulers.Schedulers;
 /**
  * 使用Glide下载图片到本地工具类
  */
-public class GlideDownloadImageUtil
-{
+public class GlideDownloadImageUtil {
 
-    public static Observable<Uri> saveImageToLocal(final Context context, final String url)
-    {
+  public static Observable<Uri> saveImageToLocal(final Context context, final String url) {
 
-        return Observable.create(new Observable.OnSubscribe<File>()
-        {
+    return Observable.create(new Observable.OnSubscribe<File>() {
 
-            @Override
-            public void call(Subscriber<? super File> subscriber)
-            {
+      @Override
+      public void call(Subscriber<? super File> subscriber) {
 
-                File file = null;
-                try
-                {
-                    LogUtil.all("download" + url);
-                    file = Glide.with(context)
-                            .load(url)
-                            .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                            .get();
+        File file = null;
+        try {
+          LogUtil.all("download" + url);
+          file = Glide.with(context)
+              .load(url)
+              .downloadOnly(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+              .get();
 
-                    subscriber.onNext(file);
-                } catch (InterruptedException e)
-                {
-                    e.printStackTrace();
-                } catch (ExecutionException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }).flatMap(new Func1<File,Observable<Uri>>()
-        {
+          subscriber.onNext(file);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        } catch (ExecutionException e) {
+          e.printStackTrace();
+        }
+      }
+    }).flatMap(new Func1<File, Observable<Uri>>() {
 
-            @Override
-            public Observable<Uri> call(File file)
-            {
+      @Override
+      public Observable<Uri> call(File file) {
 
-                File mFile = null;
-                try
-                {
+        File mFile = null;
+        try {
 
-                    String path = Environment.getExternalStorageDirectory() + File.separator + ConstantUtil.FILE_DIR;
-                    File dir = new File(path);
-                    if (!dir.exists())
-                    {
-                        dir.mkdirs();
-                    }
+          String path = Environment.getExternalStorageDirectory() + File.separator +
+              ConstantUtil.FILE_DIR;
+          File dir = new File(path);
+          if (!dir.exists()) {
+            dir.mkdirs();
+          }
 
-                    String fileName = System.currentTimeMillis() + ".jpg";
+          String fileName = System.currentTimeMillis() + ".jpg";
 
+          mFile = new File(dir, fileName);
+          FileInputStream fis = new FileInputStream(file.getAbsolutePath());
 
-                    mFile = new File(dir, fileName);
-                    FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+          int byteread = 0;
+          byte[] buf = new byte[1444];
 
-                    int byteread = 0;
-                    byte[] buf = new byte[1444];
+          FileOutputStream fos = new FileOutputStream(mFile.getAbsolutePath());
+          while ((byteread = fis.read(buf)) != -1) {
+            fos.write(buf, 0, byteread);
+          }
 
-                    FileOutputStream fos = new FileOutputStream(mFile.getAbsolutePath());
-                    while ((byteread = fis.read(buf)) != -1)
-                    {
-                        fos.write(buf, 0, byteread);
-                    }
+          fos.close();
+          fis.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+          LogUtil.all("图片下载失败");
+        }
 
-                    fos.close();
-                    fis.close();
-                } catch (Exception e)
-                {
-                    e.printStackTrace();
-                    LogUtil.all("图片下载失败");
-                }
+        //更新本地图库
+        Uri uri = Uri.fromFile(mFile);
+        Intent mIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+        context.sendBroadcast(mIntent);
 
-                //更新本地图库
-                Uri uri = Uri.fromFile(mFile);
-                Intent mIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-                context.sendBroadcast(mIntent);
-
-
-                return Observable.just(uri);
-            }
-        }).subscribeOn(Schedulers.io());
-    }
+        return Observable.just(uri);
+      }
+    }).subscribeOn(Schedulers.io());
+  }
 }

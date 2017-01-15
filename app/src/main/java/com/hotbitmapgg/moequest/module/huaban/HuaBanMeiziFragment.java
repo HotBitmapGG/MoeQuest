@@ -1,6 +1,5 @@
 package com.hotbitmapgg.moequest.module.huaban;
 
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -28,72 +27,67 @@ import butterknife.Bind;
  * 黑丝袜=39
  * 小翘臀=40
  */
-public class HuaBanMeiziFragment extends RxBaseFragment
-{
+public class HuaBanMeiziFragment extends RxBaseFragment {
 
-    @Bind(R.id.sliding_tabs)
-    SlidingTabLayout mSlidingTabLayout;
+  @Bind(R.id.sliding_tabs)
+  SlidingTabLayout mSlidingTabLayout;
 
-    @Bind(R.id.view_pager)
-    ViewPager mViewPager;
+  @Bind(R.id.view_pager)
+  ViewPager mViewPager;
 
-    private List<String> titles = Arrays.asList("大胸妹", "小清新", "文艺范", "性感妹", "大长腿", "黑丝袜", "小翘臀");
+  private List<String> titles = Arrays.asList("大胸妹", "小清新", "文艺范", "性感妹", "大长腿", "黑丝袜", "小翘臀");
 
-    private List<Integer> cids = Arrays.asList(34, 35, 36, 37, 38, 39, 40);
+  private List<Integer> cids = Arrays.asList(34, 35, 36, 37, 38, 39, 40);
 
 
-    public static HuaBanMeiziFragment newInstance()
-    {
+  public static HuaBanMeiziFragment newInstance() {
 
-        return new HuaBanMeiziFragment();
+    return new HuaBanMeiziFragment();
+  }
+
+
+  @Override
+  public int getLayoutId() {
+
+    return R.layout.fragment_huaban_meizi;
+  }
+
+
+  @Override
+  public void initViews() {
+
+    mViewPager.setAdapter(new HuaBanMeiziPageAdapter(getChildFragmentManager()));
+    mSlidingTabLayout.setViewPager(mViewPager);
+  }
+
+
+  private class HuaBanMeiziPageAdapter extends FragmentStatePagerAdapter {
+
+    public HuaBanMeiziPageAdapter(FragmentManager fm) {
+
+      super(fm);
     }
+
 
     @Override
-    public int getLayoutId()
-    {
+    public Fragment getItem(int position) {
 
-        return R.layout.fragment_huaban_meizi;
+      return HuaBanMeiziSimpleFragment
+          .newInstance(cids.get(position), position);
     }
+
 
     @Override
-    public void initViews()
-    {
+    public CharSequence getPageTitle(int position) {
 
-        mViewPager.setAdapter(new HuaBanMeiziPageAdapter(getChildFragmentManager()));
-        mSlidingTabLayout.setViewPager(mViewPager);
+      return titles.get(position);
     }
 
 
-    private class HuaBanMeiziPageAdapter extends FragmentStatePagerAdapter
-    {
+    @Override
+    public int getCount() {
 
-
-        public HuaBanMeiziPageAdapter(FragmentManager fm)
-        {
-
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position)
-        {
-
-            return HuaBanMeiziSimpleFragment
-                    .newInstance(cids.get(position), position);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position)
-        {
-
-            return titles.get(position);
-        }
-
-        @Override
-        public int getCount()
-        {
-
-            return titles.size();
-        }
+      return titles.size();
     }
+  }
 }

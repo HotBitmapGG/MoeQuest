@@ -8,73 +8,64 @@ import android.preference.PreferenceManager;
  * Created by hcc on 16/6/25 18:05
  * 100332338@qq.com
  */
-public class PreferencesLoader
-{
+public class PreferencesLoader {
 
-    private SharedPreferences mSharedPreferences;
+  private SharedPreferences mSharedPreferences;
 
-    private Context mContext;
-
-
-    public PreferencesLoader(Context context)
-    {
-
-        mContext = context;
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-    }
+  private Context mContext;
 
 
-    public void saveBoolean(int keyResId, Boolean value)
-    {
+  public PreferencesLoader(Context context) {
 
-        String key = mContext.getString(keyResId);
-        saveBoolean(key, value);
-    }
-
-
-    public void saveBoolean(String key, Boolean value)
-    {
-
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(key, value);
-        editor.apply();
-    }
+    mContext = context;
+    mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+  }
 
 
-    public Boolean getBoolean(String key)
-    {
+  public void saveBoolean(int keyResId, Boolean value) {
 
-        return mSharedPreferences.getBoolean(key, false);
-    }
-
-
-    public Boolean getBoolean(String key, boolean def)
-    {
-
-        return mSharedPreferences.getBoolean(key, def);
-    }
+    String key = mContext.getString(keyResId);
+    saveBoolean(key, value);
+  }
 
 
-    public Boolean getBoolean(int keyResId, boolean def)
-    {
+  public void saveBoolean(String key, Boolean value) {
 
-        String key = mContext.getString(keyResId);
-        return mSharedPreferences.getBoolean(key, def);
-    }
-
-
-    public int getInt(String key)
-    {
-
-        return mSharedPreferences.getInt(key, 0);
-    }
+    SharedPreferences.Editor editor = mSharedPreferences.edit();
+    editor.putBoolean(key, value);
+    editor.apply();
+  }
 
 
-    public void saveInt(String key, int value)
-    {
+  public Boolean getBoolean(String key) {
 
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putInt(key, value);
-        editor.apply();
-    }
+    return mSharedPreferences.getBoolean(key, false);
+  }
+
+
+  public Boolean getBoolean(String key, boolean def) {
+
+    return mSharedPreferences.getBoolean(key, def);
+  }
+
+
+  public Boolean getBoolean(int keyResId, boolean def) {
+
+    String key = mContext.getString(keyResId);
+    return mSharedPreferences.getBoolean(key, def);
+  }
+
+
+  public int getInt(String key) {
+
+    return mSharedPreferences.getInt(key, 0);
+  }
+
+
+  public void saveInt(String key, int value) {
+
+    SharedPreferences.Editor editor = mSharedPreferences.edit();
+    editor.putInt(key, value);
+    editor.apply();
+  }
 }

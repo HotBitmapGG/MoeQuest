@@ -40,189 +40,170 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * 去掉了重复的界面,整合为一个界面
  * 妹子详情Fragment显示界面
  */
-public class MeiziDetailsFragment extends RxBaseFragment implements RequestListener<String,GlideDrawable>
-{
+public class MeiziDetailsFragment extends RxBaseFragment
+    implements RequestListener<String, GlideDrawable> {
 
-    @Bind(R.id.meizi)
-    ImageView mImageView;
+  @Bind(R.id.meizi)
+  ImageView mImageView;
 
-    @Bind(R.id.tv_image_error)
-    TextView mImageError;
+  @Bind(R.id.tv_image_error)
+  TextView mImageError;
 
-    private static final String EXTRA_URL = "extra_url";
+  private static final String EXTRA_URL = "extra_url";
 
-    private String url;
+  private String url;
 
-    private PhotoViewAttacher mPhotoViewAttacher;
-
-    public static MeiziDetailsFragment newInstance(String url)
-    {
-
-        MeiziDetailsFragment mMeiziFragment = new MeiziDetailsFragment();
-        Bundle mBundle = new Bundle();
-        mBundle.putString(EXTRA_URL, url);
-        mMeiziFragment.setArguments(mBundle);
-
-        return mMeiziFragment;
-    }
-
-    @Override
-    public int getLayoutId()
-    {
-
-        return R.layout.fragment_meizi_details;
-    }
-
-    @Override
-    public void initViews()
-    {
-
-        url = getArguments().getString(EXTRA_URL);
-        Glide.with(this).load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .crossFade(0)
-                .listener(this)
-                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
-
-    }
+  private PhotoViewAttacher mPhotoViewAttacher;
 
 
-    private void saveImageToGallery()
-    {
+  public static MeiziDetailsFragment newInstance(String url) {
 
-        Observable.just(R.string.app_name)
-                .compose(this.<Integer>bindToLifecycle())
-                .compose(RxPermissions.getInstance(getActivity())
-                        .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                .observeOn(Schedulers.io())
-                .filter(new Func1<Boolean,Boolean>()
-                {
+    MeiziDetailsFragment mMeiziFragment = new MeiziDetailsFragment();
+    Bundle mBundle = new Bundle();
+    mBundle.putString(EXTRA_URL, url);
+    mMeiziFragment.setArguments(mBundle);
 
-                    @Override
-                    public Boolean call(Boolean aBoolean)
-                    {
+    return mMeiziFragment;
+  }
 
-                        return aBoolean;
-                    }
-                })
-                .flatMap(new Func1<Boolean,Observable<Uri>>()
-                {
 
-                    @Override
-                    public Observable<Uri> call(Boolean aBoolean)
-                    {
+  @Override
+  public int getLayoutId() {
 
-                        return GlideDownloadImageUtil.saveImageToLocal(getActivity(), url);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Uri>()
-                {
+    return R.layout.fragment_meizi_details;
+  }
 
-                    @Override
-                    public void call(Uri uri)
-                    {
 
-                        File appDir = new File(Environment.getExternalStorageDirectory(), ConstantUtil.FILE_DIR);
-                        String msg = String.format("图片已保存至 %s 文件夹", appDir.getAbsolutePath());
-                        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                    }
-                }, new Action1<Throwable>()
-                {
+  @Override
+  public void initViews() {
 
-                    @Override
-                    public void call(Throwable throwable)
-                    {
+    url = getArguments().getString(EXTRA_URL);
+    Glide.with(this).load(url)
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .crossFade(0)
+        .listener(this)
+        .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+  }
 
-                        Toast.makeText(getActivity(), "保存失败,请重试", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
-    @Override
-    public boolean onException(Exception e, String model,
-                               Target<GlideDrawable> target, boolean isFirstResource)
-    {
+  private void saveImageToGallery() {
 
-        mImageError.setVisibility(View.VISIBLE);
-        return false;
-    }
+    Observable.just(R.string.app_name)
+        .compose(this.<Integer>bindToLifecycle())
+        .compose(RxPermissions.getInstance(getActivity())
+            .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+        .observeOn(Schedulers.io())
+        .filter(new Func1<Boolean, Boolean>() {
 
-    @Override
-    public boolean onResourceReady(GlideDrawable resource, String model,
-                                   Target<GlideDrawable> target, boolean
-                                               isFromMemoryCache, boolean isFirstResource)
-    {
+          @Override
+          public Boolean call(Boolean aBoolean) {
 
-        mImageView.setImageDrawable(resource);
-        mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
-        mImageError.setVisibility(View.GONE);
-        setPhotoViewAttacher();
-        return false;
-    }
+            return aBoolean;
+          }
+        })
+        .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
-    private void setPhotoViewAttacher()
-    {
-        mPhotoViewAttacher.setOnLongClickListener(new View.OnLongClickListener()
-        {
+          @Override
+          public Observable<Uri> call(Boolean aBoolean) {
 
-            @Override
-            public boolean onLongClick(View v)
-            {
+            return GlideDownloadImageUtil.saveImageToLocal(getActivity(), url);
+          }
+        })
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Action1<Uri>() {
 
-                new AlertDialog.Builder(getActivity())
-                        .setMessage("是否保存到本地?")
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener()
-                        {
+          @Override
+          public void call(Uri uri) {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
+            File appDir = new File(Environment.getExternalStorageDirectory(),
+                ConstantUtil.FILE_DIR);
+            String msg = String.format("图片已保存至 %s 文件夹", appDir.getAbsolutePath());
+            Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+          }
+        }, new Action1<Throwable>() {
 
-                                dialog.cancel();
-                            }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener()
-                        {
+          @Override
+          public void call(Throwable throwable) {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-
-                                saveImageToGallery();
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-
-                return true;
-            }
+            Toast.makeText(getActivity(), "保存失败,请重试", Toast.LENGTH_SHORT).show();
+          }
         });
+  }
 
-        mPhotoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener()
-        {
 
-            @Override
-            public void onViewTap(View view, float v, float v1)
-            {
-                RxBus.getInstance().post("hideAppBar");
-            }
-        });
+  @Override
+  public boolean onException(Exception e, String model,
+                             Target<GlideDrawable> target, boolean isFirstResource) {
 
-        mImageError.setOnClickListener(new View.OnClickListener()
-        {
+    mImageError.setVisibility(View.VISIBLE);
+    return false;
+  }
 
-            @Override
-            public void onClick(View v)
-            {
-                RxBus.getInstance().post("hideAppBar");
-            }
-        });
-    }
 
-    public View getSharedElement()
-    {
+  @Override
+  public boolean onResourceReady(GlideDrawable resource, String model,
+                                 Target<GlideDrawable> target, boolean
+                                     isFromMemoryCache, boolean isFirstResource) {
 
-        return mImageView;
-    }
+    mImageView.setImageDrawable(resource);
+    mPhotoViewAttacher = new PhotoViewAttacher(mImageView);
+    mImageError.setVisibility(View.GONE);
+    setPhotoViewAttacher();
+    return false;
+  }
+
+
+  private void setPhotoViewAttacher() {
+    mPhotoViewAttacher.setOnLongClickListener(new View.OnLongClickListener() {
+
+      @Override
+      public boolean onLongClick(View v) {
+
+        new AlertDialog.Builder(getActivity())
+            .setMessage("是否保存到本地?")
+            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+
+                dialog.cancel();
+              }
+            })
+            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+
+                saveImageToGallery();
+                dialog.dismiss();
+              }
+            })
+            .show();
+
+        return true;
+      }
+    });
+
+    mPhotoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
+
+      @Override
+      public void onViewTap(View view, float v, float v1) {
+        RxBus.getInstance().post("hideAppBar");
+      }
+    });
+
+    mImageError.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+        RxBus.getInstance().post("hideAppBar");
+      }
+    });
+  }
+
+
+  public View getSharedElement() {
+
+    return mImageView;
+  }
 }

@@ -1,61 +1,60 @@
 package com.hotbitmapgg.moequest.entity.huaban;
 
-public class HuaBanMeiziInfo
-{
+public class HuaBanMeiziInfo {
 
-    private String thumb;
+  private String thumb;
 
-    private String title;
+  private String title;
 
-    private String url;
+  private String url;
 
-    private int type;
+  private int type;
 
-    public String getThumb()
-    {
 
-        return thumb;
-    }
+  public String getThumb() {
 
-    public void setThumb(String thumb)
-    {
+    return thumb;
+  }
 
-        this.thumb = thumb;
-    }
 
-    public String getTitle()
-    {
+  public void setThumb(String thumb) {
 
-        return title;
-    }
+    this.thumb = thumb;
+  }
 
-    public void setTitle(String title)
-    {
 
-        this.title = title;
-    }
+  public String getTitle() {
 
-    public String getUrl()
-    {
+    return title;
+  }
 
-        return url;
-    }
 
-    public void setUrl(String url)
-    {
+  public void setTitle(String title) {
 
-        this.url = url;
-    }
+    this.title = title;
+  }
 
-    public int getType()
-    {
 
-        return type;
-    }
+  public String getUrl() {
 
-    public void setType(int type)
-    {
+    return url;
+  }
 
-        this.type = type;
-    }
+
+  public void setUrl(String url) {
+
+    this.url = url;
+  }
+
+
+  public int getType() {
+
+    return type;
+  }
+
+
+  public void setType(int type) {
+
+    this.type = type;
+  }
 }

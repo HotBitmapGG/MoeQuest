@@ -18,87 +18,83 @@ import com.hotbitmapgg.moequest.widget.RatioImageView;
 import java.util.ArrayList;
 import java.util.List;
 
+public class MeiziTuAdapter extends AbsRecyclerViewAdapter {
 
-public class MeiziTuAdapter extends AbsRecyclerViewAdapter
-{
+  private List<MeiziTu> meiziList = new ArrayList<>();
 
-    private List<MeiziTu> meiziList = new ArrayList<>();
 
-    public MeiziTuAdapter(RecyclerView recyclerView, List<MeiziTu> meiziList)
-    {
+  public MeiziTuAdapter(RecyclerView recyclerView, List<MeiziTu> meiziList) {
 
-        super(recyclerView);
-        this.meiziList = meiziList;
+    super(recyclerView);
+    this.meiziList = meiziList;
+  }
+
+
+  @Override
+  public ClickableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+    bindContext(parent.getContext());
+    return new ItemViewHolder(
+        LayoutInflater.from(getContext()).inflate(R.layout.card_item_meizi, parent, false));
+  }
+
+
+  @Override
+  public void onBindViewHolder(ClickableViewHolder holder, int position) {
+
+    if (holder instanceof ItemViewHolder) {
+      final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+      itemViewHolder.mTextView.setText(meiziList.get(position).getTitle());
+      Glide.with(getContext())
+          .load(meiziList.get(position).getImageurl())
+          .centerCrop()
+          .diskCacheStrategy(DiskCacheStrategy.ALL)
+          .placeholder(R.drawable.placeholder_image)
+          .into(itemViewHolder.ratioImageView)
+          .getSize(new SizeReadyCallback() {
+
+            @Override
+            public void onSizeReady(int width, int height) {
+
+              if (!itemViewHolder.item.isShown()) {
+                itemViewHolder.item.setVisibility(View.VISIBLE);
+              }
+            }
+          });
+
+      itemViewHolder.ratioImageView.setTag(R.string.app_name,
+          meiziList.get(position).getImageurl());
+      ViewCompat.setTransitionName(itemViewHolder.ratioImageView,
+          meiziList.get(position).getImageurl());
     }
 
-    @Override
-    public ClickableViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    super.onBindViewHolder(holder, position);
+  }
 
-        bindContext(parent.getContext());
-        return new ItemViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.card_item_meizi, parent, false));
+
+  @Override
+  public int getItemCount() {
+
+    return meiziList.size();
+  }
+
+
+  public class ItemViewHolder extends ClickableViewHolder {
+
+    public RatioImageView ratioImageView;
+
+    public TextView mTextView;
+
+    public View item;
+
+
+    public ItemViewHolder(View itemView) {
+
+      super(itemView);
+      item = itemView;
+      ratioImageView = $(R.id.item_img);
+      mTextView = $(R.id.item_title);
+      ratioImageView.setOriginalSize(50, 50);
     }
-
-    @Override
-    public void onBindViewHolder(ClickableViewHolder holder, int position)
-    {
-
-        if (holder instanceof ItemViewHolder)
-        {
-            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            itemViewHolder.mTextView.setText(meiziList.get(position).getTitle());
-            Glide.with(getContext())
-                    .load(meiziList.get(position).getImageurl())
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.placeholder_image)
-                    .into(itemViewHolder.ratioImageView)
-                    .getSize(new SizeReadyCallback()
-                    {
-
-                        @Override
-                        public void onSizeReady(int width, int height)
-                        {
-
-                            if (!itemViewHolder.item.isShown())
-                            {
-                                itemViewHolder.item.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
-
-            itemViewHolder.ratioImageView.setTag(R.string.app_name, meiziList.get(position).getImageurl());
-            ViewCompat.setTransitionName(itemViewHolder.ratioImageView, meiziList.get(position).getImageurl());
-        }
-
-        super.onBindViewHolder(holder, position);
-    }
-
-    @Override
-    public int getItemCount()
-    {
-
-        return meiziList.size();
-    }
-
-
-    public class ItemViewHolder extends ClickableViewHolder
-    {
-
-        public RatioImageView ratioImageView;
-
-        public TextView mTextView;
-
-        public View item;
-
-        public ItemViewHolder(View itemView)
-        {
-
-            super(itemView);
-            item = itemView;
-            ratioImageView = $(R.id.item_img);
-            mTextView = $(R.id.item_title);
-            ratioImageView.setOriginalSize(50, 50);
-        }
-    }
+  }
 }

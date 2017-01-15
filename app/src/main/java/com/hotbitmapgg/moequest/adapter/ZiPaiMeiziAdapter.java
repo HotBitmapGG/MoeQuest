@@ -19,87 +19,82 @@ import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 import java.util.ArrayList;
 import java.util.List;
 
+public class ZiPaiMeiziAdapter extends AbsRecyclerViewAdapter {
 
-public class ZiPaiMeiziAdapter extends AbsRecyclerViewAdapter
-{
+  private List<MeiziTu> meiziList = new ArrayList<>();
 
-    private List<MeiziTu> meiziList = new ArrayList<>();
 
-    public ZiPaiMeiziAdapter(RecyclerView recyclerView, List<MeiziTu> meiziList)
-    {
+  public ZiPaiMeiziAdapter(RecyclerView recyclerView, List<MeiziTu> meiziList) {
 
-        super(recyclerView);
-        this.meiziList = meiziList;
+    super(recyclerView);
+    this.meiziList = meiziList;
+  }
+
+
+  @Override
+  public ClickableViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+    bindContext(parent.getContext());
+    return new ItemViewHolder(
+        LayoutInflater.from(getContext()).inflate(R.layout.item_zipai_meizi, parent, false));
+  }
+
+
+  @Override
+  public void onBindViewHolder(ClickableViewHolder holder, int position) {
+
+    if (holder instanceof ItemViewHolder) {
+      final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+      Glide.clear(itemViewHolder.mImageView);
+      Glide.with(getContext())
+          .load(meiziList.get(position).getImageurl())
+          .crossFade(0)
+          .centerCrop()
+          .placeholder(R.drawable.placeholder_image)
+          .diskCacheStrategy(DiskCacheStrategy.ALL)
+          .listener(new RequestListener<String, GlideDrawable>() {
+
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+
+              return false;
+            }
+
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+              itemViewHolder.mImageView.setImageDrawable(resource);
+              return false;
+            }
+          })
+          .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+
+      itemViewHolder.mImageView.setTag(R.string.app_name, meiziList.get(position).getImageurl());
+      ViewCompat.setTransitionName(itemViewHolder.mImageView,
+          meiziList.get(position).getImageurl());
     }
 
-    @Override
-    public ClickableViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    super.onBindViewHolder(holder, position);
+  }
 
-        bindContext(parent.getContext());
-        return new ItemViewHolder(LayoutInflater.from(getContext()).inflate(R.layout.item_zipai_meizi, parent, false));
+
+  @Override
+  public int getItemCount() {
+
+    return meiziList.size();
+  }
+
+
+  public class ItemViewHolder extends ClickableViewHolder {
+
+    public ImageView mImageView;
+
+
+    public ItemViewHolder(View itemView) {
+
+      super(itemView);
+      mImageView = $(R.id.item_home_img);
     }
-
-    @Override
-    public void onBindViewHolder(ClickableViewHolder holder, int position)
-    {
-
-        if (holder instanceof ItemViewHolder)
-        {
-            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            Glide.clear(itemViewHolder.mImageView);
-            Glide.with(getContext())
-                    .load(meiziList.get(position).getImageurl())
-                    .crossFade(0)
-                    .centerCrop()
-                    .placeholder(R.drawable.placeholder_image)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .listener(new RequestListener<String,GlideDrawable>()
-                    {
-
-                        @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource)
-                        {
-
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource)
-                        {
-
-                            itemViewHolder.mImageView.setImageDrawable(resource);
-                            return false;
-                        }
-                    })
-                    .into(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL);
-
-            itemViewHolder.mImageView.setTag(R.string.app_name, meiziList.get(position).getImageurl());
-            ViewCompat.setTransitionName(itemViewHolder.mImageView, meiziList.get(position).getImageurl());
-        }
-
-        super.onBindViewHolder(holder, position);
-    }
-
-    @Override
-    public int getItemCount()
-    {
-
-        return meiziList.size();
-    }
-
-
-    public class ItemViewHolder extends ClickableViewHolder
-    {
-
-        public ImageView mImageView;
-
-
-        public ItemViewHolder(View itemView)
-        {
-
-            super(itemView);
-            mImageView = $(R.id.item_home_img);
-        }
-    }
+  }
 }
