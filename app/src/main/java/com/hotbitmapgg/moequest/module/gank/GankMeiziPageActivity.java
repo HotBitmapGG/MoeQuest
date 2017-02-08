@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -121,20 +120,12 @@ public class GankMeiziPageActivity extends RxBaseActivity {
     });
 
     RxBus.getInstance().toObserverable(String.class)
-        .compose(this.<String>bindToLifecycle())
-        .subscribe(new Action1<String>() {
+        .compose(this.bindToLifecycle())
+        .subscribe(s -> {
 
-          @Override
-          public void call(String s) {
+          hideOrShowToolbar();
+        }, throwable -> {
 
-            hideOrShowToolbar();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-          }
         });
 
     setEnterSharedElementCallback(new SharedElementCallback() {
@@ -167,14 +158,7 @@ public class GankMeiziPageActivity extends RxBaseActivity {
 
     mToolbar.setTitle(gankMeizis.get(currenIndex).getDesc());
     mToolbar.setNavigationIcon(R.drawable.ic_back);
-    mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View v) {
-
-        onBackPressed();
-      }
-    });
+    mToolbar.setNavigationOnClickListener(v -> onBackPressed());
     mToolbar.inflateMenu(R.menu.menu_meizi);
 
     //设置toolbar的颜色
@@ -216,14 +200,7 @@ public class GankMeiziPageActivity extends RxBaseActivity {
         .compose(RxPermissions.getInstance(GankMeiziPageActivity.this)
             .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         .observeOn(Schedulers.io())
-        .filter(new Func1<Boolean, Boolean>() {
-
-          @Override
-          public Boolean call(Boolean aBoolean) {
-
-            return aBoolean;
-          }
-        })
+        .filter(aBoolean -> aBoolean)
         .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
           @Override
@@ -232,36 +209,24 @@ public class GankMeiziPageActivity extends RxBaseActivity {
             return GlideDownloadImageUtil.saveImageToLocal(GankMeiziPageActivity.this, url);
           }
         })
-        .map(new Func1<Uri, String>() {
+        .map(uri -> {
 
-          @Override
-          public String call(Uri uri) {
-
-            String msg = String.format("图片已保存至 %s 文件夹",
-                new File(Environment.getExternalStorageDirectory(),
-                    ConstantUtil.FILE_DIR)
-                    .getAbsolutePath());
-            return msg;
-          }
+          String msg = String.format("图片已保存至 %s 文件夹",
+              new File(Environment.getExternalStorageDirectory(),
+                  ConstantUtil.FILE_DIR)
+                  .getAbsolutePath());
+          return msg;
         })
         .observeOn(AndroidSchedulers.mainThread())
         .retry()
-        .subscribe(new Action1<String>() {
+        .subscribe(s -> {
 
-          @Override
-          public void call(String s) {
+          Toast.makeText(GankMeiziPageActivity.this, s,
+              Toast.LENGTH_SHORT).show();
+        }, throwable -> {
 
-            Toast.makeText(GankMeiziPageActivity.this, s,
-                Toast.LENGTH_SHORT).show();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            Toast.makeText(GankMeiziPageActivity.this, "保存失败,请重试",
-                Toast.LENGTH_SHORT).show();
-          }
+          Toast.makeText(GankMeiziPageActivity.this, "保存失败,请重试",
+              Toast.LENGTH_SHORT).show();
         });
   }
 
@@ -276,14 +241,7 @@ public class GankMeiziPageActivity extends RxBaseActivity {
         .compose(RxPermissions.getInstance(GankMeiziPageActivity.this)
             .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         .observeOn(Schedulers.io())
-        .filter(new Func1<Boolean, Boolean>() {
-
-          @Override
-          public Boolean call(Boolean aBoolean) {
-
-            return aBoolean;
-          }
-        })
+        .filter(aBoolean -> aBoolean)
         .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
           @Override
@@ -295,22 +253,14 @@ public class GankMeiziPageActivity extends RxBaseActivity {
         })
         .observeOn(AndroidSchedulers.mainThread())
         .retry()
-        .subscribe(new Action1<Uri>() {
+        .subscribe(uri -> {
 
-          @Override
-          public void call(Uri uri) {
+          ShareUtil.sharePic(uri, gankMeizis.get(currenIndex).getDesc(),
+              GankMeiziPageActivity.this);
+        }, throwable -> {
 
-            ShareUtil.sharePic(uri, gankMeizis.get(currenIndex).getDesc(),
-                GankMeiziPageActivity.this);
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            Toast.makeText(GankMeiziPageActivity.this, "分享失败,请重试",
-                Toast.LENGTH_SHORT).show();
-          }
+          Toast.makeText(GankMeiziPageActivity.this, "分享失败,请重试",
+              Toast.LENGTH_SHORT).show();
         });
   }
 

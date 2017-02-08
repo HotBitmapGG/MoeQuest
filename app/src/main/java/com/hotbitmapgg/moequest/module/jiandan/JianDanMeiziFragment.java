@@ -1,17 +1,8 @@
 package com.hotbitmapgg.moequest.module.jiandan;
 
-import android.app.ActivityOptions;
-import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-
+import butterknife.Bind;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.JiandanMeiziAdapter;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.base.RxBaseFragment;
 import com.hotbitmapgg.moequest.entity.jiandan.JianDanMeizi;
 import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
@@ -20,14 +11,18 @@ import com.hotbitmapgg.moequest.utils.LogUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 import com.hotbitmapgg.moequest.widget.loadmore.EndlessRecyclerOnScrollListener;
 import com.hotbitmapgg.moequest.widget.loadmore.HeaderViewRecyclerAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.Bind;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
+
+import android.app.ActivityOptions;
+import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
 
 /**
  * Created by hcc on 16/6/28 20:30
@@ -83,39 +78,24 @@ public class JianDanMeiziFragment extends RxBaseFragment {
 
     RetrofitHelper.getJianDanApi()
         .getJianDanMeizi(page)
-        .compose(this.<JianDanMeizi>bindToLifecycle())
+        .compose(this.bindToLifecycle())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<JianDanMeizi>() {
+        .subscribe(jianDanMeizi -> {
 
-          @Override
-          public void call(JianDanMeizi jianDanMeizi) {
-
-            List<JianDanMeizi.JianDanMeiziData> comments = jianDanMeizi.comments;
-            if (comments.size() < count) {
-              footView.setVisibility(View.GONE);
-            }
-
-            jianDanMeiziDataList.addAll(comments);
-            finishTask();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            LogUtil.all(throwable.getMessage());
-            mSwipeRefreshLayout.post(new Runnable() {
-
-              @Override
-              public void run() {
-
-                mSwipeRefreshLayout.setRefreshing(false);
-              }
-            });
+          List<JianDanMeizi.JianDanMeiziData> comments = jianDanMeizi.comments;
+          if (comments.size() < count) {
             footView.setVisibility(View.GONE);
-            SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
           }
+
+          jianDanMeiziDataList.addAll(comments);
+          finishTask();
+        }, throwable -> {
+
+          LogUtil.all(throwable.getMessage());
+          mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(false));
+          footView.setVisibility(View.GONE);
+          SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
         });
   }
 
@@ -134,22 +114,18 @@ public class JianDanMeiziFragment extends RxBaseFragment {
 
     mIsRefreshing = false;
 
-    mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener() {
+    mAdapter.setOnItemClickListener((position, holder) -> {
 
-      @Override
-      public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder) {
-
-        Intent intent = SingleMeiziDetailsActivity.LuanchActivity(getActivity(),
-            jianDanMeiziDataList.get(position).pics[0],
-            jianDanMeiziDataList.get(position).commentAuthor);
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
-          startActivity(intent, ActivityOptions.
-              makeSceneTransitionAnimation(getActivity(),
-                  holder.getParentView().findViewById(R.id.item_fill_image),
-                  "transitionImg").toBundle());
-        } else {
-          startActivity(intent);
-        }
+      Intent intent = SingleMeiziDetailsActivity.LuanchActivity(getActivity(),
+          jianDanMeiziDataList.get(position).pics[0],
+          jianDanMeiziDataList.get(position).commentAuthor);
+      if (android.os.Build.VERSION.SDK_INT >= 21) {
+        startActivity(intent, ActivityOptions.
+            makeSceneTransitionAnimation(getActivity(),
+                holder.getParentView().findViewById(R.id.item_fill_image),
+                "transitionImg").toBundle());
+      } else {
+        startActivity(intent);
       }
     });
   }
@@ -181,26 +157,18 @@ public class JianDanMeiziFragment extends RxBaseFragment {
   private void showProgress() {
 
     mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    mSwipeRefreshLayout.setOnRefreshListener(() -> {
 
-      @Override
-      public void onRefresh() {
-
-        page = 1;
-        jianDanMeiziDataList.clear();
-        mIsRefreshing = true;
-        getJianDanMeizi();
-      }
+      page = 1;
+      jianDanMeiziDataList.clear();
+      mIsRefreshing = true;
+      getJianDanMeizi();
     });
-    mSwipeRefreshLayout.postDelayed(new Runnable() {
+    mSwipeRefreshLayout.postDelayed(() -> {
 
-      @Override
-      public void run() {
-
-        mSwipeRefreshLayout.setRefreshing(true);
-        mIsRefreshing = true;
-        getJianDanMeizi();
-      }
+      mSwipeRefreshLayout.setRefreshing(true);
+      mIsRefreshing = true;
+      getJianDanMeizi();
     }, 500);
   }
 
@@ -216,17 +184,6 @@ public class JianDanMeiziFragment extends RxBaseFragment {
 
   private void setRecycleScrollBug() {
 
-    mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-
-        if (mIsRefreshing) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
+    mRecyclerView.setOnTouchListener((v, event) -> mIsRefreshing);
   }
 }

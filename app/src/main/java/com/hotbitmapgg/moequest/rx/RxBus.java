@@ -23,7 +23,7 @@ public class RxBus {
   private final Subject bus;
 
 
-  public RxBus() {
+  private RxBus() {
 
     bus = new SerializedSubject<>(PublishSubject.create());
   }

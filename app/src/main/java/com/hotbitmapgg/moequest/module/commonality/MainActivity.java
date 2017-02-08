@@ -1,17 +1,6 @@
 package com.hotbitmapgg.moequest.module.commonality;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.MenuItem;
-import android.view.View;
-
+import butterknife.Bind;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.base.RxBaseActivity;
 import com.hotbitmapgg.moequest.module.douban.DoubanMeiziFragment;
@@ -24,10 +13,19 @@ import com.hotbitmapgg.moequest.utils.AlarmManagerUtils;
 import com.hotbitmapgg.moequest.utils.ShareUtil;
 import com.hotbitmapgg.moequest.utils.SnackbarUtil;
 import com.hotbitmapgg.moequest.widget.CircleImageView;
-
 import java.util.Random;
 
-import butterknife.Bind;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
 
 /**
  * Created by hcc on 16/7/30 12:57
@@ -90,7 +88,6 @@ public class MainActivity extends RxBaseActivity
 
   private void initFragment() {
 
-    // 初始化Fragment
     GankMeiziFragment gankMeiziFragment = GankMeiziFragment.newInstance();
     MeiziTuFragment meiziTuFragment = MeiziTuFragment.newInstance();
     DoubanMeiziFragment doubanMeiziFragment = DoubanMeiziFragment.newInstance();

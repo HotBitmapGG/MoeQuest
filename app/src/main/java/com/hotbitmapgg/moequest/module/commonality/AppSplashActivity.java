@@ -1,5 +1,13 @@
 package com.hotbitmapgg.moequest.module.commonality;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import com.hotbitmapgg.moequest.R;
+import java.util.concurrent.TimeUnit;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -8,17 +16,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
-
-import com.hotbitmapgg.moequest.R;
-
-import java.util.concurrent.TimeUnit;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 
 /**
  * Created by hcc on 16/6/30 21:57
@@ -46,13 +43,8 @@ public class AppSplashActivity extends Activity {
     ButterKnife.bind(this);
     subscribe = Observable.timer(1000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Long>() {
-
-          @Override
-          public void call(Long aLong) {
-
-            startAnim();
-          }
+        .subscribe(aLong -> {
+          startAnim();
         });
   }
 

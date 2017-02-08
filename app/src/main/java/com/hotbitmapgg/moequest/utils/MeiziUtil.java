@@ -115,7 +115,7 @@ public class MeiziUtil {
       MeiziTu bean = new MeiziTu();
       bean.setOrder(i);
 
-      bean.setTitle(imgelement.attr("alt").toString());
+      bean.setTitle(imgelement.attr("alt"));
       bean.setType(type);
       bean.setHeight(354);
       bean.setWidth(236);

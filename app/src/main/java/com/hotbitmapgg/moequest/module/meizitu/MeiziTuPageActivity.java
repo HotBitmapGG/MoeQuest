@@ -1,5 +1,28 @@
 package com.hotbitmapgg.moequest.module.meizitu;
 
+import butterknife.Bind;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.base.RxBaseActivity;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
+import com.hotbitmapgg.moequest.rx.RxBus;
+import com.hotbitmapgg.moequest.utils.ConstantUtil;
+import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
+import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
+import com.hotbitmapgg.moequest.utils.ShareUtil;
+import com.hotbitmapgg.moequest.widget.DepthTransFormes;
+import com.jakewharton.rxbinding.view.RxMenuItem;
+import com.tbruyelle.rxpermissions.RxPermissions;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
@@ -16,32 +39,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Toast;
-
-import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.base.RxBaseActivity;
-import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
-import com.hotbitmapgg.moequest.module.commonality.MeiziDetailsFragment;
-import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.utils.ConstantUtil;
-import com.hotbitmapgg.moequest.utils.GlideDownloadImageUtil;
-import com.hotbitmapgg.moequest.utils.ImmersiveUtil;
-import com.hotbitmapgg.moequest.utils.ShareUtil;
-import com.hotbitmapgg.moequest.widget.DepthTransFormes;
-import com.jakewharton.rxbinding.view.RxMenuItem;
-import com.tbruyelle.rxpermissions.RxPermissions;
-
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
-import butterknife.Bind;
-import io.realm.Realm;
-import io.realm.RealmResults;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by hcc on 16/8/13 13:02
@@ -126,19 +123,11 @@ public class MeiziTuPageActivity extends RxBaseActivity {
     });
 
     RxBus.getInstance().toObserverable(String.class)
-        .subscribe(new Action1<String>() {
+        .subscribe(s -> {
 
-          @Override
-          public void call(String s) {
+          hideOrShowToolbar();
+        }, throwable -> {
 
-            hideOrShowToolbar();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-          }
         });
 
     setEnterSharedElementCallback(new SharedElementCallback() {
@@ -171,14 +160,7 @@ public class MeiziTuPageActivity extends RxBaseActivity {
 
     mToolbar.setTitle(meizis.get(currenIndex).getTitle());
     mToolbar.setNavigationIcon(R.drawable.ic_back);
-    mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View v) {
-
-        onBackPressed();
-      }
-    });
+    mToolbar.setNavigationOnClickListener(v -> onBackPressed());
     mToolbar.inflateMenu(R.menu.menu_meizi);
 
     //设置toolbar的颜色
@@ -217,18 +199,11 @@ public class MeiziTuPageActivity extends RxBaseActivity {
   private void saveImage() {
 
     RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_save))
-        .compose(this.<Void>bindToLifecycle())
+        .compose(this.bindToLifecycle())
         .compose(RxPermissions.getInstance(MeiziTuPageActivity.this)
             .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         .observeOn(Schedulers.io())
-        .filter(new Func1<Boolean, Boolean>() {
-
-          @Override
-          public Boolean call(Boolean aBoolean) {
-
-            return aBoolean;
-          }
-        })
+        .filter(aBoolean -> aBoolean)
         .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
           @Override
@@ -237,33 +212,21 @@ public class MeiziTuPageActivity extends RxBaseActivity {
             return GlideDownloadImageUtil.saveImageToLocal(MeiziTuPageActivity.this, url);
           }
         })
-        .map(new Func1<Uri, String>() {
+        .map(uri -> {
 
-          @Override
-          public String call(Uri uri) {
-
-            String msg = String.format("图片已保存至 %s 文件夹",
-                new File(Environment.getExternalStorageDirectory(), ConstantUtil.FILE_DIR)
-                    .getAbsolutePath());
-            return msg;
-          }
+          String msg = String.format("图片已保存至 %s 文件夹",
+              new File(Environment.getExternalStorageDirectory(), ConstantUtil.FILE_DIR)
+                  .getAbsolutePath());
+          return msg;
         })
         .observeOn(AndroidSchedulers.mainThread())
         .retry()
-        .subscribe(new Action1<String>() {
+        .subscribe(s -> {
 
-          @Override
-          public void call(String s) {
+          Toast.makeText(MeiziTuPageActivity.this, s, Toast.LENGTH_SHORT).show();
+        }, throwable -> {
 
-            Toast.makeText(MeiziTuPageActivity.this, s, Toast.LENGTH_SHORT).show();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            Toast.makeText(MeiziTuPageActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
-          }
+          Toast.makeText(MeiziTuPageActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
         });
   }
 
@@ -274,18 +237,11 @@ public class MeiziTuPageActivity extends RxBaseActivity {
   public void shareImage() {
 
     RxMenuItem.clicks(mToolbar.getMenu().findItem(R.id.action_fuli_share))
-        .compose(this.<Void>bindToLifecycle())
+        .compose(this.bindToLifecycle())
         .compose(RxPermissions.getInstance(MeiziTuPageActivity.this)
             .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         .observeOn(Schedulers.io())
-        .filter(new Func1<Boolean, Boolean>() {
-
-          @Override
-          public Boolean call(Boolean aBoolean) {
-
-            return aBoolean;
-          }
-        })
+        .filter(aBoolean -> aBoolean)
         .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
           @Override
@@ -296,20 +252,12 @@ public class MeiziTuPageActivity extends RxBaseActivity {
         })
         .observeOn(AndroidSchedulers.mainThread())
         .retry()
-        .subscribe(new Action1<Uri>() {
+        .subscribe(uri -> {
 
-          @Override
-          public void call(Uri uri) {
+          ShareUtil.sharePic(uri, meizis.get(currenIndex).getTitle(), MeiziTuPageActivity.this);
+        }, throwable -> {
 
-            ShareUtil.sharePic(uri, meizis.get(currenIndex).getTitle(), MeiziTuPageActivity.this);
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            Toast.makeText(MeiziTuPageActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
-          }
+          Toast.makeText(MeiziTuPageActivity.this, "分享失败,请重试", Toast.LENGTH_SHORT).show();
         });
   }
 

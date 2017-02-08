@@ -1,5 +1,22 @@
 package com.hotbitmapgg.moequest.module.gank;
 
+import butterknife.Bind;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.adapter.GankMeiziAdapter;
+import com.hotbitmapgg.moequest.base.RxBaseFragment;
+import com.hotbitmapgg.moequest.entity.gank.GankMeizi;
+import com.hotbitmapgg.moequest.network.RetrofitHelper;
+import com.hotbitmapgg.moequest.rx.RxBus;
+import com.hotbitmapgg.moequest.utils.LogUtil;
+import com.hotbitmapgg.moequest.utils.MeiziUtil;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import java.util.List;
+import java.util.Map;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -8,33 +25,8 @@ import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
-import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.GankMeiziAdapter;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.entity.gank.GankMeizi;
-import com.hotbitmapgg.moequest.entity.gank.GankMeiziInfo;
-import com.hotbitmapgg.moequest.entity.gank.GankMeiziResult;
-import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.utils.LogUtil;
-import com.hotbitmapgg.moequest.utils.MeiziUtil;
-import com.hotbitmapgg.moequest.utils.SnackbarUtil;
-
-import java.util.List;
-import java.util.Map;
-
-import butterknife.Bind;
-import io.realm.Realm;
-import io.realm.RealmResults;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by hcc on 16/6/25 19:48
@@ -95,23 +87,15 @@ public class GankMeiziFragment extends RxBaseFragment {
     initRecycleView();
 
     RxBus.getInstance().toObserverable(Intent.class)
-        .compose(this.<Intent>bindToLifecycle())
-        .subscribe(new Action1<Intent>() {
+        .compose(this.bindToLifecycle())
+        .subscribe(intent -> {
 
-          @Override
-          public void call(Intent intent) {
+          imageIndex = intent.getIntExtra("index", -1);
+          scrollIndex();
+          finishTask();
+        }, throwable -> {
 
-            imageIndex = intent.getIntExtra("index", -1);
-            scrollIndex();
-            finishTask();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            LogUtil.all(throwable.getMessage());
-          }
+          LogUtil.all(throwable.getMessage());
         });
 
     setEnterSharedElementCallback(new SharedElementCallback() {
@@ -147,28 +131,20 @@ public class GankMeiziFragment extends RxBaseFragment {
   public void showProgress() {
 
     mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-    mSwipeRefreshLayout.post(new Runnable() {
+    mSwipeRefreshLayout.post(() -> {
 
-      @Override
-      public void run() {
-
-        mSwipeRefreshLayout.setRefreshing(true);
-        clearCache();
-        mIsRefreshing = true;
-        getGankMeizi();
-      }
+      mSwipeRefreshLayout.setRefreshing(true);
+      clearCache();
+      mIsRefreshing = true;
+      getGankMeizi();
     });
 
-    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    mSwipeRefreshLayout.setOnRefreshListener(() -> {
 
-      @Override
-      public void onRefresh() {
-
-        page = 1;
-        clearCache();
-        mIsRefreshing = true;
-        getGankMeizi();
-      }
+      page = 1;
+      clearCache();
+      mIsRefreshing = true;
+      getGankMeizi();
     });
   }
 
@@ -190,56 +166,19 @@ public class GankMeiziFragment extends RxBaseFragment {
 
     RetrofitHelper.getGankMeiziApi()
         .getGankMeizi(pageNum, page)
-        .compose(this.<GankMeiziResult>bindToLifecycle())
-        .filter(new Func1<GankMeiziResult, Boolean>() {
-
-          @Override
-          public Boolean call(GankMeiziResult gankMeiziResult) {
-
-            return !gankMeiziResult.error;
-          }
-        })
-        .map(new Func1<GankMeiziResult, List<GankMeiziInfo>>() {
-
-          @Override
-          public List<GankMeiziInfo> call(GankMeiziResult gankMeiziResult) {
-
-            return gankMeiziResult.gankMeizis;
-          }
-        })
-        .doOnNext(new Action1<List<GankMeiziInfo>>() {
-
-          @Override
-          public void call(List<GankMeiziInfo> gankMeiziInfos) {
-
-            MeiziUtil.getInstance().putGankMeiziCache(gankMeiziInfos);
-          }
-        })
+        .compose(this.bindToLifecycle())
+        .filter(gankMeiziResult -> !gankMeiziResult.error)
+        .map(gankMeiziResult -> gankMeiziResult.gankMeizis)
+        .doOnNext(gankMeiziInfos -> MeiziUtil.getInstance().putGankMeiziCache(gankMeiziInfos))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<List<GankMeiziInfo>>() {
+        .subscribe(gankMeiziInfos -> {
 
-          @Override
-          public void call(List<GankMeiziInfo> gankMeiziInfos) {
+          finishTask();
+        }, throwable -> {
 
-            finishTask();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            mSwipeRefreshLayout.post(new Runnable() {
-
-              @Override
-              public void run() {
-
-                mSwipeRefreshLayout.setRefreshing(false);
-              }
-            });
-
-            SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
-          }
+          mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(false));
+          SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
         });
   }
 
@@ -257,20 +196,16 @@ public class GankMeiziFragment extends RxBaseFragment {
 
     mIsRefreshing = false;
 
-    mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener() {
+    mAdapter.setOnItemClickListener((position, holder) -> {
 
-      @Override
-      public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder) {
-
-        Intent intent = GankMeiziPageActivity.luanch(getActivity(), position);
-        if (Build.VERSION.SDK_INT >= 22) {
-          startActivity(intent,
-              ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                  holder.getParentView().findViewById(R.id.item_img),
-                  gankMeizis.get(position).getUrl()).toBundle());
-        } else {
-          startActivity(intent);
-        }
+      Intent intent = GankMeiziPageActivity.luanch(getActivity(), position);
+      if (Build.VERSION.SDK_INT >= 22) {
+        startActivity(intent,
+            ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                holder.getParentView().findViewById(R.id.item_img),
+                gankMeizis.get(position).getUrl()).toBundle());
+      } else {
+        startActivity(intent);
       }
     });
   }
@@ -320,17 +255,6 @@ public class GankMeiziFragment extends RxBaseFragment {
 
   private void setRecycleScrollBug() {
 
-    mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-
-        if (mIsRefreshing) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
+    mRecyclerView.setOnTouchListener((v, event) -> mIsRefreshing);
   }
 }

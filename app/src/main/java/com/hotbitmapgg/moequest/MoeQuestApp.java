@@ -18,7 +18,7 @@ import android.content.Context;
  */
 public class MoeQuestApp extends Application {
 
-  public static Context mAppContext;
+  private static Context mAppContext;
 
 
   @Override

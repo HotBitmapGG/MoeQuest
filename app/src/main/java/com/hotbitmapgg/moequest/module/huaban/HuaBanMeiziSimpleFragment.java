@@ -1,35 +1,27 @@
 package com.hotbitmapgg.moequest.module.huaban;
 
+import butterknife.Bind;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.adapter.HuaBanMeiziAdapter;
+import com.hotbitmapgg.moequest.base.RxBaseFragment;
+import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeizi;
+import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeiziInfo;
+import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
+import com.hotbitmapgg.moequest.network.RetrofitHelper;
+import com.hotbitmapgg.moequest.utils.ConstantUtil;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.MotionEvent;
-import android.view.View;
-
-import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.HuaBanMeiziAdapter;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeizi;
-import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeiziInfo;
-import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
-import com.hotbitmapgg.moequest.utils.ConstantUtil;
-import com.hotbitmapgg.moequest.utils.SnackbarUtil;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
-import okhttp3.ResponseBody;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by hcc on 16/8/13 12:50
@@ -63,11 +55,11 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment {
 
   private StaggeredGridLayoutManager mLayoutManager;
 
-  private int type;
-
   private List<HuaBanMeiziInfo> meiziInfos = new ArrayList<>();
 
   private boolean mIsRefreshing = false;
+
+  private int type;
 
 
   public static HuaBanMeiziSimpleFragment newInstance(int cid, int type) {
@@ -115,27 +107,19 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment {
   private void showProgress() {
 
     mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-    mSwipeRefreshLayout.postDelayed(new Runnable() {
+    mSwipeRefreshLayout.postDelayed(() -> {
 
-      @Override
-      public void run() {
-
-        mSwipeRefreshLayout.setRefreshing(true);
-        mIsRefreshing = true;
-        getHuaBanMeizi();
-      }
+      mSwipeRefreshLayout.setRefreshing(true);
+      mIsRefreshing = true;
+      getHuaBanMeizi();
     }, 500);
 
-    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    mSwipeRefreshLayout.setOnRefreshListener(() -> {
 
-      @Override
-      public void onRefresh() {
-
-        page = 1;
-        meiziInfos.clear();
-        mIsRefreshing = true;
-        getHuaBanMeizi();
-      }
+      page = 1;
+      meiziInfos.clear();
+      mIsRefreshing = true;
+      getHuaBanMeizi();
     });
   }
 
@@ -146,49 +130,30 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment {
         .getHuaBanMeizi(pageNum + "", page + "",
             ConstantUtil.APP_ID, cid + "",
             ConstantUtil.APP_SIGN)
-        .compose(this.<ResponseBody>bindToLifecycle())
-        .map(new Func1<ResponseBody, HuaBanMeizi>() {
+        .compose(this.bindToLifecycle())
+        .map(responseBody -> {
 
-          @Override
-          public HuaBanMeizi call(ResponseBody responseBody) {
+          try {
+            String string = responseBody.string();
 
-            try {
-              String string = responseBody.string();
-
-              return HuaBanMeizi.createFromJson(string);
-            } catch (IOException e) {
-              e.printStackTrace();
-              return null;
-            }
+            return HuaBanMeizi.createFromJson(string);
+          } catch (IOException e) {
+            e.printStackTrace();
+            return null;
           }
         })
 
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<HuaBanMeizi>() {
+        .subscribe(huaBanMeizi -> {
 
-          @Override
-          public void call(HuaBanMeizi huaBanMeizi) {
+          meiziInfos.addAll(huaBanMeizi.infos);
+          finishTask();
+        }, throwable -> {
 
-            meiziInfos.addAll(huaBanMeizi.infos);
-            finishTask();
-          }
-        }, new Action1<Throwable>() {
+          mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(false));
 
-          @Override
-          public void call(Throwable throwable) {
-
-            mSwipeRefreshLayout.post(new Runnable() {
-
-              @Override
-              public void run() {
-
-                mSwipeRefreshLayout.setRefreshing(false);
-              }
-            });
-
-            SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
-          }
+          SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
         });
   }
 
@@ -206,22 +171,18 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment {
 
     mIsRefreshing = false;
 
-    mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener() {
+    mAdapter.setOnItemClickListener((position, holder) -> {
 
-      @Override
-      public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder) {
-
-        Intent intent = SingleMeiziDetailsActivity
-            .LuanchActivity(getActivity(), meiziInfos.get(position).getThumb(),
-                meiziInfos.get(position).getTitle());
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
-          startActivity(intent, ActivityOptions
-              .makeSceneTransitionAnimation(getActivity(),
-                  holder.getParentView().findViewById(R.id.item_img),
-                  "transitionImg").toBundle());
-        } else {
-          startActivity(intent);
-        }
+      Intent intent = SingleMeiziDetailsActivity
+          .LuanchActivity(getActivity(), meiziInfos.get(position).getThumb(),
+              meiziInfos.get(position).getTitle());
+      if (android.os.Build.VERSION.SDK_INT >= 21) {
+        startActivity(intent, ActivityOptions
+            .makeSceneTransitionAnimation(getActivity(),
+                holder.getParentView().findViewById(R.id.item_img),
+                "transitionImg").toBundle());
+      } else {
+        startActivity(intent);
       }
     });
   }
@@ -252,17 +213,6 @@ public class HuaBanMeiziSimpleFragment extends RxBaseFragment {
 
   private void setRecycleScrollBug() {
 
-    mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-
-        if (mIsRefreshing) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
+    mRecyclerView.setOnTouchListener((v, event) -> mIsRefreshing);
   }
 }

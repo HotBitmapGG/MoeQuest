@@ -21,15 +21,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper {
 
-  public static final String BASE_GANK_URL = "http://gank.io/api/";
+  private static final String BASE_GANK_URL = "http://gank.io/api/";
 
-  public static final String BASE_HUABAN_URL = "http://route.showapi.com/";
+  private static final String BASE_HUABAN_URL = "http://route.showapi.com/";
 
-  public static final String BASE_DOUBAN_URL = "http://www.dbmeinv.com/dbgroup/";
+  private static final String BASE_DOUBAN_URL = "http://www.dbmeinv.com/dbgroup/";
 
-  public static final String BASE_JIANDAN_URL = "http://jandan.net/";
+  private static final String BASE_JIANDAN_URL = "http://jandan.net/";
 
-  public static final String BASE_MEIZITU_URL = "http://www.mzitu.com/";
+  private static final String BASE_MEIZITU_URL = "http://www.mzitu.com/";
 
   private static OkHttpClient mOkHttpClient;
 

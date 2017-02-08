@@ -15,14 +15,12 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import java.io.File;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -124,14 +122,7 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity {
     mToolBar.setTitle(title);
     setSupportActionBar(mToolBar);
     ActionBar supportActionBar = getSupportActionBar();
-    mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-
-      @Override
-      public void onClick(View v) {
-
-        onBackPressed();
-      }
-    });
+    mToolBar.setNavigationOnClickListener(v -> onBackPressed());
     if (supportActionBar != null) {
       supportActionBar.setDisplayHomeAsUpEnabled(true);
     }
@@ -162,14 +153,7 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity {
             .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this)
                 .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
             .observeOn(Schedulers.io())
-            .filter(new Func1<Boolean, Boolean>() {
-
-              @Override
-              public Boolean call(Boolean aBoolean) {
-
-                return aBoolean;
-              }
-            })
+            .filter(aBoolean -> aBoolean)
             .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
               @Override
@@ -181,21 +165,10 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity {
             })
             .observeOn(AndroidSchedulers.mainThread())
             .retry()
-            .subscribe(new Action1<Uri>() {
+            .subscribe(this::share, throwable -> {
 
-              @Override
-              public void call(Uri uri) {
-
-                share(uri);
-              }
-            }, new Action1<Throwable>() {
-
-              @Override
-              public void call(Throwable throwable) {
-
-                Toast.makeText(SingleMeiziDetailsActivity.this, "分享失败,请重试",
-                    Toast.LENGTH_SHORT).show();
-              }
+              Toast.makeText(SingleMeiziDetailsActivity.this, "分享失败,请重试",
+                  Toast.LENGTH_SHORT).show();
             });
         return true;
 
@@ -221,43 +194,24 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity {
 
   private void setUpPhotoAttacher() {
 
-    mPhotoViewAttacher.setOnViewTapListener(new PhotoViewAttacher.OnViewTapListener() {
-
-      @Override
-      public void onViewTap(View view, float v, float v1) {
-        //隐藏ToolBar
-        hideOrShowToolbar();
-      }
+    mPhotoViewAttacher.setOnViewTapListener((view, v, v1) -> {
+      //隐藏ToolBar
+      hideOrShowToolbar();
     });
 
-    mPhotoViewAttacher.setOnLongClickListener(new View.OnLongClickListener() {
+    mPhotoViewAttacher.setOnLongClickListener(v -> {
 
-      @Override
-      public boolean onLongClick(View v) {
+      new AlertDialog.Builder(SingleMeiziDetailsActivity.this)
+          .setMessage("是否保存到本地?")
+          .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
+          .setPositiveButton("确定", (dialog, which) -> {
 
-        new AlertDialog.Builder(SingleMeiziDetailsActivity.this)
-            .setMessage("是否保存到本地?")
-            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            saveImageToGallery();
+            dialog.dismiss();
+          })
+          .show();
 
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-
-                dialog.cancel();
-              }
-            })
-            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-              @Override
-              public void onClick(DialogInterface dialog, int which) {
-
-                saveImageToGallery();
-                dialog.dismiss();
-              }
-            })
-            .show();
-
-        return true;
-      }
+      return true;
     });
   }
 
@@ -265,18 +219,11 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity {
   private void saveImageToGallery() {
 
     Observable.just(R.string.app_name)
-        .compose(this.<Integer>bindToLifecycle())
+        .compose(this.bindToLifecycle())
         .compose(RxPermissions.getInstance(SingleMeiziDetailsActivity.this)
             .ensure(Manifest.permission.WRITE_EXTERNAL_STORAGE))
         .observeOn(Schedulers.io())
-        .filter(new Func1<Boolean, Boolean>() {
-
-          @Override
-          public Boolean call(Boolean aBoolean) {
-
-            return aBoolean;
-          }
-        })
+        .filter(aBoolean -> aBoolean)
         .flatMap(new Func1<Boolean, Observable<Uri>>() {
 
           @Override
@@ -286,23 +233,15 @@ public class SingleMeiziDetailsActivity extends RxBaseActivity {
           }
         })
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<Uri>() {
+        .subscribe(uri -> {
 
-          @Override
-          public void call(Uri uri) {
+          File appDir = new File(Environment.getExternalStorageDirectory(),
+              ConstantUtil.FILE_DIR);
+          String msg = String.format("图片已保存至 %s 文件夹", appDir.getAbsolutePath());
+          Toast.makeText(SingleMeiziDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
+        }, throwable -> {
 
-            File appDir = new File(Environment.getExternalStorageDirectory(),
-                ConstantUtil.FILE_DIR);
-            String msg = String.format("图片已保存至 %s 文件夹", appDir.getAbsolutePath());
-            Toast.makeText(SingleMeiziDetailsActivity.this, msg, Toast.LENGTH_SHORT).show();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            Toast.makeText(SingleMeiziDetailsActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
-          }
+          Toast.makeText(SingleMeiziDetailsActivity.this, "保存失败,请重试", Toast.LENGTH_SHORT).show();
         });
   }
 

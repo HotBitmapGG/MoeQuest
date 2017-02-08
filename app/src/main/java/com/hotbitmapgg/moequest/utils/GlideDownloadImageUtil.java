@@ -1,22 +1,20 @@
 package com.hotbitmapgg.moequest.utils;
 
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.concurrent.ExecutionException;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 
 /**
  * 使用Glide下载图片到本地工具类
@@ -30,7 +28,7 @@ public class GlideDownloadImageUtil {
       @Override
       public void call(Subscriber<? super File> subscriber) {
 
-        File file = null;
+        File file;
         try {
           LogUtil.all("download" + url);
           file = Glide.with(context)
@@ -39,9 +37,7 @@ public class GlideDownloadImageUtil {
               .get();
 
           subscriber.onNext(file);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
           e.printStackTrace();
         }
       }
@@ -65,7 +61,7 @@ public class GlideDownloadImageUtil {
           mFile = new File(dir, fileName);
           FileInputStream fis = new FileInputStream(file.getAbsolutePath());
 
-          int byteread = 0;
+          int byteread;
           byte[] buf = new byte[1444];
 
           FileOutputStream fos = new FileOutputStream(mFile.getAbsolutePath());

@@ -1,5 +1,23 @@
 package com.hotbitmapgg.moequest.module.meizitu;
 
+import butterknife.Bind;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.adapter.MeiziTuAdapter;
+import com.hotbitmapgg.moequest.base.RxBaseFragment;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.network.RetrofitHelper;
+import com.hotbitmapgg.moequest.rx.RxBus;
+import com.hotbitmapgg.moequest.utils.LogUtil;
+import com.hotbitmapgg.moequest.utils.MeiziUtil;
+import com.hotbitmapgg.moequest.utils.SnackbarUtil;
+import io.realm.Realm;
+import io.realm.RealmResults;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
@@ -8,32 +26,8 @@ import android.support.v4.app.SharedElementCallback;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-
-import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.MeiziTuAdapter;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.base.RxBaseFragment;
-import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
-import com.hotbitmapgg.moequest.network.RetrofitHelper;
-import com.hotbitmapgg.moequest.rx.RxBus;
-import com.hotbitmapgg.moequest.utils.LogUtil;
-import com.hotbitmapgg.moequest.utils.MeiziUtil;
-import com.hotbitmapgg.moequest.utils.SnackbarUtil;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import butterknife.Bind;
-import io.realm.Realm;
-import io.realm.RealmResults;
-import okhttp3.ResponseBody;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by hcc on 16/7/19 20:44
@@ -106,23 +100,15 @@ public class MeiziTuSimpleFragment extends RxBaseFragment {
     initRecycleView();
 
     RxBus.getInstance().toObserverable(Intent.class)
-        .compose(this.<Intent>bindToLifecycle())
-        .subscribe(new Action1<Intent>() {
+        .compose(this.bindToLifecycle())
+        .subscribe(intent -> {
 
-          @Override
-          public void call(Intent intent) {
+          imageIndex = intent.getIntExtra("index", -1);
+          scrollIndex();
+          finishTask();
+        }, throwable -> {
 
-            imageIndex = intent.getIntExtra("index", -1);
-            scrollIndex();
-            finishTask();
-          }
-        }, new Action1<Throwable>() {
-
-          @Override
-          public void call(Throwable throwable) {
-
-            LogUtil.all(throwable.getMessage());
-          }
+          LogUtil.all(throwable.getMessage());
         });
 
     setEnterSharedElementCallback(new SharedElementCallback() {
@@ -159,28 +145,20 @@ public class MeiziTuSimpleFragment extends RxBaseFragment {
   private void showProgress() {
 
     mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-    mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    mSwipeRefreshLayout.setOnRefreshListener(() -> {
 
-      @Override
-      public void onRefresh() {
-
-        page = 1;
-        mIsRefreshing = true;
-        clearCache();
-        getMeizis();
-      }
+      page = 1;
+      mIsRefreshing = true;
+      clearCache();
+      getMeizis();
     });
 
-    mSwipeRefreshLayout.postDelayed(new Runnable() {
+    mSwipeRefreshLayout.postDelayed(() -> {
 
-      @Override
-      public void run() {
-
-        mSwipeRefreshLayout.setRefreshing(true);
-        mIsRefreshing = true;
-        clearCache();
-        getMeizis();
-      }
+      mSwipeRefreshLayout.setRefreshing(true);
+      mIsRefreshing = true;
+      clearCache();
+      getMeizis();
     }, 500);
   }
 
@@ -202,40 +180,25 @@ public class MeiziTuSimpleFragment extends RxBaseFragment {
 
     RetrofitHelper.getMeiziTuApi()
         .getMeiziTuApi(type, page)
-        .compose(this.<ResponseBody>bindToLifecycle())
+        .compose(this.bindToLifecycle())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Action1<ResponseBody>() {
+        .subscribe(responseBody -> {
 
-          @Override
-          public void call(ResponseBody responseBody) {
-
-            try {
-              String html = responseBody.string();
-              List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuHtml(html, type);
-              MeiziUtil.getInstance().putMeiziTuCache(list);
-              finishTask();
-            } catch (IOException e) {
-              e.printStackTrace();
-            }
+          try {
+            String html = responseBody.string();
+            List<MeiziTu> list = MeiziUtil.getInstance().parserMeiziTuHtml(html, type);
+            MeiziUtil.getInstance().putMeiziTuCache(list);
+            finishTask();
+          } catch (IOException e) {
+            e.printStackTrace();
           }
-        }, new Action1<Throwable>() {
+        }, throwable -> {
 
-          @Override
-          public void call(Throwable throwable) {
+          mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(false));
 
-            mSwipeRefreshLayout.post(new Runnable() {
-
-              @Override
-              public void run() {
-
-                mSwipeRefreshLayout.setRefreshing(false);
-              }
-            });
-
-            SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
-            LogUtil.all(throwable.getMessage());
-          }
+          SnackbarUtil.showMessage(mRecyclerView, getString(R.string.error_message));
+          LogUtil.all(throwable.getMessage());
         });
   }
 
@@ -252,20 +215,16 @@ public class MeiziTuSimpleFragment extends RxBaseFragment {
     }
     mIsRefreshing = false;
 
-    mAdapter.setOnItemClickListener(new AbsRecyclerViewAdapter.OnItemClickListener() {
+    mAdapter.setOnItemClickListener((position, holder) -> {
 
-      @Override
-      public void onItemClick(int position, AbsRecyclerViewAdapter.ClickableViewHolder holder) {
-
-        Intent intent = MeiziTuPageActivity.luanch(getActivity(), position, type);
-        if (Build.VERSION.SDK_INT >= 22) {
-          startActivity(intent,
-              ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                  holder.getParentView().findViewById(R.id.item_img),
-                  meizis.get(position).getImageurl()).toBundle());
-        } else {
-          startActivity(intent);
-        }
+      Intent intent = MeiziTuPageActivity.luanch(getActivity(), position, type);
+      if (Build.VERSION.SDK_INT >= 22) {
+        startActivity(intent,
+            ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                holder.getParentView().findViewById(R.id.item_img),
+                meizis.get(position).getImageurl()).toBundle());
+      } else {
+        startActivity(intent);
       }
     });
   }
@@ -315,17 +274,6 @@ public class MeiziTuSimpleFragment extends RxBaseFragment {
 
   private void setRecycleScrollBug() {
 
-    mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
-
-      @Override
-      public boolean onTouch(View v, MotionEvent event) {
-
-        if (mIsRefreshing) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-    });
+    mRecyclerView.setOnTouchListener((v, event) -> mIsRefreshing);
   }
 }
