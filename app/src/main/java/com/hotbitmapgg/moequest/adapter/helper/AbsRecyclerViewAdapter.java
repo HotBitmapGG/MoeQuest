@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.adapter.base;
+package com.hotbitmapgg.moequest.adapter.helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * RecycleView通用适配器
+ * Created by hcc on 16/8/4 14:12
+ * 100332338@qq.com
+ * <p/>
+ * RecycleViewAdapter基类
  */
-public abstract class AbsRecyclerViewAdapter
-    extends RecyclerView.Adapter<AbsRecyclerViewAdapter.ClickableViewHolder> {
+public abstract class AbsRecyclerViewAdapter extends
+    RecyclerView.Adapter<AbsRecyclerViewAdapter.ClickableViewHolder> {
 
   private Context context;
 
   protected RecyclerView mRecyclerView;
 
-  protected List<RecyclerView.OnScrollListener> mListeners
-      = new ArrayList<RecyclerView.OnScrollListener>();
+  private List<RecyclerView.OnScrollListener> mListeners = new ArrayList<>();
 
 
   public AbsRecyclerViewAdapter(RecyclerView recyclerView) {
@@ -55,12 +57,12 @@ public abstract class AbsRecyclerViewAdapter
 
   public interface OnItemClickListener {
 
-    public void onItemClick(int position, ClickableViewHolder holder);
+    void onItemClick(int position, ClickableViewHolder holder);
   }
 
-  public interface OnItemLongClickListener {
+  interface OnItemLongClickListener {
 
-    public boolean onItemLongClick(int position, ClickableViewHolder holder);
+    boolean onItemLongClick(int position, ClickableViewHolder holder);
   }
 
   private OnItemClickListener itemClickListener;
@@ -95,32 +97,18 @@ public abstract class AbsRecyclerViewAdapter
   @Override
   public void onBindViewHolder(final ClickableViewHolder holder, final int position) {
 
-    holder.getParentView().setOnClickListener(new View.OnClickListener() {
+    holder.getParentView().setOnClickListener(v -> {
 
-      @Override
-      public void onClick(View v) {
-
-        if (itemClickListener != null) {
-          itemClickListener.onItemClick(position, holder);
-        }
+      if (itemClickListener != null) {
+        itemClickListener.onItemClick(position, holder);
       }
     });
-    holder.getParentView().setOnLongClickListener(new View.OnLongClickListener() {
-
-      @Override
-      public boolean onLongClick(View v) {
-
-        if (itemLongClickListener != null) {
-          return itemLongClickListener.onItemLongClick(position, holder);
-        } else {
-          return false;
-        }
-      }
-    });
+    holder.getParentView().setOnLongClickListener(v -> itemLongClickListener != null
+        && itemLongClickListener.onItemLongClick(position, holder));
   }
 
 
-  public class ClickableViewHolder extends RecyclerView.ViewHolder {
+  public static class ClickableViewHolder extends RecyclerView.ViewHolder {
 
     private View parentView;
 
@@ -138,6 +126,7 @@ public abstract class AbsRecyclerViewAdapter
     }
 
 
+    @SuppressWarnings("unchecked")
     public <T extends View> T $(@IdRes int id) {
 
       return (T) parentView.findViewById(id);

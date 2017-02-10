@@ -1,4 +1,4 @@
-package com.hotbitmapgg.moequest.widget.loadmore;
+package com.hotbitmapgg.moequest.adapter.helper;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;

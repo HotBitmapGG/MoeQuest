@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
+import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
 
 import java.util.ArrayList;

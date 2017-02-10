@@ -1,13 +1,13 @@
-package com.hotbitmapgg.moequest.widget.loadmore;
-
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewGroup;
+package com.hotbitmapgg.moequest.adapter.helper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
 
 /**
  * RecycleView添加头部

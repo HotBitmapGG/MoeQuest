@@ -78,11 +78,7 @@ public class MeiziTuFragment extends RxBaseFragment {
     @Override
     public Fragment getItem(int position) {
 
-      if (position == 0) {
-        return ZiPaiMeiziFragment.newInstance(types.get(0));
-      } else {
-        return MeiziTuSimpleFragment.newInstance(types.get(position));
-      }
+      return MeiziTuSimpleFragment.newInstance(types.get(position));
     }
 
 

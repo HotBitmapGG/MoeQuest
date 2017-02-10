@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
+import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.entity.taomodel.Contentlist;
 import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
 import com.hotbitmapgg.moequest.module.taogirl.TaoFemalePagerActivity;

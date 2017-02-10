@@ -4,7 +4,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.base.AbsRecyclerViewAdapter;
+import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeiziInfo;
 import com.hotbitmapgg.moequest.widget.RatioImageView;
 import java.util.ArrayList;
