@@ -125,7 +125,7 @@ public class MainActivity extends RxBaseActivity
   @Override
   public void initToolBar() {
 
-    mToolbar.setTitle("MoeQuest");
+    mToolbar.setTitle("萌妹纸");
     setSupportActionBar(mToolbar);
     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
         this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
