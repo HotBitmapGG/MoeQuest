@@ -4,24 +4,23 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * RecycleView上拉加载更多
+ * Created by hcc on 16/8/7 21:18
+ * 100332338@qq.com
+ * <p/>
+ * 自定义RecylcerView上拉加载处理
  */
 public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
-
-  public static String TAG = EndlessRecyclerOnScrollListener.class.getSimpleName();
 
   private int previousTotal = 0;
 
   private boolean loading = true;
-
-  int lastCompletelyVisiableItemPosition, visibleItemCount, totalItemCount;
 
   private int currentPage = 1;
 
   private LinearLayoutManager mLinearLayoutManager;
 
 
-  public EndlessRecyclerOnScrollListener(LinearLayoutManager linearLayoutManager) {
+  protected EndlessRecyclerOnScrollListener(LinearLayoutManager linearLayoutManager) {
 
     this.mLinearLayoutManager = linearLayoutManager;
   }
@@ -32,9 +31,13 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
 
     super.onScrolled(recyclerView, dx, dy);
 
-    visibleItemCount = recyclerView.getChildCount();
-    totalItemCount = mLinearLayoutManager.getItemCount();
-    lastCompletelyVisiableItemPosition
+    if (dy == 0) {
+      return;
+    }
+
+    int visibleItemCount = recyclerView.getChildCount();
+    int totalItemCount = mLinearLayoutManager.getItemCount();
+    int lastCompletelyVisiableItemPosition
         = mLinearLayoutManager.findLastCompletelyVisibleItemPosition();
 
     if (loading) {
@@ -43,13 +46,21 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
         previousTotal = totalItemCount;
       }
     }
-    if (!loading
-        && (visibleItemCount > 0)
-        && (lastCompletelyVisiableItemPosition >= totalItemCount - 1)) {
+
+    if (!loading && (visibleItemCount > 0) &&
+        (lastCompletelyVisiableItemPosition >= totalItemCount - 1)) {
       currentPage++;
       onLoadMore(currentPage);
       loading = true;
     }
+  }
+
+
+  public void refresh() {
+
+    loading = true;
+    previousTotal = 0;
+    currentPage = 1;
   }
 
 

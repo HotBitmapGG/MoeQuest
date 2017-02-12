@@ -31,9 +31,6 @@ public class ConstantUtil {
   //清纯妹子
   public static final String QINGCHUN_MEIZI = "mm";
 
-  //自拍妹子
-  public static final String ZIPAI_MEIZI = "share";
-
   //推荐
   public static final String TUIJIAN_MEIZI = "best";
 
