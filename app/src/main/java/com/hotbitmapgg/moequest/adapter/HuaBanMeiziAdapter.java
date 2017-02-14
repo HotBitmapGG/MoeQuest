@@ -2,7 +2,6 @@ package com.hotbitmapgg.moequest.adapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.hotbitmapgg.moequest.R;
 import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
 import com.hotbitmapgg.moequest.entity.huaban.HuaBanMeiziInfo;
@@ -49,14 +48,10 @@ public class HuaBanMeiziAdapter extends AbsRecyclerViewAdapter {
           .diskCacheStrategy(DiskCacheStrategy.ALL)
           .placeholder(R.drawable.placeholder_image)
           .into(itemViewHolder.ratioImageView)
-          .getSize(new SizeReadyCallback() {
+          .getSize((width, height) -> {
 
-            @Override
-            public void onSizeReady(int width, int height) {
-
-              if (!itemViewHolder.item.isShown()) {
-                itemViewHolder.item.setVisibility(View.VISIBLE);
-              }
+            if (!itemViewHolder.item.isShown()) {
+              itemViewHolder.item.setVisibility(View.VISIBLE);
             }
           });
     }

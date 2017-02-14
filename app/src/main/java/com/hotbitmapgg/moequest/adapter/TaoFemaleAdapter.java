@@ -1,5 +1,16 @@
 package com.hotbitmapgg.moequest.adapter;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
+import com.hotbitmapgg.moequest.entity.taomodel.Contentlist;
+import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
+import com.hotbitmapgg.moequest.module.taogirl.TaoFemalePagerActivity;
+import com.hotbitmapgg.moequest.widget.CircleImageView;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -10,18 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.entity.taomodel.Contentlist;
-import com.hotbitmapgg.moequest.module.commonality.SingleMeiziDetailsActivity;
-import com.hotbitmapgg.moequest.module.taogirl.TaoFemalePagerActivity;
-import com.hotbitmapgg.moequest.widget.CircleImageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TaoFemaleAdapter extends AbsRecyclerViewAdapter {
 
@@ -87,22 +86,18 @@ public class TaoFemaleAdapter extends AbsRecyclerViewAdapter {
 
     itemViewHolder.mImageNum.setText(imgList.size() + "张");
 
-    itemViewHolder.mImage.setOnClickListener(new View.OnClickListener() {
+    itemViewHolder.mImage.setOnClickListener(v -> {
 
-      @Override
-      public void onClick(View v) {
-
-        if (imgList.size() > 0) {
-          TaoFemalePagerActivity.luancher((Activity) getContext(), imgList, 0);
+      if (imgList.size() > 0) {
+        TaoFemalePagerActivity.luancher((Activity) getContext(), imgList, 0);
+      } else {
+        Intent intent = SingleMeiziDetailsActivity.LuanchActivity((Activity) mContext, url, name);
+        if (android.os.Build.VERSION.SDK_INT >= 21) {
+          mContext.startActivity(intent,
+              ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
+                  itemViewHolder.mImage, "transitionImg").toBundle());
         } else {
-          Intent intent = SingleMeiziDetailsActivity.LuanchActivity((Activity) mContext, url, name);
-          if (android.os.Build.VERSION.SDK_INT >= 21) {
-            mContext.startActivity(intent,
-                ActivityOptions.makeSceneTransitionAnimation((Activity) mContext,
-                    itemViewHolder.mImage, "transitionImg").toBundle());
-          } else {
-            mContext.startActivity(intent);
-          }
+          mContext.startActivity(intent);
         }
       }
     });

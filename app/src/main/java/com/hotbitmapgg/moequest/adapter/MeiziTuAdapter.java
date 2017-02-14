@@ -1,22 +1,20 @@
 package com.hotbitmapgg.moequest.adapter;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hotbitmapgg.moequest.R;
+import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
+import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
+import com.hotbitmapgg.moequest.widget.RatioImageView;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.SizeReadyCallback;
-import com.hotbitmapgg.moequest.R;
-import com.hotbitmapgg.moequest.adapter.helper.AbsRecyclerViewAdapter;
-import com.hotbitmapgg.moequest.entity.meizitu.MeiziTu;
-import com.hotbitmapgg.moequest.widget.RatioImageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MeiziTuAdapter extends AbsRecyclerViewAdapter {
 
@@ -51,14 +49,10 @@ public class MeiziTuAdapter extends AbsRecyclerViewAdapter {
           .diskCacheStrategy(DiskCacheStrategy.ALL)
           .placeholder(R.drawable.placeholder_image)
           .into(itemViewHolder.ratioImageView)
-          .getSize(new SizeReadyCallback() {
+          .getSize((width, height) -> {
 
-            @Override
-            public void onSizeReady(int width, int height) {
-
-              if (!itemViewHolder.item.isShown()) {
-                itemViewHolder.item.setVisibility(View.VISIBLE);
-              }
+            if (!itemViewHolder.item.isShown()) {
+              itemViewHolder.item.setVisibility(View.VISIBLE);
             }
           });
 
